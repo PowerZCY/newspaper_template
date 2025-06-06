@@ -1,0 +1,38 @@
+@import 'tailwindcss';
+
+/* 
+ * 文档主题皮肤, 参考https://fumadocs.dev/docs/ui/theme
+ * neutral
+ * black
+ * vitepress
+ * dusk
+ * catppuccin
+ * ocean
+ * purple
+ */
+@import 'fumadocs-ui/css/vitepress.css';
+@import 'fumadocs-ui/css/preset.css';
+
+@import 'katex/dist/katex.css';
+@import 'nprogress/nprogress.css';
+
+@import '../../styles/fuma.css';
+@import '../../styles/cta.css';
+
+/* 
+ * 强制NProgress进度条颜色为紫色
+ */
+#nprogress .bar {
+  background: #AC62FD !important; /* 紫色 */
+  height: 1px !important;
+}
+
+/* Icon stroke colors for light/dark themes */
+:root {
+  --clerk-icon-stroke-color: #616161; /* Light theme */
+}
+
+.dark {
+  --clerk-icon-stroke-color: #616161; /* Dark theme */
+}
+
