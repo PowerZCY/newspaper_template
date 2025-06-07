@@ -8,7 +8,6 @@ import {
 import { notFound } from 'next/navigation';
 import { getMDXComponents } from '@/components/mdx-components';
 import { TocFooter } from '@/components/toc';
-import { appConfig } from '@/lib/appConfig';
 
 export default async function Page({
   params,
@@ -19,8 +18,7 @@ export default async function Page({
   const page = blogSource.getPage(slug, locale);
   if (!page) notFound();
 
-  const path = `${appConfig.mdxSourceDir.blog}/${page.file.path}`;
-  const tocFooterElement = <TocFooter lastModified={page.data.lastModified} editPath={path} />;
+  const tocFooterElement = <TocFooter lastModified={page.data.lastModified} />;
  
  
   // Markdown content requires await if you config 'async: true' in source.config.ts

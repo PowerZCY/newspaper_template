@@ -4,7 +4,6 @@ import { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
 import { getTranslations } from 'next-intl/server';
 import ClerkUser from '@/components/ClerkUser';
 import { i18n } from '@/i18n';
-import { appConfig } from '@/lib/appConfig';
 
 // 首页普通菜单
 export async function homeNavLinks(locale: string): Promise<LinkItemType[]> {
@@ -21,12 +20,7 @@ export async function homeNavLinks(locale: string): Promise<LinkItemType[]> {
       secondary: true,
       // NicknameFilter 假设在其内部也使用了 useNickname
       children: <ClerkUser locale={locale} />
-    },
-    // {
-    //   type: 'custom',
-    //   secondary: true,
-    //   children: <ClerkOrganization locale={locale} />
-    // }
+    }
   ];
 }
 
@@ -57,8 +51,6 @@ export async function baseOptions(locale: string): Promise<BaseLayoutProps> {
       transparentMode: 'none',
     },
     // 导航Header, 语言切换
-    i18n,
-    // 导航Header, Github链接
-    githubUrl: appConfig.github,
+    i18n
   };
 }

@@ -2,8 +2,6 @@
 export const appConfig = {
   // 基础配置
   baseUrl: process.env.NEXT_PUBLIC_BASE_URL || 'https://ddaas.de8ger.com',
-  githubBaseUrl: process.env.NEXT_PUBLIC_GITHUB_BASE_URL || 'https://github.com/PowerZCY/newspaper_template/blob/main/',
-  github: process.env.NEXT_PUBLIC_GITHUB || 'https://github.com/PowerZCY/newspaper_template/',
 
   i18n: {
     // locales: ["en", "zh", "ja", "ko", "fr", "de", "es", "it", "pt", "tr", "pl"] as const,
@@ -43,7 +41,7 @@ export const appConfig = {
       enabled: process.env.NEXT_PUBLIC_STYLE_WATERMARK_ENABLED === 'true',
       text: process.env.NEXT_PUBLIC_STYLE_WATERMARK_TEXT || "巽川·怀因"
     },
-    cdnBaseUrl: "https://raw.githubusercontent.com/caofanCPU/wind-run-1/main/public",
+    cdnBaseUrl: process.env.NEXT_PUBLIC_STYLE_CDN_BASE_URL || "https://raw.githubusercontent.com/caofanCPU/wind-run-1/main/public",
     placeHolder: {
       image: "/default.webp"
     }

@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useCopyButton } from 'fumadocs-ui/utils/use-copy-button';
-import Link from 'fumadocs-core/link';
 import { globalLucideIcons as icons } from '@/components/global-icon'
 import {formatTimestamp} from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -64,24 +63,12 @@ export function LLMCopyButton() {
   );
 }
 
-export function EditOnGitHub({ url }: { url: string }) {
-  return (
-    <Link
-      className="flex items-center gap-x-2 text-stone-600 hover:text-stone-500 dark:text-stone-400 dark:hover:text-stone-300 text-sm"
-      href={url}
-    >
-      <icons.GitHub/>
-      Edit this page on GitHub
-    </Link>
-  );
-}
-
 // New component for displaying the last updated date with an icon
 export function LastUpdatedDate({ gitTimestamp }: { gitTimestamp: Date | undefined }) {
   return (
     <div className="flex items-center gap-x-2 text-stone-600 dark:text-stone-400 text-sm">
       <icons.LastUpdated/>
-      Lastest on {gitTimestamp ? formatTimestamp(gitTimestamp.toString(), "yyyy-MM-dd") : "Ages ago"}
+      First on {gitTimestamp ? formatTimestamp(gitTimestamp.toString(), "yyyy-MM-dd") : "Ages ago"}
     </div>
   );
 }
