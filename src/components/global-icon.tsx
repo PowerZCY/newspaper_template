@@ -13,6 +13,7 @@ import { iconColor } from '@/lib/appConfig';
 
 // Define all custom image-based icons in this object
 const customImageIcons = {
+  ByteCry: iconFromSVG("/icons/bytecry.svg", "ByteCry"),
   GitHub: iconFromSVG("/icons/github.svg", "GitHub"),
   LastUpdated: iconFromSVG("/icons/latest.svg", "Last updated"),
   Markdown: iconFromSVG("/icons/markdown.svg", "Markdown"),

@@ -6,6 +6,7 @@
  */
 export {
     AlbumIcon,
+    AlignHorizontalJustifyEnd,
     ArrowLeft,
     ArrowRight,
     ArrowUp,
