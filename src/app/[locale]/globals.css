@@ -36,3 +36,41 @@
   --clerk-icon-stroke-color: #616161; /* Dark theme */
 }
 
+/* Newspaper Template Styles */
+.newspaper-bg {
+  background: #f5f5e5;
+}
+.img-shadow {
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 16px 0 rgba(0,0,0,0.10);
+}
+.editable:focus {
+  outline: 1px solid #ac62fd;
+}
+
+/* EngraversOldEnglish古典僵尸字体 */
+@font-face {
+  font-family: 'EngraversOldEnglish';
+  src: url('/EngraversOldEnglish.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+/* MontserratRegular优雅字体 */
+@font-face {
+  font-family: 'MontserratRegular';
+  src: url('/MontserratRegular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+/* SuperAdorable可爱字体 */
+@font-face {
+  font-family: 'SuperAdorable';
+  src: url('/SuperAdorable.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+/* 网站默认MontserratRegular字体 */
+body {
+  font-family: 'MontserratRegular', sans-serif;
+}
+

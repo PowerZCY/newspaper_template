@@ -60,7 +60,9 @@
     "fumadocs-mdx": "11.6.3",
     "fumadocs-typescript": "4.0.4",
     "fumadocs-ui": "15.3.3",
+    "html2canvas": "^1.4.1",
     "input-otp": "1.4.2",
+    "jspdf": "^3.0.1",
     "katex": "^0.16.22",
     "lucide-react": "^0.511.0",
     "mermaid": "^11.6.0",
@@ -90,6 +92,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.7",
     "@types/hast": "^3.0.4",
+    "@types/html2canvas": "^1.0.0",
     "@types/node": "^22.15.18",
     "@types/nprogress": "^0.2.3",
     "@types/react": "19.1.2",

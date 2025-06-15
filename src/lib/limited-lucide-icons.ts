@@ -51,6 +51,7 @@ export {
     Pi,
     ReceiptText,
     Regex,
+    Replace,
     Rss,
     Search,
     Share,
