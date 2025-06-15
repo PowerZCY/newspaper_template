@@ -48,6 +48,24 @@
       background: #23272f;
       color: #aaa;
     }
+    @font-face {
+      font-family: 'Olde English';
+      src: url('../public/OldeEnglish.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Anjelina';
+      src: url('../public/Anjelina.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'SuperAdorable';
+      src: url('../public/SuperAdorable.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col bg-neutral-100 dark:bg-neutral-900 transition-colors duration-300">
@@ -93,6 +111,7 @@
     &copy; 2024 Re8ger Newspaper Template
   </footer>
 
+  <script src="https://unpkg.com/lucide@latest"></script>
   <script>
     // 模板数据
     const templates = {
@@ -103,7 +122,7 @@
             <!-- 顶部区 -->
             <div contenteditable="true" class="editable text-center text-base text-neutral-700 mt-2 mb-1 tracking-wide" style="font-family:Times New Roman,serif;">Especial Edition</div>
             <div class="w-full h-px bg-neutral-700"></div>
-            <div contenteditable="true" class="editable text-center text-[2.8rem] md:text-6xl font-extrabold tracking-[0.14em] text-neutral-900 leading-tight mb-0.5" style="font-family:Times New Roman,serif; font-weight:600;">BREAKING NEWS</div>
+            <div contenteditable="true" class="editable text-center text-[2.8rem] md:text-6xl font-extrabold tracking-[0.14em] text-neutral-900 leading-tight mb-0.5" style="font-family:SuperAdorable,Times New Roman,serif; font-weight:600;">BREAKING NEWS</div>
             <div class="w-full h-px bg-neutral-700 mt-2"></div>
             <div class="w-full h-1 bg-neutral-900 mt-0.5 mb-2"></div>
             <!-- 主体区 -->
@@ -112,11 +131,11 @@
               <div class="w-2/3 pr-6 flex flex-col justify-start">
                 <!-- 行1：大图（横向，3:1比例） -->
                 <div class="mb-2">
-                  <label class="block relative cursor-pointer group w-full">
-                    <img id="main-img" src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=900&q=80" class="img-shadow w-full h-[400px] object-cover" alt="主图"/>
-                    <input type="file" accept="image/*" class="hidden" onchange="window.uploadImage(event, 'main-img')"/>
-                    <span class="absolute bottom-2 right-2 bg-white/80 text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">更换图片</span>
-                  </label>
+                  <div class="relative group w-full">
+                    <img id="main-img" src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=900&q=80" class="img-shadow w-full h-[400px] object-cover select-none" style="cursor:default;" alt="主图"/>
+                    <button type="button" class="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onclick="event.stopPropagation();document.getElementById('main-img-input').click();"><i data-lucide='replace' class='w-6 h-6 text-black'></i></button>
+                    <input id="main-img-input" type="file" accept="image/*" class="hidden" onchange="window.uploadImage(event, 'main-img')"/>
+                  </div>
                 </div>
                 <!-- 行2：大标题 -->
                 <div contenteditable="true" class="editable mb-1 text-xl font-extrabold tracking-wide text-neutral-900" style="font-family:Times New Roman,serif;">JULIET'S BIRTHDAY NIGHT</div>
@@ -133,11 +152,11 @@
                 <div contenteditable="true" class="editable text-xs font-bold tracking-wide leading-tight mb-1" style="font-family:Times New Roman,serif;">JULIET TELLS US HOW SHE PREPARED FOR HER PARTY.</div>
                 <!-- 行2：竖图（右列等宽，竖向比例） -->
                 <div class="mb-1">
-                  <label class="block relative cursor-pointer group w-full">
-                    <img id="side-img" src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=200&q=80" class="img-shadow w-full h-[200px] object-cover" alt="侧图"/>
-                    <input type="file" accept="image/*" class="hidden" onchange="window.uploadImage(event, 'side-img')"/>
-                    <span class="absolute bottom-2 right-2 bg-white/80 text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">更换图片</span>
-                  </label>
+                  <div class="relative group w-full">
+                    <img id="side-img" src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=200&q=80" class="img-shadow w-full h-[200px] object-cover select-none" style="cursor:default;" alt="侧图"/>
+                    <button type="button" class="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onclick="event.stopPropagation();document.getElementById('side-img-input').click();"><i data-lucide='replace' class='w-6 h-6 text-black'></i></button>
+                    <input id="side-img-input" type="file" accept="image/*" class="hidden" onchange="window.uploadImage(event, 'side-img')"/>
+                  </div>
                 </div>
                 <!-- 行3：描述 -->
                 <div contenteditable="true" class="editable text-base text-neutral-700 leading-snug mb-2" style="font-family:Times New Roman,serif;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.</div>
@@ -146,11 +165,11 @@
                 <!-- 行5：小标题+横图（横向比例） -->
                 <div contenteditable="true" class="editable text-xs font-bold tracking-wide leading-tight mb-1" style="font-family:Times New Roman,serif;">MOM AND DAD, THE MOST ELEGANT OF THE NIGHT.</div>
                 <div>
-                  <label class="block relative cursor-pointer group w-full">
-                    <img id="bottom-img" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=200&q=80" class="img-shadow w-full h-[200px] object-cover" alt="底部图"/>
-                    <input type="file" accept="image/*" class="hidden" onchange="window.uploadImage(event, 'bottom-img')"/>
-                    <span class="absolute bottom-2 right-2 bg-white/80 text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">更换图片</span>
-                  </label>
+                  <div class="relative group w-full">
+                    <img id="bottom-img" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=200&q=80" class="img-shadow w-full h-[200px] object-cover select-none" style="cursor:default;" alt="底部图"/>
+                    <button type="button" class="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onclick="event.stopPropagation();document.getElementById('bottom-img-input').click();"><i data-lucide='replace' class='w-6 h-6 text-black'></i></button>
+                    <input id="bottom-img-input" type="file" accept="image/*" class="hidden" onchange="window.uploadImage(event, 'bottom-img')"/>
+                  </div>
                 </div>
                 <div contenteditable="true" class="editable text-base text-neutral-700 leading-snug mb-2" style="font-family:Times New Roman,serif;">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
               </div>
@@ -164,40 +183,64 @@
       template2: {
         name: '现代杂志风',
         html: `
-          <div class="flex flex-col gap-2">
-            <div class="flex items-center justify-between">
-              <div contenteditable="true" class="editable text-3xl font-extrabold text-pink-600 dark:text-pink-400 tracking-wide" spellcheck="false">MAGAZINE WEEKLY</div>
-              <div contenteditable="true" class="editable text-base text-neutral-500 dark:text-neutral-400" spellcheck="false">2024/06/08</div>
+          <div class="flex flex-col gap-0 font-serif newspaper-bg" style="background:#f5f5e5;">
+            <!-- 顶部区 -->
+            <div class="relative flex items-end justify-between w-full text-xl mb-1" style="height:44px;">
+              <span contenteditable="true" class="editable text-xs">Special Edition</span>
+              <span contenteditable="true" class="editable text-xs">New York</span>
+              <img src="../public/flowers.png" alt="Flowers" class="absolute left-1/2 -translate-x-1/2 top-[10px] w-[82px] h-auto pointer-events-none" />
             </div>
-            <div class="flex gap-4 mt-4">
-              <div class="flex-1 flex flex-col gap-2">
-                <div contenteditable="true" class="editable text-xl font-bold text-neutral-900 dark:text-neutral-100" spellcheck="false">THE FUTURE OF AI DESIGN</div>
-                <div contenteditable="true" class="editable text-base text-neutral-700 dark:text-neutral-200" spellcheck="false">
-                  Discover how AI is transforming the world of design. From generative art to smart layouts, the future is now.
-                </div>
-                <div class="flex gap-2 mt-2">
-                  <img id="mag-img1" src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=200&q=80" class="img-shadow w-24 h-24 object-cover" alt="图1"/>
-                  <label class="block relative cursor-pointer group">
-                    <input type="file" accept="image/*" class="hidden" onchange="window.uploadImage(event, 'mag-img1')"/>
-                    <span class="absolute bottom-2 right-2 bg-white/80 text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">更换图片</span>
-                  </label>
-                  <img id="mag-img2" src="https://images.unsplash.com/photo-1465101178521-c1a9136a3b41?auto=format&fit=crop&w=200&q=80" class="img-shadow w-24 h-24 object-cover" alt="图2"/>
-                  <label class="block relative cursor-pointer group">
-                    <input type="file" accept="image/*" class="hidden" onchange="window.uploadImage(event, 'mag-img2')"/>
-                    <span class="absolute bottom-2 right-2 bg-white/80 text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">更换图片</span>
-                  </label>
+            <div class="w-full h-1 bg-neutral-700 mb-1"></div>
+            <div contenteditable="true" class="editable text-center text-[2.5rem] md:text-5xl font-black tracking-wide text-neutral-900 leading-tight mb-1" style="font-family:SuperAdorable,Olde English,serif; font-weight:600;">Breaking News</div>
+            <div class="w-full h-1 bg-neutral-900 mb-0.5"></div>
+            <div class="w-full h-1 bg-neutral-900 mb-1"></div>
+            <div contenteditable="true" class="editable text-center text-lg tracking-[0.3em] font-serif uppercase mb-1">BIRTHDAY PARTY INVITATION</div>
+            <div class="w-full h-[2px] bg-neutral-700 mb-2"></div>
+            <!-- 上半部分：左右结构 -->
+            <div class="flex flex-row w-full mb-2 items-stretch">
+              <!-- 左：About me 30% -->
+              <div class="flex flex-col justify-start" style="width:30%">
+                <div contenteditable="true" class="editable text-xl font-bold border-b border-neutral-700 mb-2 pb-1">About me</div>
+                <div contenteditable="true" class="editable text-base leading-relaxed flex-1">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+              </div>
+              <!-- 竖直分割线 居中 -->
+              <div class="h-auto w-[2px] bg-neutral-700 mx-6" style="align-self:stretch"></div>
+              <!-- 右：大竖图 70% -->
+              <div class="flex flex-col items-center" style="width:70%">
+                <div class="relative group w-full">
+                  <img id="mag-main-img" src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80" class="img-shadow w-full h-[350px] object-cover select-none" style="cursor:default;" alt="主图"/>
+                  <button type="button" class="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onclick="event.stopPropagation();document.getElementById('mag-main-img-input').click();"><i data-lucide='replace' class='w-6 h-6 text-black'></i></button>
+                  <input id="mag-main-img-input" type="file" accept="image/*" class="hidden" onchange="window.uploadImage(event, 'mag-main-img')"/>
                 </div>
               </div>
-              <div class="w-48 flex flex-col items-center">
-                <img id="mag-main-img" src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=300&q=80" class="img-shadow w-full h-64 object-cover" alt="主图"/>
-                <label class="block relative cursor-pointer group">
-                  <input type="file" accept="image/*" class="hidden" onchange="window.uploadImage(event, 'mag-main-img')"/>
-                  <span class="absolute bottom-2 right-2 bg-white/80 text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">更换图片</span>
-                </label>
-              </div>
             </div>
-            <div class="mt-4 text-xs text-neutral-500 dark:text-neutral-400 text-center">
-              <span contenteditable="true" class="editable underline" spellcheck="false">magazine.re8ger.com</span>
+            <!-- 横向分割线 -->
+            <div class="w-full h-[2px] bg-neutral-700 mb-2"></div>
+            <!-- 下半部分：三列结构 -->
+            <div class="grid grid-cols-3 gap-0 w-full">
+              <!-- 左：竖图 -->
+              <div class="flex flex-col items-center justify-center pr-4">
+                <div class="relative group w-full">
+                  <img id="mag-img1" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" class="img-shadow w-full h-[250px] object-cover select-none" style="cursor:default;" alt="竖图" />
+                  <button type="button" class="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onclick="event.stopPropagation();document.getElementById('mag-img1-input').click();"><i data-lucide='replace' class='w-6 h-6 text-black'></i></button>
+                  <input id="mag-img1-input" type="file" accept="image/*" class="hidden" onchange="window.uploadImage(event, 'mag-img1')"/>
+                </div>
+              </div>
+              <!-- 中：票据风格日期 -->
+              <div class="flex flex-col items-center justify-center px-2">
+                <div class="w-full h-[260px] flex flex-col items-center justify-center border-[1.5px] border-neutral-700 rounded-xl p-3">
+                  <div contenteditable="true" class="editable text-3xl font-serif font-bold leading-tight mb-1 mt-2 text-center">22</div>
+                  <div contenteditable="true" class="editable text-3xl font-serif font-bold leading-tight mb-2 text-center">NOV</div>
+                  <div contenteditable="true" class="editable text-base mb-2 text-center">123<br>Anywhere St.<br>Any City</div>
+                  <div class="w-full border-t border-dashed border-neutral-700 my-4 mx-auto"></div>
+                  <div contenteditable="true" class="editable text-2xl font-bold text-center">8 PM</div>
+                </div>
+              </div>
+              <!-- 右：Join us! -->
+              <div class="flex flex-col border-l-[1.5px] border-neutral-700 pl-4">
+                <div contenteditable="true" class="editable text-xl font-bold border-b border-neutral-700 mb-2 pb-1">Join us!</div>
+                <div contenteditable="true" class="editable text-base leading-relaxed flex-1">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+              </div>
             </div>
           </div>
         `
@@ -208,6 +251,7 @@
     function renderTemplate(name) {
       const area = document.getElementById('newspaper-area');
       area.innerHTML = templates[name].html;
+      if (window.lucide) lucide.createIcons(); // 关键：每次渲染后都执行
     }
 
     // 图片上传
@@ -258,6 +302,8 @@
     document.getElementById('theme-toggle').onclick = function() {
       document.documentElement.classList.toggle('dark');
     };
+
+    if (window.lucide) lucide.createIcons();
   </script>
 </body>
 </html>
