@@ -10,6 +10,7 @@
   <!-- jsPDF for PDF export -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
   <style>
     .newspaper-bg {
       background: #f5f5e5;
@@ -49,14 +50,14 @@
       color: #aaa;
     }
     @font-face {
-      font-family: 'Olde English';
-      src: url('../public/OldeEnglish.ttf') format('truetype');
+      font-family: 'EngraversOldEnglish';
+      src: url('../public/EngraversOldEnglish.otf') format('opentype');
       font-weight: normal;
       font-style: normal;
     }
     @font-face {
-      font-family: 'Anjelina';
-      src: url('../public/Anjelina.ttf') format('truetype');
+      font-family: 'MontserratRegular';
+      src: url('../public/MontserratRegular.otf') format('opentype');
       font-weight: normal;
       font-style: normal;
     }
@@ -65,6 +66,9 @@
       src: url('../public/SuperAdorable.ttf') format('truetype');
       font-weight: normal;
       font-style: normal;
+    }
+    body {
+      font-family: 'MontserratRegular', sans-serif;
     }
   </style>
 </head>
@@ -118,12 +122,12 @@
       template1: {
         name: '简约报纸风',
         html: `
-          <div class="flex flex-col gap-0 font-serif newspaper-bg" style="background:#f5f5e5;">
+          <div class="flex flex-col gap-0 newspaper-bg" style="background:#f5f5e5; font-family: 'MontserratRegular', sans-serif;">
             <!-- 顶部区 -->
-            <div contenteditable="true" class="editable text-center text-base text-neutral-700 mt-2 mb-1 tracking-wide" style="font-family:Times New Roman,serif;">Especial Edition</div>
+            <div contenteditable="true" class="editable text-center text-base text-neutral-700 mt-2 mb-1 tracking-wide">Especial Edition</div>
             <div class="w-full h-px bg-neutral-700"></div>
-            <div contenteditable="true" class="editable text-center text-[2.8rem] md:text-6xl font-extrabold tracking-[0.14em] text-neutral-900 leading-tight mb-0.5" style="font-family:SuperAdorable,Times New Roman,serif; font-weight:600;">BREAKING NEWS</div>
-            <div class="w-full h-px bg-neutral-700 mt-2"></div>
+            <div contenteditable="true" class="editable text-center text-[2.8rem] md:text-6xl font-extrabold tracking-[0.14em] text-neutral-900 leading-tight" style="font-family:SuperAdorable,Times New Roman,serif; font-weight:600;">BREAKING NEWS</div>
+            <div class="w-full h-px bg-neutral-700"></div>
             <div class="w-full h-1 bg-neutral-900 mt-0.5 mb-2"></div>
             <!-- 主体区 -->
             <div class="flex flex-row w-full min-h-[320px] gap-0 relative">
@@ -132,15 +136,15 @@
                 <!-- 行1：大图（横向，3:1比例） -->
                 <div class="mb-2">
                   <div class="relative group w-full">
-                    <img id="main-img" src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=900&q=80" class="img-shadow w-full h-[400px] object-cover select-none" style="cursor:default;" alt="主图"/>
+                    <img id="main-img" src="../public/0.webp" class="img-shadow w-full h-[400px] object-cover select-none" style="cursor:default;" alt="主图"/>
                     <button type="button" class="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onclick="event.stopPropagation();document.getElementById('main-img-input').click();"><i data-lucide='replace' class='w-6 h-6 text-black'></i></button>
                     <input id="main-img-input" type="file" accept="image/*" class="hidden" onchange="window.uploadImage(event, 'main-img')"/>
                   </div>
                 </div>
                 <!-- 行2：大标题 -->
-                <div contenteditable="true" class="editable mb-1 text-xl font-extrabold tracking-wide text-neutral-900" style="font-family:Times New Roman,serif;">JULIET'S BIRTHDAY NIGHT</div>
+                <div contenteditable="true" class="editable mb-1 text-xl font-extrabold tracking-wide text-neutral-900">JULIET'S BIRTHDAY NIGHT</div>
                 <!-- 行3：正文 -->
-                <div contenteditable="true" class="editable text-base text-neutral-900 leading-relaxed" style="font-family:Times New Roman,serif;">
+                <div contenteditable="true" class="editable text-base text-neutral-900 leading-relaxed">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus orci velit, porttitor nec justo eget, fermentum facilisis enim. Nullam ut tincidunt quam. Curabitur in tempus est. Suspendisse sed urna efficitur, eleifend sapien quis, consectetur libero. Aliquam laoreet commodo imperdiet. Nulla facilisi. Duis rhoncus vitae quam in finibus. Maecenas porttitor ultrices dolor at tempus. Sed feugiat felis quis mauris porttitor sollicitudin. Nullam cursus massa vel facilisis auctor. Vivamus vel tincidunt turpis. Integer consectetur elementum vestibulum.
                 </div>
               </div>
@@ -149,41 +153,41 @@
               <!-- 右列 1/3 -->
               <div class="w-1/3 pl-6 flex flex-col justify-start">
                 <!-- 行1：小标题 -->
-                <div contenteditable="true" class="editable text-xs font-bold tracking-wide leading-tight mb-1" style="font-family:Times New Roman,serif;">JULIET TELLS US HOW SHE PREPARED FOR HER PARTY.</div>
+                <div contenteditable="true" class="editable text-xs font-bold tracking-wide leading-tight mb-1">JULIET TELLS US HOW SHE PREPARED FOR HER PARTY.</div>
                 <!-- 行2：竖图（右列等宽，竖向比例） -->
                 <div class="mb-1">
                   <div class="relative group w-full">
-                    <img id="side-img" src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=200&q=80" class="img-shadow w-full h-[200px] object-cover select-none" style="cursor:default;" alt="侧图"/>
+                    <img id="side-img" src="../public/1.webp" class="img-shadow w-full h-[200px] object-cover select-none" style="cursor:default;" alt="侧图"/>
                     <button type="button" class="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onclick="event.stopPropagation();document.getElementById('side-img-input').click();"><i data-lucide='replace' class='w-6 h-6 text-black'></i></button>
                     <input id="side-img-input" type="file" accept="image/*" class="hidden" onchange="window.uploadImage(event, 'side-img')"/>
                   </div>
                 </div>
                 <!-- 行3：描述 -->
-                <div contenteditable="true" class="editable text-base text-neutral-700 leading-snug mb-2" style="font-family:Times New Roman,serif;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.</div>
+                <div contenteditable="true" class="editable text-base text-neutral-700 leading-snug mb-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.</div>
                 <!-- 行4：分割线 -->
                 <div class="w-full h-[2px] bg-neutral-700 my-2"></div>
                 <!-- 行5：小标题+横图（横向比例） -->
-                <div contenteditable="true" class="editable text-xs font-bold tracking-wide leading-tight mb-1" style="font-family:Times New Roman,serif;">MOM AND DAD, THE MOST ELEGANT OF THE NIGHT.</div>
+                <div contenteditable="true" class="editable text-xs font-bold tracking-wide leading-tight mb-1">MOM AND DAD, THE MOST ELEGANT OF THE NIGHT.</div>
                 <div>
                   <div class="relative group w-full">
-                    <img id="bottom-img" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=200&q=80" class="img-shadow w-full h-[200px] object-cover select-none" style="cursor:default;" alt="底部图"/>
+                    <img id="bottom-img" src="../public/4.webp" class="img-shadow w-full h-[200px] object-cover select-none" style="cursor:default;" alt="底部图"/>
                     <button type="button" class="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onclick="event.stopPropagation();document.getElementById('bottom-img-input').click();"><i data-lucide='replace' class='w-6 h-6 text-black'></i></button>
                     <input id="bottom-img-input" type="file" accept="image/*" class="hidden" onchange="window.uploadImage(event, 'bottom-img')"/>
                   </div>
                 </div>
-                <div contenteditable="true" class="editable text-base text-neutral-700 leading-snug mb-2" style="font-family:Times New Roman,serif;">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+                <div contenteditable="true" class="editable text-base text-neutral-700 leading-snug mb-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
               </div>
             </div>
             <!-- 底部分割线和信息 -->
             <div class="w-full h-[1px] bg-neutral-700 mt-2 mb-1"></div>
-            <div contenteditable="true" class="editable text-xs text-neutral-700 text-center tracking-widest uppercase mb-1" style="font-family:Times New Roman,serif;">MORE INFORMATION AT WWW.REALLYGREATSITE.COM</div>
+            <div contenteditable="true" class="editable text-xs text-neutral-700 text-center tracking-widest uppercase mb-1">MORE INFORMATION AT WWW.REALLYGREATSITE.COM</div>
           </div>
         `
       },
       template2: {
         name: '现代杂志风',
         html: `
-          <div class="flex flex-col gap-0 font-serif newspaper-bg" style="background:#f5f5e5;">
+          <div class="flex flex-col gap-0 newspaper-bg" style="background:#f5f5e5; font-family: 'MontserratRegular', sans-serif;">
             <!-- 顶部区 -->
             <div class="relative flex items-end justify-between w-full text-xl mb-1" style="height:44px;">
               <span contenteditable="true" class="editable text-xs">Special Edition</span>
@@ -191,10 +195,14 @@
               <img src="../public/flowers.png" alt="Flowers" class="absolute left-1/2 -translate-x-1/2 top-[10px] w-[82px] h-auto pointer-events-none" />
             </div>
             <div class="w-full h-1 bg-neutral-700 mb-1"></div>
-            <div contenteditable="true" class="editable text-center text-[2.5rem] md:text-5xl font-black tracking-wide text-neutral-900 leading-tight mb-1" style="font-family:SuperAdorable,Olde English,serif; font-weight:600;">Breaking News</div>
-            <div class="w-full h-1 bg-neutral-900 mb-0.5"></div>
+            <div contenteditable="true" 
+                class="editable text-center text-[3.5rem] md:text-7xl font-black tracking-wide text-neutral-900 leading-tight mb-2.5 w-full flex items-center justify-center" 
+                style="font-family:EngraversOldEnglish,SuperAdorable,serif; font-weight:600; letter-spacing: 0.05em;">
+              Breaking News
+            </div>
+            <div class="w-full h-1 bg-neutral-900 mb-[1px]"></div>
             <div class="w-full h-1 bg-neutral-900 mb-1"></div>
-            <div contenteditable="true" class="editable text-center text-lg tracking-[0.3em] font-serif uppercase mb-1">BIRTHDAY PARTY INVITATION</div>
+            <div contenteditable="true" class="editable text-center text-lg tracking-[0.3em] uppercase mb-1">BIRTHDAY PARTY INVITATION</div>
             <div class="w-full h-[2px] bg-neutral-700 mb-2"></div>
             <!-- 上半部分：左右结构 -->
             <div class="flex flex-row w-full mb-2 items-stretch">
@@ -208,7 +216,7 @@
               <!-- 右：大竖图 70% -->
               <div class="flex flex-col items-center" style="width:70%">
                 <div class="relative group w-full">
-                  <img id="mag-main-img" src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80" class="img-shadow w-full h-[350px] object-cover select-none" style="cursor:default;" alt="主图"/>
+                  <img id="mag-main-img" src="../public/6.webp" class="img-shadow w-full h-[350px] object-cover select-none" style="cursor:default;" alt="主图"/>
                   <button type="button" class="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onclick="event.stopPropagation();document.getElementById('mag-main-img-input').click();"><i data-lucide='replace' class='w-6 h-6 text-black'></i></button>
                   <input id="mag-main-img-input" type="file" accept="image/*" class="hidden" onchange="window.uploadImage(event, 'mag-main-img')"/>
                 </div>
@@ -221,7 +229,7 @@
               <!-- 左：竖图 -->
               <div class="flex flex-col items-center justify-center pr-4">
                 <div class="relative group w-full">
-                  <img id="mag-img1" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" class="img-shadow w-full h-[250px] object-cover select-none" style="cursor:default;" alt="竖图" />
+                  <img id="mag-img1" src="../public/2.webp" class="img-shadow w-full h-[250px] object-cover select-none" style="cursor:default;" alt="竖图" />
                   <button type="button" class="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onclick="event.stopPropagation();document.getElementById('mag-img1-input').click();"><i data-lucide='replace' class='w-6 h-6 text-black'></i></button>
                   <input id="mag-img1-input" type="file" accept="image/*" class="hidden" onchange="window.uploadImage(event, 'mag-img1')"/>
                 </div>
@@ -229,8 +237,8 @@
               <!-- 中：票据风格日期 -->
               <div class="flex flex-col items-center justify-center px-2">
                 <div class="w-full h-[260px] flex flex-col items-center justify-center border-[1.5px] border-neutral-700 rounded-xl p-3">
-                  <div contenteditable="true" class="editable text-3xl font-serif font-bold leading-tight mb-1 mt-2 text-center">22</div>
-                  <div contenteditable="true" class="editable text-3xl font-serif font-bold leading-tight mb-2 text-center">NOV</div>
+                  <div contenteditable="true" class="editable text-3xl font-bold leading-tight mb-1 mt-2 text-center">22</div>
+                  <div contenteditable="true" class="editable text-3xl font-bold leading-tight mb-2 text-center">NOV</div>
                   <div contenteditable="true" class="editable text-base mb-2 text-center">123<br>Anywhere St.<br>Any City</div>
                   <div class="w-full border-t border-dashed border-neutral-700 my-4 mx-auto"></div>
                   <div contenteditable="true" class="editable text-2xl font-bold text-center">8 PM</div>
