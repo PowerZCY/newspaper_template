@@ -183,6 +183,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
           >{content.joinText}</div>
         </div>
       </div>
+      <div style={{borderTop:'2px solid #222', width:'100%', marginTop:'5px', marginBottom:'5px'}}></div>
     </div>
   );
 }; 

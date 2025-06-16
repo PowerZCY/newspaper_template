@@ -74,18 +74,39 @@ export default function Home() {
     return () => document.removeEventListener('visibilitychange', handleVisibility);
   }, []);
 
+  // 卡片点击逻辑
+  const handleTemplateCardClick = (tpl: { key: string; href: string; name: string }) => {
+    setExporting('none'); // 切换模板时重置导出状态
+    if (tpl.href) {
+      window.open(tpl.href, "_blank");
+    } else {
+      setTemplate(tpl.key as "simple" | "modern");
+      setSelectedKey(tpl.key);
+    }
+  };
+
   // 导出图片
   const handleExportImg = async () => {
+    if (!areaRef.current) {
+      alert('Export area not ready, please try again later!');
+      setExporting('none');
+      return;
+    }
     setExporting('img');
     const timeoutId = setTimeout(() => setExporting('none'), 5000); // 5秒兜底
     await prepareForExport();
     try {
+      if (!areaRef.current) throw new Error('Export area lost');
       const domtoimage = await import('dom-to-image-more');
       const dataUrl = await domtoimage.toPng(areaRef.current as HTMLElement);
+      if (!dataUrl) throw new Error('Export failed');
       const link = document.createElement("a");
       link.download = `${selectedKey || 'newspaper'}.png`;
       link.href = dataUrl;
       link.click();
+    } catch (e) {
+      console.error(e);
+      alert('Export failed, please try again');
     } finally {
       restoreAfterExport();
       clearTimeout(timeoutId);
@@ -94,13 +115,20 @@ export default function Home() {
   };
   // 导出PDF
   const handleExportPDF = async () => {
+    if (!areaRef.current) {
+      alert('Export area not ready, please try again later!');
+      setExporting('none');
+      return;
+    }
     setExporting('pdf');
-    const timeoutId = setTimeout(() => setExporting('none'), 5000); // 5秒兜底
+    const timeoutId = setTimeout(() => setExporting('none'), 5000); // 5 seconds fallback
     await prepareForExport();
     try {
+      if (!areaRef.current) throw new Error('Export area lost');
       const domtoimage = await import('dom-to-image-more');
       const jsPDF = (await import("jspdf")).default;
       const dataUrl = await domtoimage.toPng(areaRef.current as HTMLElement);
+      if (!dataUrl) throw new Error('Export failed');
       const pdf = new jsPDF("p", "pt", "a4");
       const pageWidth = pdf.internal.pageSize.getWidth();
       const imgWidth = pageWidth - 40;
@@ -112,20 +140,13 @@ export default function Home() {
         pdf.addImage(dataUrl, "PNG", 20, 20, imgWidth, imgHeight);
         pdf.save(`${selectedKey || 'newspaper'}.pdf`);
       };
+    } catch (e) {
+      console.error(e);
+      alert('Export failed, please try again');
     } finally {
       restoreAfterExport();
       clearTimeout(timeoutId);
       setExporting('none');
-    }
-  };
-
-  // 卡片点击逻辑
-  const handleTemplateCardClick = (tpl: { key: string; href: string; name: string }) => {
-    if (tpl.href) {
-      window.open(tpl.href, "_blank");
-    } else {
-      setTemplate(tpl.key as "simple" | "modern");
-      setSelectedKey(tpl.key);
     }
   };
 
@@ -138,14 +159,14 @@ export default function Home() {
           className={`ml-6 px-4 py-1 rounded bg-gradient-to-r from-purple-400 to-pink-500 text-white transition-opacity ${exporting !== 'none' ? 'opacity-60 cursor-not-allowed' : ''}`}
           disabled={exporting !== 'none'}
         >
-          {exporting === 'img' ? '图片处理中...' : '导出为图片'}
+          {exporting === 'img' ? 'Exporting Image...' : 'Export as Image'}
         </button>
         <button
           onClick={handleExportPDF}
           className={`ml-2 px-4 py-1 rounded bg-gradient-to-r from-purple-400 to-pink-500 text-white transition-opacity ${exporting !== 'none' ? 'opacity-60 cursor-not-allowed' : ''}`}
           disabled={exporting !== 'none'}
         >
-          {exporting === 'pdf' ? 'PDF处理中...' : '导出为PDF'}
+          {exporting === 'pdf' ? 'Exporting PDF...' : 'Export as PDF'}
         </button>
       </div>
       {/* 主体内容区 */}
