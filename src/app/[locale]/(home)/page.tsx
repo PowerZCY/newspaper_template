@@ -1,7 +1,7 @@
 "use client";
 import { NewspaperModern } from "@/components/newspaper/NewspaperModern";
 import { NewspaperSimple } from "@/components/newspaper/NewspaperSimple";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { appConfig } from "@/lib/appConfig";
 import { globalLucideIcons as icons } from "@/components/global-icon";
@@ -15,6 +15,7 @@ export default function Home() {
   const [modernImgs, setModernImgs] = useState({ ...NEWSPAPER_TEMPLATES.modern.defaultImgs });
   const areaRef = useRef<HTMLDivElement>(null);
   const [closedAds, setClosedAds] = useState<string[]>([]);
+  const [exporting, setExporting] = useState<'none' | 'img' | 'pdf'>('none');
 
   // 模板卡片排序
   const templates = [...appConfig.newspaperTemplates].sort((a, b) => (b.top ? 1 : 0) - (a.top ? 1 : 0));
@@ -53,33 +54,69 @@ export default function Home() {
     }
   };
 
+  // 导出前处理
+  const prepareForExport = async () => {
+    if (!areaRef.current) return;
+    areaRef.current.classList.add('exporting');
+    await document.fonts.ready;
+  };
+  // 导出后恢复
+  const restoreAfterExport = () => {
+    if (!areaRef.current) return;
+    areaRef.current.classList.remove('exporting');
+  };
+
+  useEffect(() => {
+    const handleVisibility = () => {
+      setExporting('none');
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => document.removeEventListener('visibilitychange', handleVisibility);
+  }, []);
+
   // 导出图片
   const handleExportImg = async () => {
-    if (!areaRef.current) return;
-    const domtoimage = await import('dom-to-image-more');
-    const dataUrl = await domtoimage.toPng(areaRef.current);
-    const link = document.createElement("a");
-    link.download = "newspaper.png";
-    link.href = dataUrl;
-    link.click();
+    setExporting('img');
+    let timeoutId = setTimeout(() => setExporting('none'), 5000); // 5秒兜底
+    await prepareForExport();
+    try {
+      const domtoimage = await import('dom-to-image-more');
+      const dataUrl = await domtoimage.toPng(areaRef.current as HTMLElement);
+      const link = document.createElement("a");
+      link.download = `${selectedKey || 'newspaper'}.png`;
+      link.href = dataUrl;
+      link.click();
+    } finally {
+      restoreAfterExport();
+      clearTimeout(timeoutId);
+      setExporting('none');
+    }
   };
   // 导出PDF
   const handleExportPDF = async () => {
-    if (!areaRef.current) return;
-    const domtoimage = await import('dom-to-image-more');
-    const jsPDF = (await import("jspdf")).default;
-    const dataUrl = await domtoimage.toPng(areaRef.current);
-    const pdf = new jsPDF("p", "pt", "a4");
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const imgWidth = pageWidth - 40;
-    // 先创建图片对象获取高度
-    const img = new window.Image();
-    img.src = dataUrl;
-    img.onload = function() {
-      const imgHeight = img.height * imgWidth / img.width;
-      pdf.addImage(dataUrl, "PNG", 20, 20, imgWidth, imgHeight);
-      pdf.save("newspaper.pdf");
-    };
+    setExporting('pdf');
+    let timeoutId = setTimeout(() => setExporting('none'), 5000); // 5秒兜底
+    await prepareForExport();
+    try {
+      const domtoimage = await import('dom-to-image-more');
+      const jsPDF = (await import("jspdf")).default;
+      const dataUrl = await domtoimage.toPng(areaRef.current as HTMLElement);
+      const pdf = new jsPDF("p", "pt", "a4");
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const imgWidth = pageWidth - 40;
+      // 先创建图片对象获取高度
+      const img = new window.Image();
+      img.src = dataUrl;
+      img.onload = function() {
+        const imgHeight = img.height * imgWidth / img.width;
+        pdf.addImage(dataUrl, "PNG", 20, 20, imgWidth, imgHeight);
+        pdf.save(`${selectedKey || 'newspaper'}.pdf`);
+      };
+    } finally {
+      restoreAfterExport();
+      clearTimeout(timeoutId);
+      setExporting('none');
+    }
   };
 
   // 卡片点击逻辑
@@ -96,8 +133,20 @@ export default function Home() {
     <div className="min-h-screen flex flex-col bg-neutral-100 dark:bg-neutral-900 transition-colors duration-300">
       {/* 模板选择区和导出按钮 */}
       <div className="flex justify-center mt-6">
-        <button onClick={handleExportImg} className="ml-6 px-4 py-1 rounded bg-gradient-to-r from-purple-400 to-pink-500 text-white">导出为图片</button>
-        <button onClick={handleExportPDF} className="ml-2 px-4 py-1 rounded bg-gradient-to-r from-purple-400 to-pink-500 text-white">导出为PDF</button>
+        <button
+          onClick={handleExportImg}
+          className={`ml-6 px-4 py-1 rounded bg-gradient-to-r from-purple-400 to-pink-500 text-white transition-opacity ${exporting !== 'none' ? 'opacity-60 cursor-not-allowed' : ''}`}
+          disabled={exporting !== 'none'}
+        >
+          {exporting === 'img' ? '图片处理中...' : '导出为图片'}
+        </button>
+        <button
+          onClick={handleExportPDF}
+          className={`ml-2 px-4 py-1 rounded bg-gradient-to-r from-purple-400 to-pink-500 text-white transition-opacity ${exporting !== 'none' ? 'opacity-60 cursor-not-allowed' : ''}`}
+          disabled={exporting !== 'none'}
+        >
+          {exporting === 'pdf' ? 'PDF处理中...' : '导出为PDF'}
+        </button>
       </div>
       {/* 主体内容区 */}
       <main className="flex-1 flex justify-center items-start py-8 gap-10">

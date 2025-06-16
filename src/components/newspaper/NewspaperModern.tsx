@@ -37,23 +37,25 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
 
   return (
     <div className="newspaper-bg flex flex-col gap-0" style={{ background: "#f5f5e5", fontFamily: 'MontserratRegular, sans-serif' }}>
-      {/* 顶部区 */}
-      <div className="relative flex items-end justify-between w-full text-xl mb-1" style={{ height: 44 }}>
+      {/* 顶部区：三列flex布局，左右文字底部对齐，图片居中 */}
+      <div style={{display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', width: '100%', marginBottom: '4px'}}>
         <span
           contentEditable
           suppressContentEditableWarning
-          className="editable text-xs text-neutral-700"
+          className="editable text-xs text-neutral-700 whitespace-nowrap"
+          style={{whiteSpace: 'nowrap', alignSelf: 'flex-end'}}
           onBlur={e => onContentChange("leftTop", e.currentTarget.innerText)}
         >{content.leftTop}</span>
+        <Image src="/flowers.png" alt="Flowers" width={82} height={30} style={{display: 'block', margin: '0 16px', height: '30px', alignSelf: 'center'}} className="pointer-events-none" />
         <span
           contentEditable
           suppressContentEditableWarning
-          className="editable text-xs text-neutral-700"
+          className="editable text-xs text-neutral-700 whitespace-nowrap"
+          style={{whiteSpace: 'nowrap', alignSelf: 'flex-end'}}
           onBlur={e => onContentChange("rightTop", e.currentTarget.innerText)}
         >{content.rightTop}</span>
-        <Image src="/flowers.png" alt="Flowers" width={82} height={30} className="absolute left-1/2 -translate-x-1/2 top-[10px] w-[82px] h-auto pointer-events-none" />
       </div>
-      <div className="w-full h-1 bg-neutral-700 mb-1"></div>
+      <div style={{borderTop: '2px solid #222', width: '100%', marginBottom: '4px'}}></div>
       <div
         contentEditable
         suppressContentEditableWarning
@@ -61,23 +63,24 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
         style={{ fontFamily: 'EngraversOldEnglish,SuperAdorable,serif', fontWeight: 600, letterSpacing: '0.05em' }}
         onBlur={e => onContentChange("headline", e.currentTarget.innerText)}
       >{content.headline}</div>
-      <div className="w-full h-1 bg-neutral-900 mb-[1px]"></div>
-      <div className="w-full h-1 bg-neutral-900 mb-1"></div>
+      <div style={{borderTop:'4px solid #000', width:'100%', marginBottom:'2px'}}></div>
+      <div style={{borderTop:'4px solid #000', width:'100%', marginBottom:'4px'}}></div>
       <div
         contentEditable
         suppressContentEditableWarning
         className="editable text-center text-lg tracking-[0.3em] uppercase mb-1 text-neutral-900"
         onBlur={e => onContentChange("subTitle", e.currentTarget.innerText)}
       >{content.subTitle}</div>
-      <div className="w-full h-[2px] bg-neutral-700 mb-2"></div>
+      <div style={{borderTop:'2px solid #222', width:'100%', marginBottom:'8px'}}></div>
       {/* 上半部分：左右结构 */}
       <div className="flex flex-row w-full mb-2 items-stretch">
         {/* 左：About me 30% */}
-        <div className="flex flex-col justify-start" style={{ width: '30%' }}>
+        <div className="flex flex-col justify-start" style={{ width: '35%', borderRight: '2px solid #222', paddingRight: '10px', marginRight: '10px' }}>
           <div
             contentEditable
             suppressContentEditableWarning
-            className="editable text-xl font-bold border-b border-neutral-700 mb-2 pb-1 text-neutral-900"
+            className="editable text-xl font-bold"
+            style={{borderBottom:'3px solid #222', marginBottom:'8px', paddingBottom:'4px', color:'#222'}}
             onBlur={e => onContentChange("aboutTitle", e.currentTarget.innerText)}
           >{content.aboutTitle}</div>
           <div
@@ -87,10 +90,8 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
             onBlur={e => onContentChange("aboutText", e.currentTarget.innerText)}
           >{content.aboutText}</div>
         </div>
-        {/* 竖直分割线 居中 */}
-        <div className="h-auto w-[2px] bg-neutral-700 mx-6" style={{ alignSelf: 'stretch' }}></div>
         {/* 右：大竖图 70% */}
-        <div className="flex flex-col items-center" style={{ width: '70%' }}>
+        <div className="flex flex-col items-center" style={{ width: '65%' }}>
           <div className="relative group w-full">
             <Image
               src={mainImg}
@@ -108,9 +109,9 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
         </div>
       </div>
       {/* 横向分割线 */}
-      <div className="w-full h-[2px] bg-neutral-700 mb-2"></div>
+      <div style={{borderTop:'2px solid #222', width:'100%', marginTop: '4px', marginBottom:'4px'}}></div>
       {/* 下半部分：三列结构 */}
-      <div className="grid grid-cols-3 gap-0 w-full">
+      <div className="grid grid-cols-3 gap-0 w-full" style={{marginBottom: '10px'}}>
         {/* 左：竖图 */}
         <div className="flex flex-col items-center justify-center pr-4">
           <div className="relative group w-full">
@@ -130,7 +131,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
         </div>
         {/* 中：票据风格日期 */}
         <div className="flex flex-col items-center justify-center px-2">
-          <div className="w-full h-[260px] flex flex-col items-center justify-center border-[1.5px] border-neutral-700 rounded-xl p-3">
+          <div className="w-full h-[260px] flex flex-col items-center justify-center" style={{border:'1.5px solid #222', borderRadius:'12px', padding:'12px'}}>
             <div
               contentEditable
               suppressContentEditableWarning
@@ -156,7 +157,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
                 </React.Fragment>
               ))}
             </div>
-            <div className="w-full border-t border-dashed border-neutral-700 my-4 mx-auto"></div>
+            <div style={{borderTop:'1.5px dashed #222', width:'100%', margin:'16px 0'}}></div>
             <div
               contentEditable
               suppressContentEditableWarning
@@ -166,11 +167,12 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
           </div>
         </div>
         {/* 右：Join us! */}
-        <div className="flex flex-col border-l-[1.5px] border-neutral-700 pl-4">
+        <div className="flex flex-col" style={{borderLeft:'2px solid #222', paddingLeft:'16px'}}>
           <div
             contentEditable
             suppressContentEditableWarning
-            className="editable text-xl font-bold border-b border-neutral-700 mb-2 pb-1 text-neutral-900"
+            className="editable text-xl font-bold"
+            style={{borderBottom:'3px solid #222', marginBottom:'8px', paddingBottom:'4px', color:'#222'}}
             onBlur={e => onContentChange("joinTitle", e.currentTarget.innerText)}
           >{content.joinTitle}</div>
           <div

@@ -74,3 +74,10 @@ body {
   font-family: 'MontserratRegular', sans-serif;
 }
 
+/* 导出时去除所有编辑态样式 */
+.exporting .editable,
+.exporting .editable:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
