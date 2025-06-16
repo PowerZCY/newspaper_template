@@ -62,7 +62,7 @@ export const appConfig = {
       name: "Simple",
       type: "normal",
       key: "simple",
-      thumb: "/0.webp",
+      thumb: "/3.webp",
       href: "",
       top: true
     },
@@ -70,14 +70,14 @@ export const appConfig = {
       name: "Modern",
       type: "normal",
       key: "modern",
-      thumb: "/1.webp",
+      thumb: "/3.webp",
       href: "",
       top: false
     },
     {
       name: "Sponsored",
       type: "ads",
-      thumb: "/6.webp",
+      thumb: "/3.webp",
       href: "https://ddaas.d8ger.com",
       key: "ad-1",
       top: false

@@ -63,7 +63,15 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
           {/* 行1：大图 */}
           <div className="mb-2">
             <div className="relative group w-full">
-              <Image src={mainImg} alt="主图" width={700} height={400} className="img-shadow w-full h-[400px] object-cover select-none" unoptimized={mainImg.startsWith('data:')} style={{ cursor: "default" }} />
+              <Image
+                src={mainImg}
+                alt="Main image"
+                width={700}
+                height={400}
+                priority={false}
+                className="img-shadow w-full h-[400px] object-cover select-none"
+                unoptimized={mainImg.startsWith('data:')}
+              />
               <button type="button" className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onClick={e => { e.stopPropagation(); mainImgInput.current?.click(); }}>
                 <icons.Replace className="w-6 h-6 text-black" />
               </button>
@@ -99,7 +107,14 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
           {/* 行2：竖图 */}
           <div className="mb-1">
             <div className="relative group w-full">
-              <Image src={sideImg} alt="侧图" width={700} height={200} className="img-shadow w-full h-[200px] object-cover select-none" unoptimized={sideImg.startsWith('data:')} style={{ cursor: "default" }} />
+              <Image
+                src={sideImg}
+                alt="Side image"
+                width={700}
+                height={200}
+                className="img-shadow w-full h-[200px] object-cover select-none"
+                unoptimized={sideImg.startsWith('data:')}
+              />
               <button type="button" className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onClick={e => { e.stopPropagation(); sideImgInput.current?.click(); }}>
                 <icons.Replace className="w-6 h-6 text-black" />
               </button>
@@ -124,7 +139,14 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
           >{content.bottomTitle}</div>
           <div>
             <div className="relative group w-full">
-              <Image src={bottomImg} alt="底部图" width={700} height={200} className="img-shadow w-full h-[200px] object-cover select-none" unoptimized={bottomImg.startsWith('data:')} style={{ cursor: "default" }} />
+              <Image
+                src={bottomImg}
+                alt="Bottom image"
+                width={700}
+                height={200}
+                className="img-shadow w-full h-[200px] object-cover select-none"
+                unoptimized={bottomImg.startsWith('data:')}
+              />
               <button type="button" className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onClick={e => { e.stopPropagation(); bottomImgInput.current?.click(); }}>
                 <icons.Replace className="w-6 h-6 text-black" />
               </button>

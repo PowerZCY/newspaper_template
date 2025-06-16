@@ -92,7 +92,14 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
         {/* 右：大竖图 70% */}
         <div className="flex flex-col items-center" style={{ width: '70%' }}>
           <div className="relative group w-full">
-            <Image src={mainImg} alt="主图" width={700} height={350} className="img-shadow w-full h-[350px] object-cover select-none" unoptimized={mainImg.startsWith('data:')} style={{ cursor: "default" }} />
+            <Image
+              src={mainImg}
+              alt="Main image"
+              width={700}
+              height={350}
+              className="img-shadow w-full h-[350px] object-cover select-none"
+              unoptimized={mainImg.startsWith('data:')}
+            />
             <button type="button" className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onClick={e => { e.stopPropagation(); mainImgInput.current?.click(); }}>
               <icons.Replace className="w-6 h-6 text-black" />
             </button>
@@ -107,7 +114,14 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
         {/* 左：竖图 */}
         <div className="flex flex-col items-center justify-center pr-4">
           <div className="relative group w-full">
-            <Image src={img1} alt="竖图" width={700} height={250} className="img-shadow w-full h-[250px] object-cover select-none" unoptimized={img1.startsWith('data:')} style={{ cursor: "default" }} />
+            <Image
+              src={img1}
+              alt="Side image"
+              width={700}
+              height={250}
+              className="img-shadow w-full h-[250px] object-cover select-none"
+              unoptimized={img1.startsWith('data:')}
+            />
             <button type="button" className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onClick={e => { e.stopPropagation(); img1Input.current?.click(); }}>
               <icons.Replace className="w-6 h-6 text-black" />
             </button>

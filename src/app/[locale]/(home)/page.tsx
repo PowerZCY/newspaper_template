@@ -2,6 +2,7 @@
 import { NewspaperModern } from "@/components/newspaper/NewspaperModern";
 import { NewspaperSimple } from "@/components/newspaper/NewspaperSimple";
 import React, { useRef, useState } from "react";
+import Image from "next/image";
 import { appConfig } from "@/lib/appConfig";
 import { globalLucideIcons as icons } from "@/components/global-icon";
 import { NEWSPAPER_TEMPLATES } from "@/components/newspaper/BaseConfig";
@@ -55,34 +56,38 @@ export default function Home() {
   // 导出图片
   const handleExportImg = async () => {
     if (!areaRef.current) return;
-    const html2canvas = (await import("html2canvas")).default;
-    const canvas = await html2canvas(areaRef.current, { backgroundColor: null });
+    const domtoimage = await import('dom-to-image-more');
+    const dataUrl = await domtoimage.toPng(areaRef.current);
     const link = document.createElement("a");
     link.download = "newspaper.png";
-    link.href = canvas.toDataURL();
+    link.href = dataUrl;
     link.click();
   };
   // 导出PDF
   const handleExportPDF = async () => {
     if (!areaRef.current) return;
-    const html2canvas = (await import("html2canvas")).default;
+    const domtoimage = await import('dom-to-image-more');
     const jsPDF = (await import("jspdf")).default;
-    const canvas = await html2canvas(areaRef.current, { backgroundColor: null });
-    const imgData = canvas.toDataURL("image/png");
+    const dataUrl = await domtoimage.toPng(areaRef.current);
     const pdf = new jsPDF("p", "pt", "a4");
     const pageWidth = pdf.internal.pageSize.getWidth();
     const imgWidth = pageWidth - 40;
-    const imgHeight = canvas.height * imgWidth / canvas.width;
-    pdf.addImage(imgData, "PNG", 20, 20, imgWidth, imgHeight);
-    pdf.save("newspaper.pdf");
+    // 先创建图片对象获取高度
+    const img = new window.Image();
+    img.src = dataUrl;
+    img.onload = function() {
+      const imgHeight = img.height * imgWidth / img.width;
+      pdf.addImage(dataUrl, "PNG", 20, 20, imgWidth, imgHeight);
+      pdf.save("newspaper.pdf");
+    };
   };
 
   // 卡片点击逻辑
-  const handleTemplateCardClick = (tpl: any) => {
+  const handleTemplateCardClick = (tpl: { key: string; href: string; name: string }) => {
     if (tpl.href) {
       window.open(tpl.href, "_blank");
     } else {
-      setTemplate(tpl.key);
+      setTemplate(tpl.key as "simple" | "modern");
       setSelectedKey(tpl.key);
     }
   };
@@ -122,7 +127,7 @@ export default function Home() {
         </section>
         {/* 模板卡片区 */}
         <aside className="grid grid-cols-2 gap-4" style={{ width: CARD_WIDTH * 2 + 32 }}>
-          {visibleTemplates.map((tpl, idx) => (
+          {visibleTemplates.map((tpl, _idx) => (
             <div
               key={tpl.key}
               className={`relative cursor-pointer border rounded-xl shadow p-2 flex flex-col items-center transition-all duration-200 hover:shadow-lg
@@ -155,7 +160,15 @@ export default function Home() {
                   </button>
                 )}
               </div>
-              <img src={tpl.thumb} alt={tpl.name} className="w-full h-full object-cover rounded" />
+              <Image
+                src={tpl.thumb}
+                alt={tpl.name}
+                width={CARD_WIDTH}
+                height={CARD_HEIGHT}
+                className="w-full h-full object-cover rounded"
+                unoptimized
+                style={{ width: '100%', height: '100%', cursor: 'default' }}
+              />
             </div>
           ))}
         </aside>
