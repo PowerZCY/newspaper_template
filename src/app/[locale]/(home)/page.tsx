@@ -2,6 +2,8 @@
 import { NewspaperModern } from "@/components/newspaper/NewspaperModern";
 import { NewspaperSimple } from "@/components/newspaper/NewspaperSimple";
 import React, { useRef, useState } from "react";
+import { appConfig } from "@/lib/appConfig";
+import { globalLucideIcons as icons } from "@/components/global-icon";
 
 const defaultSimpleContent = {
   edition: "Especial Edition",
@@ -46,6 +48,26 @@ export default function Home() {
   const [simpleImgs, setSimpleImgs] = useState({ ...defaultSimpleImgs });
   const [modernImgs, setModernImgs] = useState({ ...defaultModernImgs });
   const areaRef = useRef<HTMLDivElement>(null);
+  const [closedAds, setClosedAds] = useState<string[]>([]);
+
+  // 模板卡片排序
+  const templates = [...appConfig.newspaperTemplates].sort((a, b) => (b.top ? 1 : 0) - (a.top ? 1 : 0));
+  const [selectedKey, setSelectedKey] = useState<string>(template);
+
+  // 缩略图参数
+  const THUMB_WIDTH = 240;
+  const THUMB_HEIGHT = 309; // 700:900缩放
+  const CARD_WIDTH = 260;
+  const CARD_HEIGHT = 340;
+
+  // 过滤已关闭广告
+  const visibleTemplates = templates.filter(
+    tpl => !(tpl.type === 'ads' && closedAds.includes(tpl.key))
+  );
+
+  const handleCloseAd = (key: string) => {
+    setClosedAds(prev => [...prev, key]);
+  };
 
   // 图片上传
   const handleImgChange = (type: string, key: string, file: File) => {
@@ -94,35 +116,34 @@ export default function Home() {
     pdf.save("newspaper.pdf");
   };
 
-  // 主题切换
-  const handleThemeToggle = () => {
-    document.documentElement.classList.toggle("dark");
+  // 模板卡片区渲染函数
+  const renderTemplatePreview = (tpl: any) => {
+    return (
+      <img src={tpl.thumb} alt={tpl.name} className="w-full h-full object-cover rounded" />
+    );
   };
 
-  // 切换模板时重置内容和图片
-  const handleTemplateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const val = e.target.value;
-    setTemplate(val === "simple" ? "simple" : "modern");
+  // 卡片点击逻辑
+  const handleTemplateCardClick = (tpl: any) => {
+    if (tpl.href) {
+      window.open(tpl.href, "_blank");
+    } else {
+      setTemplate(tpl.key);
+      setSelectedKey(tpl.key);
+    }
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-neutral-100 dark:bg-neutral-900 transition-colors duration-300">
-      {/* 模板选择 */}
+      {/* 模板选择区和导出按钮 */}
       <div className="flex justify-center mt-6">
-        <label className="mr-2 text-neutral-700 dark:text-neutral-200">选择模板：</label>
-        <select value={template} onChange={handleTemplateChange} className="border rounded px-2 py-1">
-          <option value="simple">简约报纸风</option>
-          <option value="modern">现代杂志风</option>
-        </select>
         <button onClick={handleExportImg} className="ml-6 px-4 py-1 rounded bg-gradient-to-r from-purple-400 to-pink-500 text-white">导出为图片</button>
         <button onClick={handleExportPDF} className="ml-2 px-4 py-1 rounded bg-gradient-to-r from-purple-400 to-pink-500 text-white">导出为PDF</button>
       </div>
       {/* 主体内容区 */}
-      <main className="flex-1 flex justify-center items-start py-8">
-        {/* 广告位左 */}
-        <div className="ad-slot select-none">留白<br />以放广告</div>
-        {/* 报纸模板内容 */}
-        <section ref={areaRef} className="newspaper-bg shadow-lg rounded-lg px-8 py-6 mx-2 w-[700px] min-h-[900px] flex flex-col gap-4 transition-colors duration-300">
+      <main className="flex-1 flex justify-center items-start py-8 gap-10">
+        {/* 报纸内容块 */}
+        <section ref={areaRef} className="newspaper-bg shadow-lg rounded-lg px-8 py-6 w-[700px] min-h-[900px] flex flex-col gap-4 transition-colors duration-300 flex-shrink-0 mr-8">
           {template === "simple" ? (
             <NewspaperSimple
               mainImg={simpleImgs.mainImg}
@@ -145,8 +166,42 @@ export default function Home() {
             />
           )}
         </section>
-        {/* 广告位右 */}
-        <div className="ad-slot select-none">留白<br />以放广告</div>
+        {/* 模板卡片区 */}
+        <aside className="grid grid-cols-2 gap-4 w-[540px]">
+          {visibleTemplates.map((tpl, idx) => (
+            <div
+              key={tpl.key}
+              className={`relative cursor-pointer border rounded-xl shadow p-2 flex flex-col items-center bg-white transition-all duration-200 hover:shadow-lg ${selectedKey === tpl.key ? 'ring-2 ring-purple-400 border-purple-400' : 'border-neutral-200'} ${tpl.type === 'ads' ? 'bg-yellow-50' : 'bg-white'}`}
+              style={{ width: CARD_WIDTH, height: CARD_HEIGHT }}
+              onClick={() => handleTemplateCardClick(tpl)}
+              title={tpl.name}
+            >
+              {/* 顶部名称和广告关闭按钮 */}
+              <div className="w-full flex flex-row items-center justify-between px-1 pt-1 pb-1 select-none">
+                <div className="text-base font-bold">
+                  {tpl.type === 'ads'
+                    ? <>
+                        {tpl.name.replace(/(ad|ads)$/i, '').trim()}
+                        <span className="ml-1 text-xs text-red-500 align-middle">Ad</span>
+                      </>
+                    : tpl.name}
+                </div>
+                {tpl.type === 'ads' && (
+                  <button
+                    className="text-neutral-400 hover:text-red-500 text-lg select-none p-0.5"
+                    onClick={e => { e.stopPropagation(); handleCloseAd(tpl.key); }}
+                    title="Close"
+                  >
+                    <icons.X className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+              <div className="w-full flex items-center justify-center overflow-hidden rounded" style={{ height: THUMB_HEIGHT }}>
+                {renderTemplatePreview(tpl)}
+              </div>
+            </div>
+          ))}
+        </aside>
       </main>
     </div>
   );

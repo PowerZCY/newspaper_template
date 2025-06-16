@@ -1,4 +1,3 @@
-
 export const appConfig = {
   // 基础配置
   baseUrl: process.env.NEXT_PUBLIC_BASE_URL || 'https://ddaas.de8ger.com',
@@ -57,7 +56,33 @@ export const appConfig = {
     fallbackSignUpUrl: process.env.NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL || "/",
     waitlistUrl: process.env.NEXT_PUBLIC_CLERK_WAITLIST_URL || "/waitlist",
     debug: process.env.CLERK_DEBUG === 'true',
-  }
+  },
+  newspaperTemplates: [
+    {
+      name: "Minimal Newspaper",
+      type: "normal",
+      key: "simple",
+      thumb: "/0.webp",
+      href: "",
+      top: true
+    },
+    {
+      name: "Modern Magazine",
+      type: "normal",
+      key: "modern",
+      thumb: "/1.webp",
+      href: "",
+      top: false
+    },
+    {
+      name: "Sponsored",
+      type: "ads",
+      thumb: "/6.webp",
+      href: "https://ddaas.d8ger.com",
+      key: "ad-1",
+      top: false
+    }
+  ],
 };
 
 export const iconColor = appConfig.style.icon.uniformColor
