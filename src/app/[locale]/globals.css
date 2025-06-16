@@ -48,6 +48,17 @@
   outline: 1px solid #ac62fd;
 }
 
+/* 导出时去除所有阴影和边框（极致兜底） */
+.exporting *, .exporting *:before, .exporting *:after {
+  box-shadow: none !important;
+  border: none !important;
+}
+.exporting .editable,
+.exporting .editable:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 /* EngraversOldEnglish古典僵尸字体 */
 @font-face {
   font-family: 'EngraversOldEnglish';
@@ -74,10 +85,4 @@ body {
   font-family: 'MontserratRegular', sans-serif;
 }
 
-/* 导出时去除所有编辑态样式 */
-.exporting .editable,
-.exporting .editable:focus {
-  outline: none !important;
-  box-shadow: none !important;
-}
 

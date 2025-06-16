@@ -77,7 +77,7 @@ export default function Home() {
   // 导出图片
   const handleExportImg = async () => {
     setExporting('img');
-    let timeoutId = setTimeout(() => setExporting('none'), 5000); // 5秒兜底
+    const timeoutId = setTimeout(() => setExporting('none'), 5000); // 5秒兜底
     await prepareForExport();
     try {
       const domtoimage = await import('dom-to-image-more');
@@ -95,7 +95,7 @@ export default function Home() {
   // 导出PDF
   const handleExportPDF = async () => {
     setExporting('pdf');
-    let timeoutId = setTimeout(() => setExporting('none'), 5000); // 5秒兜底
+    const timeoutId = setTimeout(() => setExporting('none'), 5000); // 5秒兜底
     await prepareForExport();
     try {
       const domtoimage = await import('dom-to-image-more');
