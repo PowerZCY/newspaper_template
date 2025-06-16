@@ -83,6 +83,10 @@ export const appConfig = {
       top: false
     }
   ],
+  newspaperCard: {
+    cardWidth: 260,
+    cardHeight: 340,
+  },
 };
 
 export const iconColor = appConfig.style.icon.uniformColor

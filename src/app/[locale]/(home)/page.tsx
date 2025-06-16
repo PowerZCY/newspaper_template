@@ -4,49 +4,14 @@ import { NewspaperSimple } from "@/components/newspaper/NewspaperSimple";
 import React, { useRef, useState } from "react";
 import { appConfig } from "@/lib/appConfig";
 import { globalLucideIcons as icons } from "@/components/global-icon";
-
-const defaultSimpleContent = {
-  edition: "Especial Edition",
-  headline: "BREAKING NEWS",
-  title: "JULIET'S BIRTHDAY NIGHT",
-  mainText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus orci velit, porttitor nec justo eget, fermentum facilisis enim. Nullam ut tincidunt quam. Curabitur in tempus est. Suspendisse sed urna efficitur, eleifend sapien quis, consectetur libero. Aliquam laoreet commodo imperdiet. Nulla facilisi. Duis rhoncus vitae quam in finibus. Maecenas porttitor ultrices dolor at tempus. Sed feugiat felis quis mauris porttitor sollicitudin. Nullam cursus massa vel facilisis auctor. Vivamus vel tincidunt turpis. Integer consectetur elementum vestibulum.",
-  sideTitle: "JULIET TELLS US HOW SHE PREPARED FOR HER PARTY.",
-  sideDesc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.",
-  bottomTitle: "MOM AND DAD, THE MOST ELEGANT OF THE NIGHT.",
-  bottomDesc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  footer: "MORE INFORMATION AT WWW.REALLYGREATSITE.COM",
-};
-const defaultModernContent = {
-  leftTop: "Special Edition",
-  rightTop: "New York",
-  headline: "Breaking News",
-  subTitle: "BIRTHDAY PARTY INVITATION",
-  aboutTitle: "About me",
-  aboutText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  dateDay: "22",
-  dateMonth: "NOV",
-  dateAddr: "123\nAnywhere St.\nAny City",
-  dateTime: "8 PM",
-  joinTitle: "Join us!",
-  joinText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-};
-
-const defaultSimpleImgs = {
-  mainImg: "/0.webp",
-  sideImg: "/1.webp",
-  bottomImg: "/4.webp",
-};
-const defaultModernImgs = {
-  mainImg: "/6.webp",
-  img1: "/2.webp",
-};
+import { NEWSPAPER_TEMPLATES } from "@/components/newspaper/BaseConfig";
 
 export default function Home() {
   const [template, setTemplate] = useState<"simple" | "modern">("simple");
-  const [simpleContent, setSimpleContent] = useState({ ...defaultSimpleContent });
-  const [modernContent, setModernContent] = useState({ ...defaultModernContent });
-  const [simpleImgs, setSimpleImgs] = useState({ ...defaultSimpleImgs });
-  const [modernImgs, setModernImgs] = useState({ ...defaultModernImgs });
+  const [simpleContent, setSimpleContent] = useState({ ...NEWSPAPER_TEMPLATES.simple.defaultContent });
+  const [modernContent, setModernContent] = useState({ ...NEWSPAPER_TEMPLATES.modern.defaultContent });
+  const [simpleImgs, setSimpleImgs] = useState({ ...NEWSPAPER_TEMPLATES.simple.defaultImgs });
+  const [modernImgs, setModernImgs] = useState({ ...NEWSPAPER_TEMPLATES.modern.defaultImgs });
   const areaRef = useRef<HTMLDivElement>(null);
   const [closedAds, setClosedAds] = useState<string[]>([]);
 
@@ -54,11 +19,7 @@ export default function Home() {
   const templates = [...appConfig.newspaperTemplates].sort((a, b) => (b.top ? 1 : 0) - (a.top ? 1 : 0));
   const [selectedKey, setSelectedKey] = useState<string>(template);
 
-  // 缩略图参数
-  const THUMB_WIDTH = 240;
-  const THUMB_HEIGHT = 309; // 700:900缩放
-  const CARD_WIDTH = 260;
-  const CARD_HEIGHT = 340;
+  const { cardWidth: CARD_WIDTH, cardHeight: CARD_HEIGHT } = appConfig.newspaperCard;
 
   // 过滤已关闭广告
   const visibleTemplates = templates.filter(
@@ -116,13 +77,6 @@ export default function Home() {
     pdf.save("newspaper.pdf");
   };
 
-  // 模板卡片区渲染函数
-  const renderTemplatePreview = (tpl: any) => {
-    return (
-      <img src={tpl.thumb} alt={tpl.name} className="w-full h-full object-cover rounded" />
-    );
-  };
-
   // 卡片点击逻辑
   const handleTemplateCardClick = (tpl: any) => {
     if (tpl.href) {
@@ -167,7 +121,7 @@ export default function Home() {
           )}
         </section>
         {/* 模板卡片区 */}
-        <aside className="grid grid-cols-2 gap-4 w-[540px]">
+        <aside className="grid grid-cols-2 gap-4" style={{ width: CARD_WIDTH * 2 + 32 }}>
           {visibleTemplates.map((tpl, idx) => (
             <div
               key={tpl.key}
@@ -196,9 +150,7 @@ export default function Home() {
                   </button>
                 )}
               </div>
-              <div className="w-full flex items-center justify-center overflow-hidden rounded" style={{ height: THUMB_HEIGHT }}>
-                {renderTemplatePreview(tpl)}
-              </div>
+              <img src={tpl.thumb} alt={tpl.name} className="w-full h-full object-cover rounded" />
             </div>
           ))}
         </aside>
