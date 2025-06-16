@@ -159,7 +159,7 @@ export default function Home() {
           className={`ml-6 px-4 py-1 rounded bg-gradient-to-r from-purple-400 to-pink-500 text-white transition-opacity ${exporting !== 'none' ? 'opacity-60 cursor-not-allowed' : ''}`}
           disabled={exporting !== 'none'}
         >
-          {exporting === 'img' ? 'Exporting Image...' : 'Export as Image'}
+          {exporting === 'img' ? 'Exporting PNG...' : 'Export as PNG'}
         </button>
         <button
           onClick={handleExportPDF}
@@ -187,9 +187,10 @@ export default function Home() {
           ) : (
             <NewspaperModern
               mainImg={modernImgs.mainImg}
-              img1={modernImgs.img1}
+              subImg={modernImgs.subImg}
+              flowers={modernImgs.flowers}
               onMainImgChange={file => handleImgChange("modern", "mainImg", file)}
-              onImg1Change={file => handleImgChange("modern", "img1", file)}
+              onSubImgChange={file => handleImgChange("modern", "subImg", file)}
               content={modernContent}
               onContentChange={(key, value) => handleContentChange("modern", key, value)}
             />

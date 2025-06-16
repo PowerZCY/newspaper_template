@@ -41,7 +41,8 @@ export const NEWSPAPER_TEMPLATES = {
     },
     defaultImgs: {
       mainImg: '/6.webp',
-      img1: '/2.webp',
+      subImg: '/2.webp',
+      flowers: '/flowers.png',
     },
   },
 };

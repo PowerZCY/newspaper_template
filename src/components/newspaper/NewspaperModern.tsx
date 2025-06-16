@@ -4,9 +4,10 @@ import { globalLucideIcons as icons } from "@/components/global-icon";
 
 interface NewspaperModernProps {
   mainImg: string;
-  img1: string;
+  subImg: string;
+  flowers: string;
   onMainImgChange: (file: File) => void;
-  onImg1Change: (file: File) => void;
+  onSubImgChange: (file: File) => void;
   content: {
     leftTop: string;
     rightTop: string;
@@ -26,14 +27,15 @@ interface NewspaperModernProps {
 
 export const NewspaperModern: React.FC<NewspaperModernProps> = ({
   mainImg,
-  img1,
+  subImg,
+  flowers,
   onMainImgChange,
-  onImg1Change,
+  onSubImgChange,
   content,
   onContentChange,
 }) => {
   const mainImgInput = useRef<HTMLInputElement>(null);
-  const img1Input = useRef<HTMLInputElement>(null);
+  const subImgInput = useRef<HTMLInputElement>(null);
 
   return (
     <div className="newspaper-bg flex flex-col gap-0" style={{ background: "#f5f5e5", fontFamily: 'MontserratRegular, sans-serif' }}>
@@ -46,7 +48,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
           style={{whiteSpace: 'nowrap', alignSelf: 'flex-end'}}
           onBlur={e => onContentChange("leftTop", e.currentTarget.innerText)}
         >{content.leftTop}</span>
-        <Image src="/flowers.png" alt="Flowers" width={82} height={30} style={{display: 'block', margin: '0 16px', height: '30px', alignSelf: 'center'}} className="pointer-events-none" />
+        <Image src={flowers} alt="Flowers" width={82} height={30} style={{display: 'block', margin: '0 16px', height: '30px', alignSelf: 'center'}} className="pointer-events-none" />
         <span
           contentEditable
           suppressContentEditableWarning
@@ -116,17 +118,17 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
         <div className="flex flex-col items-center justify-center pr-4">
           <div className="relative group w-full">
             <Image
-              src={img1}
-              alt="Side image"
+              src={subImg}
+              alt="Sub image"
               width={700}
               height={250}
               className="img-shadow w-full h-[250px] object-cover select-none"
-              unoptimized={img1.startsWith('data:')}
+              unoptimized={subImg.startsWith('data:')}
             />
-            <button type="button" className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onClick={e => { e.stopPropagation(); img1Input.current?.click(); }}>
+            <button type="button" className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onClick={e => { e.stopPropagation(); subImgInput.current?.click(); }}>
               <icons.Replace className="w-6 h-6 text-black" />
             </button>
-            <input ref={img1Input} type="file" accept="image/*" className="hidden" onChange={e => { if (e.target.files?.[0]) onImg1Change(e.target.files[0]); }} />
+            <input ref={subImgInput} type="file" accept="image/*" className="hidden" onChange={e => { if (e.target.files?.[0]) onSubImgChange(e.target.files[0]); }} />
           </div>
         </div>
         {/* 中：票据风格日期 */}
