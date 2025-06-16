@@ -4,11 +4,11 @@ export const appConfig = {
 
   i18n: {
     // locales: ["en", "zh", "ja", "ko", "fr", "de", "es", "it", "pt", "tr", "pl"] as const,
-    locales: ["en", "zh"] as const,
+    locales: ["en"] as const,
     defaultLocale: "en" as const,
     localeLabels: {
       en: "English",
-      zh: "简体中文",
+      // zh: "简体中文",
       // ja: "日本語",
       // ko: "한국어",
       // fr: "Français",
@@ -59,7 +59,7 @@ export const appConfig = {
   },
   newspaperTemplates: [
     {
-      name: "Minimal Newspaper",
+      name: "Simple",
       type: "normal",
       key: "simple",
       thumb: "/0.webp",
@@ -67,7 +67,7 @@ export const appConfig = {
       top: true
     },
     {
-      name: "Modern Magazine",
+      name: "Modern",
       type: "normal",
       key: "modern",
       thumb: "/1.webp",
@@ -84,8 +84,8 @@ export const appConfig = {
     }
   ],
   newspaperCard: {
-    cardWidth: 260,
-    cardHeight: 340,
+    cardWidth: 170,
+    cardHeight: 220,
   },
 };
 

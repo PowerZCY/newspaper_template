@@ -125,14 +125,19 @@ export default function Home() {
           {visibleTemplates.map((tpl, idx) => (
             <div
               key={tpl.key}
-              className={`relative cursor-pointer border rounded-xl shadow p-2 flex flex-col items-center bg-white transition-all duration-200 hover:shadow-lg ${selectedKey === tpl.key ? 'ring-2 ring-purple-400 border-purple-400' : 'border-neutral-200'} ${tpl.type === 'ads' ? 'bg-yellow-50' : 'bg-white'}`}
+              className={`relative cursor-pointer border rounded-xl shadow p-2 flex flex-col items-center transition-all duration-200 hover:shadow-lg
+                ${selectedKey === tpl.key ? 'ring-2 ring-purple-400 border-purple-400' : 'border-neutral-200'}
+                ${tpl.type === 'ads'
+                  ? 'bg-yellow-50'
+                  : 'bg-white dark:bg-neutral-800'}
+              `}
               style={{ width: CARD_WIDTH, height: CARD_HEIGHT }}
               onClick={() => handleTemplateCardClick(tpl)}
               title={tpl.name}
             >
               {/* 顶部名称和广告关闭按钮 */}
               <div className="w-full flex flex-row items-center justify-between px-1 pt-1 pb-1 select-none">
-                <div className="text-base font-bold">
+                <div className={`font-bold ${tpl.type === 'ads' ? 'text-neutral-700 text-sm' : 'text-sm'}`}>
                   {tpl.type === 'ads'
                     ? <>
                         {tpl.name.replace(/(ad|ads)$/i, '').trim()}
