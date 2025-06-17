@@ -302,11 +302,11 @@ export default function Home() {
                 <Image
                   src={tpl.thumb}
                   alt={tpl.name}
-                  width={CARD_WIDTH}
-                  height={CARD_HEIGHT}
-                  className="w-full h-full object-cover rounded"
+                  width={182}
+                  height={254}
+                  className="object-cover rounded"
                   unoptimized
-                  style={{ width: '100%', height: '100%', cursor: 'default' }}
+                  style={{ width: 182, height: 254, maxWidth: 182, maxHeight: 254, cursor: 'default' }}
                 />
               </div>
             ))}
