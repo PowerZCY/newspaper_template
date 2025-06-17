@@ -91,6 +91,10 @@ export const appConfig = {
     scale: 3, // 图片导出清晰度
     pdfScale: 4, // PDF导出JPEG的清晰度
   },
+  socialIcons: [
+    { key: 'Twitter', name: 'Twitter' },
+    { key: 'Facebook', name: 'Facebook' },
+  ],
 };
 
 export const iconColor = appConfig.style.icon.uniformColor

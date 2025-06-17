@@ -31,6 +31,11 @@ export default function Home() {
   const [exportError, setExportError] = useState<string | null>(null);
   const globalImgInputRef = useRef<HTMLInputElement>(null);
   const [pendingImgUpload, setPendingImgUpload] = useState<null | { type: string; key: string; cb: (file: File) => void }>(null);
+  const [exportingJPEG, setExportingJPEG] = useState(false);
+  const [exportingSVG, setExportingSVG] = useState(false);
+  const [exportMenuOpen, setExportMenuOpen] = useState(false);
+  const exportBtnRef = useRef<HTMLButtonElement>(null);
+  const exportMenuRef = useRef<HTMLDivElement>(null);
 
   // 模板卡片排序
   const templates = [...appConfig.newspaperTemplates].sort((a, b) => (b.top ? 1 : 0) - (a.top ? 1 : 0));
@@ -97,68 +102,99 @@ export default function Home() {
     }
   };
 
-  const handleExportImg = () => {
+  // 导出 JPEG
+  const handleExportJPEG = async () => {
     if (!pageFocused) return;
     if (!areaRef.current) {
       setExportError('Please refresh page or switch template and try again！');
       return;
     }
-    tryExport('img');
+    setExportMenuOpen(false);
+    tryExport('jpeg');
   };
-  const handleExportPDF = () => {
+  // 导出 PNG
+  const handleExportPNG = async () => {
     if (!pageFocused) return;
     if (!areaRef.current) {
       setExportError('Please refresh page or switch template and try again！');
       return;
     }
+    setExportMenuOpen(false);
+    tryExport('png');
+  };
+  // 导出 SVG
+  const handleExportSVG = async () => {
+    if (!pageFocused) return;
+    if (!areaRef.current) {
+      setExportError('Please refresh page or switch template and try again！');
+      return;
+    }
+    setExportMenuOpen(false);
+    tryExport('svg');
+  };
+  // 导出 PDF
+  const handleExportPDF = async () => {
+    if (!pageFocused) return;
+    if (!areaRef.current) {
+      setExportError('Please refresh page or switch template and try again！');
+      return;
+    }
+    setExportMenuOpen(false);
     tryExport('pdf');
   };
 
-  const tryExport = useCallback(async (type: 'img' | 'pdf') => {
-    if (type === 'img') setExportingImg(true);
+  const tryExport = useCallback(async (type: 'png' | 'jpeg' | 'svg' | 'pdf') => {
+    if (type === 'png') setExportingImg(true);
+    if (type === 'jpeg') setExportingJPEG(true);
+    if (type === 'svg') setExportingSVG(true);
     if (type === 'pdf') setExportingPDF(true);
     const timeoutId = setTimeout(() => {
       restoreAfterExport();
+      setExportingImg(false);
+      setExportingJPEG(false);
+      setExportingSVG(false);
       setExportingPDF(false);
       setExportError('Export timeout, please try again！');
-    }, 7000); // 主流程兜底7秒
-
+    }, 7000);
     let finished = false;
     const finish = (isTimeout = false) => {
       if (finished) return;
       finished = true;
       restoreAfterExport();
+      setExportingImg(false);
+      setExportingJPEG(false);
+      setExportingSVG(false);
       setExportingPDF(false);
       clearTimeout(timeoutId);
       clearTimeout(pdfTimeoutId);
       if (isTimeout) {
-        setExportError('PDF export timeout, please try again！');
+        setExportError('Export timeout, please try again！');
       }
     };
     const pdfTimeoutId = setTimeout(() => {
-      finish(true); // 只有图片加载超时才弹窗
-    }, 5000); // 图片加载兜底5秒
-
+      finish(true);
+    }, 5000);
     await prepareForExport();
     try {
       if (!areaRef.current) throw new Error('Export area lost');
       const domtoimage = await import('dom-to-image-more');
       let dataUrl;
-      if (type === 'img') {
+      if (type === 'png') {
         dataUrl = await domtoimage.toPng(areaRef.current as HTMLElement, { scale: appConfig.export?.scale || window.devicePixelRatio || 2 });
+      } else if (type === 'jpeg') {
+        dataUrl = await domtoimage.toJpeg(areaRef.current as HTMLElement, { scale: appConfig.export?.scale || window.devicePixelRatio || 2, quality: 0.95, bgcolor: '#f5f5e5' });
+      } else if (type === 'svg') {
+        dataUrl = await domtoimage.toSvg(areaRef.current as HTMLElement, { scale: appConfig.export?.scale || window.devicePixelRatio || 2 });
       } else if (type === 'pdf') {
         dataUrl = await domtoimage.toJpeg(areaRef.current as HTMLElement, { scale: appConfig.export?.pdfScale || 1.5, quality: 0.85, bgcolor: '#f5f5e5' });
       }
       if (!dataUrl) throw new Error('Export failed');
-      if (type === 'img') {
+      if (type === 'png' || type === 'jpeg' || type === 'svg') {
         const link = document.createElement("a");
-        link.download = `${selectedKey || 'newspaper'}.png`;
+        link.download = `${selectedKey || 'newspaper'}.${type === 'jpeg' ? 'jpg' : type}`;
         link.href = dataUrl;
         link.click();
-        restoreAfterExport();
-        setExportingImg(false);
-        clearTimeout(timeoutId);
-        clearTimeout(pdfTimeoutId);
+        finish();
       } else if (type === 'pdf') {
         const jsPDF = (await import("jspdf")).default;
         const pdf = new jsPDF("p", "pt", "a4");
@@ -169,7 +205,7 @@ export default function Home() {
         img.onload = function() {
           try {
             const imgHeight = img.height * imgWidth / img.width;
-            pdf.addImage(dataUrl, "PNG", 20, 20, imgWidth, imgHeight);
+            pdf.addImage(dataUrl, "JPEG", 20, 20, imgWidth, imgHeight);
             pdf.save(`${selectedKey || 'newspaper'}.pdf`);
           } finally {
             finish();
@@ -182,11 +218,7 @@ export default function Home() {
       }
     } catch (e) {
       console.error(e);
-      restoreAfterExport();
-      if (type === 'img') setExportingImg(false);
-      if (type === 'pdf') setExportingPDF(false);
-      clearTimeout(timeoutId);
-      clearTimeout(pdfTimeoutId);
+      finish();
       setExportError('Export failed, please try again');
     }
   }, [selectedKey, prepareForExport, restoreAfterExport, areaRef]);
@@ -225,18 +257,34 @@ export default function Home() {
     setPendingImgUpload(null);
   };
 
+  // 下拉菜单点击外部关闭
+  useEffect(() => {
+    if (!exportMenuOpen) return;
+    function handleClickOutside(event: MouseEvent) {
+      const btn = exportBtnRef.current;
+      const menu = exportMenuRef.current;
+      if (btn && btn.contains(event.target as Node)) return;
+      if (menu && menu.contains(event.target as Node)) return;
+      setExportMenuOpen(false);
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [exportMenuOpen]);
+
   return (
     <>
       <AlertDialog open={!!exportError} onOpenChange={open => { if (!open) setExportError(null); }}>
-        <AlertDialogContent>
+        <AlertDialogContent className="bg-white dark:bg-neutral-900 rounded-xl shadow-2xl border border-neutral-200 dark:border-neutral-700 text-center">
           <AlertDialogHeader>
-            <AlertDialogTitle>导出失败</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogTitle>Download Failed</AlertDialogTitle>
+            <AlertDialogDescription className="text-lg font-semibold text-neutral-800 dark:text-neutral-100 mt-2 mb-4">
               {exportError}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogAction onClick={() => setExportError(null)}>
-            确定
+            Confirm
           </AlertDialogAction>
         </AlertDialogContent>
       </AlertDialog>
@@ -291,33 +339,56 @@ export default function Home() {
             ))}
           </aside>
 
-          {/* 报纸内容块+导出按钮整体竖直居中 */}
-          <div className="flex flex-col items-center">
+          {/* 报纸内容块+操作按钮整体竖直居中 */}
+          <div className="flex flex-col items-center mt-[0px]">
+            {/* 操作区：社交图标+导出按钮 */}
+            <div className="mb-2 w-full max-w-[700px] px-8 flex flex-row justify-between items-center">
+                {/* 社交图标区 */}
+                <div className="flex flex-row">
+                  {appConfig.socialIcons.map(icon => {
+                    const iconKey = icon.key as keyof typeof icons;
+                    const IconComp = icons[iconKey];
+                    return IconComp ? (
+                      <button key={icon.key} className="rounded-full p-1 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition" title={icon.name}>
+                        <IconComp className="w-5 h-5" />
+                      </button>
+                    ) : null;
+                  })}
+                </div>
+                {/* 导出按钮区 */}
+                <div className="relative">
+                  <button
+                    ref={exportBtnRef}
+                    onClick={handleExportJPEG}
+                    className={`flex items-center rounded-full px-4 py-1 bg-white dark:bg-neutral-800 border border-purple-400 ring-2 ring-purple-400 shadow text-neutral-700 dark:text-white text-sm font-semibold transition focus:outline-none ${exportingJPEG || !pageFocused ? 'opacity-60 cursor-not-allowed' : ''}`}
+                    disabled={exportingJPEG || !pageFocused}
+                    onMouseDown={e => { if (e.button === 2) e.preventDefault(); }}
+                  >
+                    <icons.Download className="w-5 h-5 mr-2" />
+                    Download JPG
+                    <icons.ChevronDown className="w-5 h-5 ml-2" onClick={e => { e.stopPropagation(); setExportMenuOpen(v => !v); }} />
+                  </button>
+                  {/* 下拉菜单 */}
+                  {exportMenuOpen && (
+                    <div ref={exportMenuRef} className="absolute right-0 mt-2 w-48 bg-white dark:bg-neutral-800 text-neutral-800 dark:text-white text-sm rounded-xl shadow-lg z-50 border border-neutral-200 dark:border-neutral-700 overflow-hidden animate-fade-in">
+                      <button onClick={handleExportJPEG} className="flex items-center w-full px-4 py-3 transition hover:bg-neutral-200 dark:hover:bg-neutral-600 text-left disabled:opacity-60" disabled={exportingJPEG || !pageFocused}>
+                        <icons.ImageDown className="w-5 h-5 mr-2" />Download JPG
+                      </button>
+                      <button onClick={handleExportPNG} className="flex items-center w-full px-4 py-3 transition hover:bg-neutral-200 dark:hover:bg-neutral-600 text-left disabled:opacity-60" disabled={exportingImg || !pageFocused}>
+                        <icons.ImageDown className="w-5 h-5 mr-2" />Download PNG
+                      </button>
+                      <button onClick={handleExportSVG} className="flex items-center w-full px-4 py-3 transition hover:bg-neutral-200 dark:hover:bg-neutral-600 text-left disabled:opacity-60" disabled={exportingSVG || !pageFocused}>
+                        <icons.ImageDown className="w-5 h-5 mr-2" />Download SVG
+                      </button>
+                      <button onClick={handleExportPDF} className="flex items-center w-full px-4 py-3 transition hover:bg-neutral-200 dark:hover:bg-neutral-600 text-left disabled:opacity-60" disabled={exportingPDF || !pageFocused}>
+                        <icons.Download className="w-5 h-5 mr-2" />Download PDF
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
             {/* 全局图片上传 input，隐藏 */}
             <input ref={globalImgInputRef} type="file" accept="image/*" className="hidden" onChange={onGlobalImgInputChange} />
-            {/* 导出按钮，竖直居中对齐，不能包含在section内 */}
-            <div className="mb-2 flex flex-row gap-2">
-              <button
-                onClick={handleExportImg}
-                className={`px-4 py-1 rounded-xl border border-purple-400 ring-2 ring-purple-400 shadow flex items-center transition
-                  bg-white text-neutral-700 dark:bg-neutral-800 dark:text-white
-                  focus:outline-none ${exportingImg || !pageFocused ? 'opacity-60 cursor-not-allowed' : ''}`}
-                disabled={exportingImg || !pageFocused}
-              >
-                <icons.ImageDown className="w-5 h-5 mr-1" />
-                {exportingImg ? 'Exporting PNG...' : 'Export as PNG'}
-              </button>
-              <button
-                onClick={handleExportPDF}
-                className={`px-4 py-1 rounded-xl border border-purple-400 ring-2 ring-purple-400 shadow flex items-center transition
-                  bg-white text-neutral-700 dark:bg-neutral-800 dark:text-white
-                  focus:outline-none ${exportingPDF || !pageFocused ? 'opacity-60 cursor-not-allowed' : ''}`}
-                disabled={exportingPDF || !pageFocused}
-              >
-                <icons.Download className="w-5 h-5 mr-1" />
-                {exportingPDF ? 'Exporting PDF...' : 'Export as PDF'}
-              </button>
-            </div>
             {/* 报纸模板内容，导出区域，不能包含按钮 */}
             <section
               key={theme + '-' + pathname + '-' + template + '-' + pageFocused}

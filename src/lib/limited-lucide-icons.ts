@@ -27,6 +27,7 @@ export {
     DatabaseZap,
     Dot,
     Download,
+    Facebook,
     FileLock2,
     Fingerprint,
     GitPullRequestArrow,
@@ -65,6 +66,7 @@ export {
     ShieldUser,
     Tablets,
     Terminal,
+    Twitter,
     X,
     Zap
 } from 'lucide-react'; 
