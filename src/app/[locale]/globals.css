@@ -63,6 +63,10 @@
   box-shadow: none !important;
 }
 
+.exporting .newspaper-border-right { border-right-color: #222 !important; }
+.exporting .newspaper-border-left { border-left-color: #222 !important; }
+.exporting .newspaper-border-all { border-color: #222 !important; }
+
 /* EngraversOldEnglish古典僵尸字体 */
 @font-face {
   font-family: 'EngraversOldEnglish';

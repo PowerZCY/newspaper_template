@@ -79,7 +79,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
       {/* 上半部分：左右结构 */}
       <div className="flex flex-row w-full mb-2 items-stretch">
         {/* 左：About me 30% */}
-        <div className="flex flex-col justify-start" style={{ width: '35%', borderRight: '2px solid #222', paddingRight: '10px', marginRight: '10px' }}>
+        <div className="flex flex-col justify-start newspaper-border-right" style={{ width: '35%', borderRight: '2px solid #222', paddingRight: '10px', marginRight: '10px' }}>
           <div
             contentEditable
             suppressContentEditableWarning
@@ -133,7 +133,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
         </div>
         {/* 中：票据风格日期 */}
         <div className="flex flex-col items-center justify-center px-2">
-          <div className="w-full h-[260px] flex flex-col items-center justify-center" style={{border:'1.5px solid #222', borderRadius:'12px', padding:'12px'}}>
+          <div className="w-full h-[260px] flex flex-col items-center justify-center newspaper-border-all" style={{border:'1.5px solid #222', borderRadius:'12px', padding:'12px'}}>
             <div
               contentEditable
               suppressContentEditableWarning
@@ -159,7 +159,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
                 </React.Fragment>
               ))}
             </div>
-            <div style={{borderTop:'1.5px dashed #222', width:'100%', margin:'16px 0'}}></div>
+            <div className="newspaper-divider" style={{borderTop:'1.5px dashed #222', width:'100%', margin:'16px 0'}}></div>
             <div
               contentEditable
               suppressContentEditableWarning
@@ -169,7 +169,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
           </div>
         </div>
         {/* 右：Join us! */}
-        <div className="flex flex-col" style={{borderLeft:'2px solid #222', paddingLeft:'16px'}}>
+        <div className="flex flex-col newspaper-border-left" style={{borderLeft:'2px solid #222', paddingLeft:'16px'}}>
           <div
             contentEditable
             suppressContentEditableWarning
