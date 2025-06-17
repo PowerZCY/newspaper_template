@@ -366,7 +366,7 @@ export default function Home() {
                   >
                     <icons.Download className="w-5 h-5 mr-2" />
                     Download JPG
-                    <icons.ChevronDown className="w-5 h-5 ml-2" onClick={e => { e.stopPropagation(); setExportMenuOpen(v => !v); }} />
+                    <icons.ChevronDown className="w-6 h-6 ml-2" onClick={e => { e.stopPropagation(); setExportMenuOpen(v => !v); }} />
                   </button>
                   {/* 下拉菜单 */}
                   {exportMenuOpen && (
