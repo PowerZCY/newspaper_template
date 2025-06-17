@@ -340,7 +340,7 @@ export default function Home() {
           </aside>
 
           {/* 报纸内容块+操作按钮整体竖直居中 */}
-          <div className="flex flex-col items-center mt-[0px]">
+          <div className="flex flex-col items-center mt-[-2px]">
             {/* 操作区：社交图标+导出按钮 */}
             <div className="mb-2 w-full max-w-[700px] px-8 flex flex-row justify-between items-center">
                 {/* 社交图标区 */}
@@ -356,21 +356,31 @@ export default function Home() {
                   })}
                 </div>
                 {/* 导出按钮区 */}
-                <div className="relative">
+                <div className="relative flex">
+                  {/* 左区：主操作 */}
                   <button
                     ref={exportBtnRef}
-                    onClick={handleExportJPEG}
-                    className={`flex items-center rounded-full px-4 py-1 bg-white dark:bg-neutral-800 border border-purple-400 ring-2 ring-purple-400 shadow text-neutral-700 dark:text-white text-sm font-semibold transition focus:outline-none ${exportingJPEG || !pageFocused ? 'opacity-60 cursor-not-allowed' : ''}`}
+                    className={`flex-1 flex items-center px-4 py-1 text-neutral-700 dark:text-white text-sm font-semibold transition focus:outline-none rounded-l-full hover:bg-neutral-200 dark:hover:bg-neutral-700 ${exportingJPEG || !pageFocused ? 'opacity-60 cursor-not-allowed' : ''}`}
                     disabled={exportingJPEG || !pageFocused}
+                    onClick={handleExportJPEG}
                     onMouseDown={e => { if (e.button === 2) e.preventDefault(); }}
                   >
-                    <icons.Download className="w-5 h-5 mr-2" />
-                    Download JPG
-                    <icons.ChevronDown className="w-6 h-6 ml-2" onClick={e => { e.stopPropagation(); setExportMenuOpen(v => !v); }} />
+                    <icons.Download className="w-5 h-5 mr-2" /> Download JPG
                   </button>
-                  {/* 下拉菜单 */}
+                  {/* 右区：下拉 */}
+                  <span
+                    className="flex items-center justify-center w-10 h-8 cursor-pointer transition hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-r-full"
+                    onClick={e => { e.stopPropagation(); setExportMenuOpen(v => !v); }}
+                    tabIndex={0}
+                  >
+                    <icons.ChevronDown className="w-6 h-6" />
+                  </span>
+                  {/* 下拉菜单（原有功能不动） */}
                   {exportMenuOpen && (
-                    <div ref={exportMenuRef} className="absolute right-0 mt-2 w-48 bg-white dark:bg-neutral-800 text-neutral-800 dark:text-white text-sm rounded-xl shadow-lg z-50 border border-neutral-200 dark:border-neutral-700 overflow-hidden animate-fade-in">
+                    <div
+                      ref={exportMenuRef}
+                      className="absolute right-0 top-full w-48 bg-white dark:bg-neutral-800 text-neutral-800 dark:text-white text-sm rounded-xl shadow-lg z-50 border border-neutral-200 dark:border-neutral-700 overflow-hidden animate-fade-in"
+                    >
                       <button onClick={handleExportJPEG} className="flex items-center w-full px-4 py-3 transition hover:bg-neutral-200 dark:hover:bg-neutral-600 text-left disabled:opacity-60" disabled={exportingJPEG || !pageFocused}>
                         <icons.ImageDown className="w-5 h-5 mr-2" />Download JPG
                       </button>
