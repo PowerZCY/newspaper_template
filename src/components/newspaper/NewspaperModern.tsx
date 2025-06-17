@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import Image from "next/image";
 import { globalLucideIcons as icons } from "@/components/global-icon";
 
@@ -18,7 +18,9 @@ interface NewspaperModernProps {
     aboutText: string;
     dateDay: string;
     dateMonth: string;
-    dateAddr: string;
+    addr1: string;
+    addr2: string;
+    addr3: string;
     dateTime: string;
     joinTitle: string;
     joinText: string;
@@ -36,8 +38,6 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
   content,
   onContentChange,
 }) => {
-  const mainImgInput = useRef<HTMLInputElement>(null);
-  const subImgInput = useRef<HTMLInputElement>(null);
 
   return (
     <div className="newspaper-bg flex flex-col gap-0" style={{ background: "#f5f5e5", fontFamily: 'MontserratRegular, sans-serif' }}>
@@ -150,15 +150,20 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
               contentEditable
               suppressContentEditableWarning
               className="editable text-base mb-2 text-center text-neutral-900"
-              onBlur={e => onContentChange("dateAddr", e.currentTarget.innerText)}
-            >
-              {content.dateAddr.split('\n').map((line, idx) => (
-                <React.Fragment key={idx}>
-                  {line}
-                  {idx !== content.dateAddr.split('\n').length - 1 && <br />}
-                </React.Fragment>
-              ))}
-            </div>
+              onBlur={e => onContentChange("addr1", e.currentTarget.innerText)}
+            >{content.addr1}</div>
+            <div
+              contentEditable
+              suppressContentEditableWarning
+              className="editable text-base mb-2 text-center text-neutral-900"
+              onBlur={e => onContentChange("addr2", e.currentTarget.innerText)}
+            >{content.addr2}</div>
+            <div
+              contentEditable
+              suppressContentEditableWarning
+              className="editable text-base mb-2 text-center text-neutral-900"
+              onBlur={e => onContentChange("addr3", e.currentTarget.innerText)}
+            >{content.addr3}</div>
             <div className="newspaper-divider" style={{borderTop:'1.5px dashed #222', width:'100%', margin:'16px 0'}}></div>
             <div
               contentEditable

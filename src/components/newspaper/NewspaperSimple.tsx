@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import Image from "next/image";
 import { globalLucideIcons as icons } from "@/components/global-icon";
 
@@ -35,9 +35,6 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
   content,
   onContentChange,
 }) => {
-  const mainImgInput = useRef<HTMLInputElement>(null);
-  const sideImgInput = useRef<HTMLInputElement>(null);
-  const bottomImgInput = useRef<HTMLInputElement>(null);
 
   return (
     <div className="newspaper-bg flex flex-col gap-0" style={{ background: "#f5f5e5", fontFamily: 'MontserratRegular, sans-serif' }}>
