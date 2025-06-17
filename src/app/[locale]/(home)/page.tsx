@@ -143,8 +143,12 @@ export default function Home() {
     try {
       if (!areaRef.current) throw new Error('Export area lost');
       const domtoimage = await import('dom-to-image-more');
-      if (!areaRef.current) throw new Error('Export area lost');
-      const dataUrl = await domtoimage.toPng(areaRef.current as HTMLElement);
+      let dataUrl;
+      if (type === 'img') {
+        dataUrl = await domtoimage.toPng(areaRef.current as HTMLElement, { scale: appConfig.export?.scale || window.devicePixelRatio || 2 });
+      } else if (type === 'pdf') {
+        dataUrl = await domtoimage.toJpeg(areaRef.current as HTMLElement, { scale: appConfig.export?.pdfScale || 1.5, quality: 0.85, bgcolor: '#f5f5e5' });
+      }
       if (!dataUrl) throw new Error('Export failed');
       if (type === 'img') {
         const link = document.createElement("a");

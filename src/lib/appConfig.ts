@@ -59,7 +59,7 @@ export const appConfig = {
   },
   newspaperTemplates: [
     {
-      name: "Simple",
+      name: "Simple Template",
       type: "normal",
       key: "simple",
       thumb: "/simple.png",
@@ -67,7 +67,7 @@ export const appConfig = {
       top: true
     },
     {
-      name: "Modern",
+      name: "Modern Template",
       type: "normal",
       key: "modern",
       thumb: "/modern.png",
@@ -86,6 +86,10 @@ export const appConfig = {
   newspaperCard: {
     cardWidth: 200,
     cardHeight: 300,
+  },
+  export: {
+    scale: 3, // 图片导出清晰度
+    pdfScale: 4, // PDF导出JPEG的清晰度
   },
 };
 
