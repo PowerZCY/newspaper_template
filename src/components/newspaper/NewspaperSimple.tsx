@@ -47,7 +47,7 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
         style={{whiteSpace: 'nowrap'}}
         onBlur={e => onContentChange("edition", e.currentTarget.innerText)}
         >{content.edition}</div>
-      <div style={{borderTop:'2px solid #222', width:'100%'}}></div>
+      <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%'}}></div>
       <div
         contentEditable
         suppressContentEditableWarning
@@ -55,8 +55,8 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
         style={{ fontFamily: 'SuperAdorable,Times New Roman,serif', fontWeight: 600 }}
         onBlur={e => onContentChange("headline", e.currentTarget.innerText)}
       >{content.headline}</div>
-      <div style={{borderTop:'2px solid #222', width:'100%'}}></div>
-      <div style={{borderTop:'4px solid #000', width:'100%', marginTop:'2px', marginBottom:'8px'}}></div>
+      <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%'}}></div>
+      <div className="newspaper-divider" style={{borderTop:'4px solid #222', width:'100%', marginTop:'2px', marginBottom:'8px'}}></div>
       {/* 主体区 */}
       <div className="flex flex-row w-full min-h-[320px] gap-0 relative" style={{paddingBottom: '5px'}}>
         {/* 左列 2/3 */}
@@ -95,7 +95,7 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
           >{content.mainText}</div>
         </div>
         {/* 垂直分割线 */}
-        <div className="h-auto absolute" style={{borderLeft:'2px solid #222', height:'100%', left:'66.6667%', top:0, bottom:0}}></div>
+        <div className="h-auto absolute newspaper-divider" style={{borderLeft:'2px solid #222', height:'100%', left:'66.6667%', top:0, bottom:0}}></div>
         {/* 右列 1/3 */}
         <div className="w-1/3 pl-6 flex flex-col justify-start">
           {/* 行1：小标题 */}
@@ -129,7 +129,7 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
             className="editable text-base text-neutral-700 leading-snug mb-2"
             onBlur={e => onContentChange("sideDesc", e.currentTarget.innerText)}
           >{content.sideDesc}</div>
-          <div style={{borderTop:'2px solid #222', width:'100%', marginTop:'25px', marginBottom:'5px'}}></div>
+          <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%', marginTop:'25px', marginBottom:'5px'}}></div>
           {/* 行5：小标题+横图 */}
           <div
             contentEditable
@@ -161,7 +161,7 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
           >{content.bottomDesc}</div>
         </div>
       </div>
-      <div style={{borderTop:'2px solid #222', width:'100%', marginTop:'25px', marginBottom:'5px'}}></div>
+      <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%', marginTop:'25px', marginBottom:'5px'}}></div>
       <div
         contentEditable
         suppressContentEditableWarning

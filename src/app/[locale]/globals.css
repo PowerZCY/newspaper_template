@@ -53,6 +53,10 @@
   box-shadow: none !important;
   border: none !important;
 }
+.exporting .newspaper-divider {
+  border-color: #222 !important;
+}
+
 .exporting .editable,
 .exporting .editable:focus {
   outline: none !important;

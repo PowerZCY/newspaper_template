@@ -57,7 +57,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
           onBlur={e => onContentChange("rightTop", e.currentTarget.innerText)}
         >{content.rightTop}</span>
       </div>
-      <div style={{borderTop: '2px solid #222', width: '100%', marginBottom: '4px'}}></div>
+      <div className="newspaper-divider" style={{borderTop: '2px solid #222', width: '100%', marginBottom: '4px'}}></div>
       <div
         contentEditable
         suppressContentEditableWarning
@@ -65,15 +65,15 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
         style={{ fontFamily: 'EngraversOldEnglish,SuperAdorable,serif', fontWeight: 600, letterSpacing: '0.05em' }}
         onBlur={e => onContentChange("headline", e.currentTarget.innerText)}
       >{content.headline}</div>
-      <div style={{borderTop:'4px solid #000', width:'100%', marginBottom:'2px'}}></div>
-      <div style={{borderTop:'4px solid #000', width:'100%', marginBottom:'4px'}}></div>
+      <div className="newspaper-divider" style={{borderTop:'4px solid #222', width:'100%', marginBottom:'2px'}}></div>
+      <div className="newspaper-divider" style={{borderTop:'4px solid #222', width:'100%', marginBottom:'4px'}}></div>
       <div
         contentEditable
         suppressContentEditableWarning
         className="editable text-center text-lg tracking-[0.3em] uppercase mb-1 text-neutral-900"
         onBlur={e => onContentChange("subTitle", e.currentTarget.innerText)}
       >{content.subTitle}</div>
-      <div style={{borderTop:'2px solid #222', width:'100%', marginBottom:'8px'}}></div>
+      <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%', marginBottom:'8px'}}></div>
       {/* 上半部分：左右结构 */}
       <div className="flex flex-row w-full mb-2 items-stretch">
         {/* 左：About me 30% */}
@@ -111,7 +111,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
         </div>
       </div>
       {/* 横向分割线 */}
-      <div style={{borderTop:'2px solid #222', width:'100%', marginTop: '4px', marginBottom:'4px'}}></div>
+      <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%', marginTop: '4px', marginBottom:'4px'}}></div>
       {/* 下半部分：三列结构 */}
       <div className="grid grid-cols-3 gap-0 w-full" style={{marginBottom: '10px'}}>
         {/* 左：竖图 */}
@@ -185,7 +185,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
           >{content.joinText}</div>
         </div>
       </div>
-      <div style={{borderTop:'2px solid #222', width:'100%', marginTop:'5px', marginBottom:'5px'}}></div>
+      <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%', marginTop:'5px', marginBottom:'5px'}}></div>
     </div>
   );
 }; 

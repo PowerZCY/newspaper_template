@@ -240,6 +240,9 @@ export default function Home() {
             key={theme + '-' + pathname + '-' + template + '-' + pageFocused}
             ref={areaRef}
             className="newspaper-bg shadow-lg rounded-lg px-8 py-6 w-[700px] min-h-[900px] flex flex-col gap-4 transition-colors duration-300 flex-shrink-0 mr-8"
+            style={{
+              border: '1px solid rgba(255,255,255,0)', // 透明白色边框，兜底黑线
+            }}
           >
             {template === "simple" ? (
               <NewspaperSimple
