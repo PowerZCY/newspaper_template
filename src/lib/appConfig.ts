@@ -62,7 +62,7 @@ export const appConfig = {
       name: "Simple",
       type: "normal",
       key: "simple",
-      thumb: "/3.webp",
+      thumb: "/simple.png",
       href: "",
       top: true
     },
@@ -70,7 +70,7 @@ export const appConfig = {
       name: "Modern",
       type: "normal",
       key: "modern",
-      thumb: "/3.webp",
+      thumb: "/modern.png",
       href: "",
       top: false
     },
@@ -84,8 +84,8 @@ export const appConfig = {
     }
   ],
   newspaperCard: {
-    cardWidth: 170,
-    cardHeight: 220,
+    cardWidth: 200,
+    cardHeight: 300,
   },
 };
 
