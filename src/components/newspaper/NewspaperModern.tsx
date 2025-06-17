@@ -8,6 +8,7 @@ interface NewspaperModernProps {
   flowers: string;
   onMainImgChange: (file: File) => void;
   onSubImgChange: (file: File) => void;
+  onTriggerImgUpload: (key: string, cb: (file: File) => void) => void;
   content: {
     leftTop: string;
     rightTop: string;
@@ -31,6 +32,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
   flowers,
   onMainImgChange,
   onSubImgChange,
+  onTriggerImgUpload,
   content,
   onContentChange,
 }) => {
@@ -103,10 +105,9 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
               className="img-shadow w-full h-[350px] object-cover select-none"
               unoptimized={mainImg.startsWith('data:')}
             />
-            <button type="button" className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onClick={e => { e.stopPropagation(); mainImgInput.current?.click(); }}>
+            <button type="button" className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onClick={e => { e.stopPropagation(); onTriggerImgUpload('mainImg', onMainImgChange); }}>
               <icons.Replace className="w-6 h-6 text-black" />
             </button>
-            <input ref={mainImgInput} type="file" accept="image/*" className="hidden" onChange={e => { if (e.target.files?.[0]) onMainImgChange(e.target.files[0]); }} />
           </div>
         </div>
       </div>
@@ -125,10 +126,9 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
               className="img-shadow w-full h-[250px] object-cover select-none"
               unoptimized={subImg.startsWith('data:')}
             />
-            <button type="button" className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onClick={e => { e.stopPropagation(); subImgInput.current?.click(); }}>
+            <button type="button" className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onClick={e => { e.stopPropagation(); onTriggerImgUpload('subImg', onSubImgChange); }}>
               <icons.Replace className="w-6 h-6 text-black" />
             </button>
-            <input ref={subImgInput} type="file" accept="image/*" className="hidden" onChange={e => { if (e.target.files?.[0]) onSubImgChange(e.target.files[0]); }} />
           </div>
         </div>
         {/* 中：票据风格日期 */}

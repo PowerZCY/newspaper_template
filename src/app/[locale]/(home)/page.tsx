@@ -29,6 +29,8 @@ export default function Home() {
   const [exportingPDF, setExportingPDF] = useState(false);
   const [pageFocused, setPageFocused] = useState(true);
   const [exportError, setExportError] = useState<string | null>(null);
+  const globalImgInputRef = useRef<HTMLInputElement>(null);
+  const [pendingImgUpload, setPendingImgUpload] = useState<null | { type: string; key: string; cb: (file: File) => void }>(null);
 
   // 模板卡片排序
   const templates = [...appConfig.newspaperTemplates].sort((a, b) => (b.top ? 1 : 0) - (a.top ? 1 : 0));
@@ -200,6 +202,25 @@ export default function Home() {
     };
   }, []);
 
+  // 全局图片上传触发器
+  const handleGlobalImgUpload = (type: string, key: string, cb: (file: File) => void) => {
+    setPendingImgUpload({ type, key, cb });
+    setTimeout(() => {
+      globalImgInputRef.current?.click();
+    }, 0);
+  };
+
+  // input change 事件
+  const onGlobalImgInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && pendingImgUpload) {
+      pendingImgUpload.cb(file);
+    }
+    // 清空 input value，防止同一文件无法重复上传
+    e.target.value = '';
+    setPendingImgUpload(null);
+  };
+
   return (
     <>
       <AlertDialog open={!!exportError} onOpenChange={open => { if (!open) setExportError(null); }}>
@@ -220,6 +241,8 @@ export default function Home() {
         <main className="flex-1 flex justify-center items-start py-2 gap-10">
           {/* 报纸内容块+导出按钮整体竖直居中 */}
           <div className="flex flex-col items-center">
+            {/* 全局图片上传 input，隐藏 */}
+            <input ref={globalImgInputRef} type="file" accept="image/*" className="hidden" onChange={onGlobalImgInputChange} />
             {/* 导出按钮，竖直居中对齐，不能包含在section内 */}
             <div className="mb-2 flex flex-row gap-2">
               <button
@@ -260,6 +283,7 @@ export default function Home() {
                   onMainImgChange={file => handleImgChange("simple", "mainImg", file)}
                   onSideImgChange={file => handleImgChange("simple", "sideImg", file)}
                   onBottomImgChange={file => handleImgChange("simple", "bottomImg", file)}
+                  onTriggerImgUpload={(key, cb) => handleGlobalImgUpload("simple", key, cb)}
                   content={simpleContent}
                   onContentChange={(key, value) => handleContentChange("simple", key, value)}
                 />
@@ -270,6 +294,7 @@ export default function Home() {
                   flowers={modernImgs.flowers}
                   onMainImgChange={file => handleImgChange("modern", "mainImg", file)}
                   onSubImgChange={file => handleImgChange("modern", "subImg", file)}
+                  onTriggerImgUpload={(key, cb) => handleGlobalImgUpload("modern", key, cb)}
                   content={modernContent}
                   onContentChange={(key, value) => handleContentChange("modern", key, value)}
                 />

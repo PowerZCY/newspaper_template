@@ -9,6 +9,7 @@ interface NewspaperSimpleProps {
   onMainImgChange: (file: File) => void;
   onSideImgChange: (file: File) => void;
   onBottomImgChange: (file: File) => void;
+  onTriggerImgUpload: (key: string, cb: (file: File) => void) => void;
   content: {
     edition: string;
     headline: string;
@@ -30,6 +31,7 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
   onMainImgChange,
   onSideImgChange,
   onBottomImgChange,
+  onTriggerImgUpload,
   content,
   onContentChange,
 }) => {
@@ -73,10 +75,9 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
                 className="img-shadow w-full h-[400px] object-cover select-none"
                 unoptimized={mainImg.startsWith('data:')}
               />
-              <button type="button" className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onClick={e => { e.stopPropagation(); mainImgInput.current?.click(); }}>
+              <button type="button" className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onClick={e => { e.stopPropagation(); onTriggerImgUpload('mainImg', onMainImgChange); }}>
                 <icons.Replace className="w-6 h-6 text-black" />
               </button>
-              <input ref={mainImgInput} type="file" accept="image/*" className="hidden" onChange={e => { if (e.target.files?.[0]) onMainImgChange(e.target.files[0]); }} />
             </div>
           </div>
           {/* 行2：大标题 */}
@@ -116,10 +117,9 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
                 className="img-shadow w-full h-[200px] object-cover select-none"
                 unoptimized={sideImg.startsWith('data:')}
               />
-              <button type="button" className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onClick={e => { e.stopPropagation(); sideImgInput.current?.click(); }}>
+              <button type="button" className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onClick={e => { e.stopPropagation(); onTriggerImgUpload('sideImg', onSideImgChange); }}>
                 <icons.Replace className="w-6 h-6 text-black" />
               </button>
-              <input ref={sideImgInput} type="file" accept="image/*" className="hidden" onChange={e => { if (e.target.files?.[0]) onSideImgChange(e.target.files[0]); }} />
             </div>
           </div>
           {/* 行3：描述 */}
@@ -147,10 +147,9 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
                 className="img-shadow w-full h-[200px] object-cover select-none"
                 unoptimized={bottomImg.startsWith('data:')}
               />
-              <button type="button" className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onClick={e => { e.stopPropagation(); bottomImgInput.current?.click(); }}>
+              <button type="button" className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onClick={e => { e.stopPropagation(); onTriggerImgUpload('bottomImg', onBottomImgChange); }}>
                 <icons.Replace className="w-6 h-6 text-black" />
               </button>
-              <input ref={bottomImgInput} type="file" accept="image/*" className="hidden" onChange={e => { if (e.target.files?.[0]) onBottomImgChange(e.target.files[0]); }} />
             </div>
           </div>
           <div
