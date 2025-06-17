@@ -216,57 +216,66 @@ export default function Home() {
         </AlertDialogContent>
       </AlertDialog>
       <div className="min-h-screen flex flex-col bg-neutral-100 dark:bg-neutral-900 transition-colors duration-300">
-        {/* 模板选择区和导出按钮 */}
-        <div className="flex justify-center mt-6">
-          <button
-            onClick={handleExportImg}
-            className={`ml-6 px-4 py-1 rounded bg-gradient-to-r from-purple-400 to-pink-500 text-white transition-opacity ${exportingImg || !pageFocused ? 'opacity-60 cursor-not-allowed' : ''}`}
-            disabled={exportingImg || !pageFocused}
-          >
-            {exportingImg ? 'Exporting PNG...' : 'Export as PNG'}
-          </button>
-          <button
-            onClick={handleExportPDF}
-            className={`ml-2 px-4 py-1 rounded bg-gradient-to-r from-purple-400 to-pink-500 text-white transition-opacity ${exportingPDF || !pageFocused ? 'opacity-60 cursor-not-allowed' : ''}`}
-            disabled={exportingPDF || !pageFocused}
-          >
-            {exportingPDF ? 'Exporting PDF...' : 'Export as PDF'}
-          </button>
-        </div>
         {/* 主体内容区 */}
-        <main className="flex-1 flex justify-center items-start py-8 gap-10">
-          {/* 报纸内容块 */}
-          <section
-            key={theme + '-' + pathname + '-' + template + '-' + pageFocused}
-            ref={areaRef}
-            className="newspaper-bg shadow-lg rounded-lg px-8 py-6 w-[700px] min-h-[900px] flex flex-col gap-4 transition-colors duration-300 flex-shrink-0 mr-8"
-            style={{
-              border: '1px solid rgba(255,255,255,0)', // 透明白色边框，兜底黑线
-            }}
-          >
-            {template === "simple" ? (
-              <NewspaperSimple
-                mainImg={simpleImgs.mainImg}
-                sideImg={simpleImgs.sideImg}
-                bottomImg={simpleImgs.bottomImg}
-                onMainImgChange={file => handleImgChange("simple", "mainImg", file)}
-                onSideImgChange={file => handleImgChange("simple", "sideImg", file)}
-                onBottomImgChange={file => handleImgChange("simple", "bottomImg", file)}
-                content={simpleContent}
-                onContentChange={(key, value) => handleContentChange("simple", key, value)}
-              />
-            ) : (
-              <NewspaperModern
-                mainImg={modernImgs.mainImg}
-                subImg={modernImgs.subImg}
-                flowers={modernImgs.flowers}
-                onMainImgChange={file => handleImgChange("modern", "mainImg", file)}
-                onSubImgChange={file => handleImgChange("modern", "subImg", file)}
-                content={modernContent}
-                onContentChange={(key, value) => handleContentChange("modern", key, value)}
-              />
-            )}
-          </section>
+        <main className="flex-1 flex justify-center items-start py-2 gap-10">
+          {/* 报纸内容块+导出按钮整体竖直居中 */}
+          <div className="flex flex-col items-center">
+            {/* 导出按钮，竖直居中对齐，不能包含在section内 */}
+            <div className="mb-2 flex flex-row gap-2">
+              <button
+                onClick={handleExportImg}
+                className={`px-4 py-1 rounded-xl border border-purple-400 ring-2 ring-purple-400 shadow flex items-center transition
+                  bg-white text-neutral-700 dark:bg-neutral-800 dark:text-white
+                  focus:outline-none ${exportingImg || !pageFocused ? 'opacity-60 cursor-not-allowed' : ''}`}
+                disabled={exportingImg || !pageFocused}
+              >
+                <icons.ImageDown className="w-5 h-5 mr-1" />
+                {exportingImg ? 'Exporting PNG...' : 'Export as PNG'}
+              </button>
+              <button
+                onClick={handleExportPDF}
+                className={`px-4 py-1 rounded-xl border border-purple-400 ring-2 ring-purple-400 shadow flex items-center transition
+                  bg-white text-neutral-700 dark:bg-neutral-800 dark:text-white
+                  focus:outline-none ${exportingPDF || !pageFocused ? 'opacity-60 cursor-not-allowed' : ''}`}
+                disabled={exportingPDF || !pageFocused}
+              >
+                <icons.Download className="w-5 h-5 mr-1" />
+                {exportingPDF ? 'Exporting PDF...' : 'Export as PDF'}
+              </button>
+            </div>
+            {/* 报纸模板内容，导出区域，不能包含按钮 */}
+            <section
+              key={theme + '-' + pathname + '-' + template + '-' + pageFocused}
+              ref={areaRef}
+              className="newspaper-bg shadow-lg rounded-lg px-8 py-6 w-[700px] min-h-[900px] flex flex-col gap-4 transition-colors duration-300 flex-shrink-0 mr-8"
+              style={{
+                border: '1px solid rgba(255,255,255,0)', // 透明白色边框，兜底黑线
+              }}
+            >
+              {template === "simple" ? (
+                <NewspaperSimple
+                  mainImg={simpleImgs.mainImg}
+                  sideImg={simpleImgs.sideImg}
+                  bottomImg={simpleImgs.bottomImg}
+                  onMainImgChange={file => handleImgChange("simple", "mainImg", file)}
+                  onSideImgChange={file => handleImgChange("simple", "sideImg", file)}
+                  onBottomImgChange={file => handleImgChange("simple", "bottomImg", file)}
+                  content={simpleContent}
+                  onContentChange={(key, value) => handleContentChange("simple", key, value)}
+                />
+              ) : (
+                <NewspaperModern
+                  mainImg={modernImgs.mainImg}
+                  subImg={modernImgs.subImg}
+                  flowers={modernImgs.flowers}
+                  onMainImgChange={file => handleImgChange("modern", "mainImg", file)}
+                  onSubImgChange={file => handleImgChange("modern", "subImg", file)}
+                  content={modernContent}
+                  onContentChange={(key, value) => handleContentChange("modern", key, value)}
+                />
+              )}
+            </section>
+          </div>
           {/* 模板卡片区 */}
           <aside className="grid grid-cols-2 gap-4" style={{ width: CARD_WIDTH * 2 + 32 }}>
             {visibleTemplates.map((tpl, _idx) => (
