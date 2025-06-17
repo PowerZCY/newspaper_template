@@ -243,6 +243,54 @@ export default function Home() {
       <div className="min-h-screen flex flex-col bg-neutral-100 dark:bg-neutral-900 transition-colors duration-300">
         {/* 主体内容区 */}
         <main className="flex-1 flex justify-center items-start py-2 gap-10">
+          {/* 模板卡片区 */}
+          <aside className="grid grid-cols-2 gap-4" style={{ width: CARD_WIDTH * 2 + 32 }}>
+            {visibleTemplates.map((tpl, _idx) => (
+              <div
+                key={tpl.key}
+                className={`relative cursor-pointer border rounded-xl shadow p-2 flex flex-col items-center transition-all duration-200 hover:shadow-lg
+                  ${selectedKey === tpl.key ? 'ring-2 ring-purple-400 border-purple-400' : 'border-neutral-200'}
+                  ${tpl.type === 'ads'
+                    ? 'bg-yellow-50'
+                    : 'bg-white dark:bg-neutral-800'}
+                `}
+                style={{ width: CARD_WIDTH, height: CARD_HEIGHT }}
+                onClick={() => handleTemplateCardClick(tpl)}
+                title={tpl.name}
+              >
+                {/* 顶部名称和广告关闭按钮 */}
+                <div className="w-full flex flex-row items-center justify-between px-1 pt-1 pb-1 select-none">
+                  <div className={`font-bold ${tpl.type === 'ads' ? 'text-neutral-700 text-sm' : 'text-sm'}`}>
+                    {tpl.type === 'ads'
+                      ? <>
+                          {tpl.name.replace(/(ad|ads)$/i, '').trim()}
+                          <span className="ml-1 text-xs text-red-500 align-middle">Ad</span>
+                        </>
+                      : tpl.name}
+                  </div>
+                  {tpl.type === 'ads' && (
+                    <button
+                      className="text-neutral-400 hover:text-red-500 text-lg select-none p-0.5"
+                      onClick={e => { e.stopPropagation(); handleCloseAd(tpl.key); }}
+                      title="Close"
+                    >
+                      <icons.X className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+                <Image
+                  src={tpl.thumb}
+                  alt={tpl.name}
+                  width={182}
+                  height={254}
+                  className="object-cover rounded"
+                  unoptimized
+                  style={{ width: 182, height: 254, maxWidth: 182, maxHeight: 254, cursor: 'default' }}
+                />
+              </div>
+            ))}
+          </aside>
+
           {/* 报纸内容块+导出按钮整体竖直居中 */}
           <div className="flex flex-col items-center">
             {/* 全局图片上传 input，隐藏 */}
@@ -305,53 +353,6 @@ export default function Home() {
               )}
             </section>
           </div>
-          {/* 模板卡片区 */}
-          <aside className="grid grid-cols-2 gap-4" style={{ width: CARD_WIDTH * 2 + 32 }}>
-            {visibleTemplates.map((tpl, _idx) => (
-              <div
-                key={tpl.key}
-                className={`relative cursor-pointer border rounded-xl shadow p-2 flex flex-col items-center transition-all duration-200 hover:shadow-lg
-                  ${selectedKey === tpl.key ? 'ring-2 ring-purple-400 border-purple-400' : 'border-neutral-200'}
-                  ${tpl.type === 'ads'
-                    ? 'bg-yellow-50'
-                    : 'bg-white dark:bg-neutral-800'}
-                `}
-                style={{ width: CARD_WIDTH, height: CARD_HEIGHT }}
-                onClick={() => handleTemplateCardClick(tpl)}
-                title={tpl.name}
-              >
-                {/* 顶部名称和广告关闭按钮 */}
-                <div className="w-full flex flex-row items-center justify-between px-1 pt-1 pb-1 select-none">
-                  <div className={`font-bold ${tpl.type === 'ads' ? 'text-neutral-700 text-sm' : 'text-sm'}`}>
-                    {tpl.type === 'ads'
-                      ? <>
-                          {tpl.name.replace(/(ad|ads)$/i, '').trim()}
-                          <span className="ml-1 text-xs text-red-500 align-middle">Ad</span>
-                        </>
-                      : tpl.name}
-                  </div>
-                  {tpl.type === 'ads' && (
-                    <button
-                      className="text-neutral-400 hover:text-red-500 text-lg select-none p-0.5"
-                      onClick={e => { e.stopPropagation(); handleCloseAd(tpl.key); }}
-                      title="Close"
-                    >
-                      <icons.X className="w-4 h-4" />
-                    </button>
-                  )}
-                </div>
-                <Image
-                  src={tpl.thumb}
-                  alt={tpl.name}
-                  width={182}
-                  height={254}
-                  className="object-cover rounded"
-                  unoptimized
-                  style={{ width: 182, height: 254, maxWidth: 182, maxHeight: 254, cursor: 'default' }}
-                />
-              </div>
-            ))}
-          </aside>
         </main>
       </div>
     </>
