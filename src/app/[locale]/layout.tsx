@@ -5,6 +5,8 @@ import './globals.css';
 import NProgressBar from '@/app/[locale]/nProgressBar';
 import { cn } from '@/lib/fuma-search-util';
 import { RootProvider } from "fumadocs-ui/provider";
+import './globals.css';
+import { cn as cnUtils } from '@/lib/utils';
 import { montserrat } from '@/lib/fonts';
 
 export const dynamic = 'force-dynamic'
@@ -52,7 +54,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <NextIntlClientProvider messages={messages}>
-        <body className={montserrat.className}>
+        <body className={cnUtils(montserrat.className)}>
           <NProgressBar />
           <RootProvider
             i18n={{

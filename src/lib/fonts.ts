@@ -1,11 +1,11 @@
+import { Montserrat } from "next/font/google";
 import localFont from 'next/font/local';
 
-export const montserrat = localFont({
-  src: '../../public/fonts/MontserratRegular.otf',
+export const montserrat = Montserrat({
+  weight: ['400'], // 400 是 Regular
+  subsets: ['latin'],
   display: 'swap',
-  // family: 'montserrat', // 可省略，默认用文件名
-});
-
+})
 export const engravers = localFont({
   src: '../../public/fonts/EngraversOldEnglish.otf',
   display: 'swap',
