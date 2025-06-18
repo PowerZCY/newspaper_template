@@ -114,6 +114,7 @@
     "onlyBuiltDependencies": [
       "@clerk/shared",
       "@tailwindcss/oxide",
+      "core-js",
       "esbuild",
       "sharp",
       "unrs-resolver"

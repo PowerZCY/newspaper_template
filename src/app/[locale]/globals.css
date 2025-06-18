@@ -67,30 +67,4 @@
 .exporting .newspaper-border-left { border-left-color: #222 !important; }
 .exporting .newspaper-border-all { border-color: #222 !important; }
 
-/* EngraversOldEnglish古典僵尸字体 */
-@font-face {
-  font-family: 'EngraversOldEnglish';
-  src: url('/EngraversOldEnglish.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-/* MontserratRegular优雅字体 */
-@font-face {
-  font-family: 'MontserratRegular';
-  src: url('/MontserratRegular.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-/* SuperAdorable可爱字体 */
-@font-face {
-  font-family: 'SuperAdorable';
-  src: url('/SuperAdorable.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-/* 网站默认MontserratRegular字体 */
-body {
-  font-family: 'MontserratRegular', sans-serif;
-}
-
 

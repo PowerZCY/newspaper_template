@@ -1,6 +1,8 @@
 import React from "react";
 import Image from "next/image";
 import { globalLucideIcons as icons } from "@/components/global-icon";
+import { montserrat, adorable } from '@/lib/fonts';
+import { cn } from '@/lib/utils';
 
 interface NewspaperSimpleProps {
   mainImg: string;
@@ -37,7 +39,7 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
 }) => {
 
   return (
-    <div className="newspaper-bg flex flex-col gap-0" style={{ background: "#f5f5e5", fontFamily: 'MontserratRegular, sans-serif' }}>
+    <div className={cn("newspaper-bg flex flex-col gap-0", montserrat.className)} style={{ background: "#f5f5e5" }}>
       {/* 顶部区 */}
       <div
         contentEditable
@@ -50,8 +52,11 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
       <div
         contentEditable
         suppressContentEditableWarning
-        className="editable text-center text-[2.8rem] md:text-6xl font-extrabold tracking-[0.14em] text-neutral-900 leading-tight"
-        style={{ fontFamily: 'SuperAdorable,Times New Roman,serif', fontWeight: 600 }}
+        className={cn(
+          "editable text-center text-[2.8rem] md:text-6xl font-extrabold tracking-[0.14em] text-neutral-900 leading-tight",
+          adorable.className
+        )}
+        style={{ fontWeight: 600 }}
         onBlur={e => onContentChange("headline", e.currentTarget.innerText)}
       >{content.headline}</div>
       <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%'}}></div>

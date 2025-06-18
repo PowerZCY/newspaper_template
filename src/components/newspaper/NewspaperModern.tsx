@@ -1,6 +1,8 @@
 import React from "react";
 import Image from "next/image";
 import { globalLucideIcons as icons } from "@/components/global-icon";
+import { montserrat, engravers } from '@/lib/fonts';
+import { cn } from '@/lib/utils';
 
 interface NewspaperModernProps {
   mainImg: string;
@@ -40,7 +42,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
 }) => {
 
   return (
-    <div className="newspaper-bg flex flex-col gap-0" style={{ background: "#f5f5e5", fontFamily: 'MontserratRegular, sans-serif' }}>
+    <div className={cn("newspaper-bg flex flex-col gap-0", montserrat.className)} style={{ background: "#f5f5e5" }}>
       {/* 顶部区：三列flex布局，左右文字底部对齐，图片居中 */}
       <div style={{display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', width: '100%', marginBottom: '4px'}}>
         <span
@@ -63,8 +65,11 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
       <div
         contentEditable
         suppressContentEditableWarning
-        className="editable text-center text-[3.5rem] md:text-7xl font-black tracking-wide text-neutral-900 leading-tight mb-2.5 w-full flex items-center justify-center"
-        style={{ fontFamily: 'EngraversOldEnglish,SuperAdorable,serif', fontWeight: 600, letterSpacing: '0.05em' }}
+        className={cn(
+          "editable text-center text-[3.5rem] md:text-7xl font-black tracking-wide text-neutral-900 leading-tight mb-2.5 w-full flex items-center justify-center",
+          engravers.className
+        )}
+        style={{ fontWeight: 600, letterSpacing: '0.05em' }}
         onBlur={e => onContentChange("headline", e.currentTarget.innerText)}
       >{content.headline}</div>
       <div className="newspaper-divider" style={{borderTop:'4px solid #222', width:'100%', marginBottom:'2px'}}></div>

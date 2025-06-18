@@ -5,6 +5,8 @@ import './globals.css';
 import NProgressBar from '@/app/[locale]/nProgressBar';
 import { cn } from '@/lib/fuma-search-util';
 import { RootProvider } from "fumadocs-ui/provider";
+import { montserrat } from '@/lib/fonts';
+
 export const dynamic = 'force-dynamic'
 
 // 网站元数据
@@ -25,16 +27,6 @@ export async function generateMetadata({
       canonical: `${appConfig.baseUrl}/${locale}`,
       languages: {
         "en": `${appConfig.baseUrl}/en`,
-        "zh": `${appConfig.baseUrl}/zh`,
-        "ja": `${appConfig.baseUrl}/ja`,
-        "ko": `${appConfig.baseUrl}/ko`,
-        "fr": `${appConfig.baseUrl}/fr`,
-        "de": `${appConfig.baseUrl}/de`,
-        "es": `${appConfig.baseUrl}/es`,
-        "it": `${appConfig.baseUrl}/it`,
-        "pt": `${appConfig.baseUrl}/pt`,
-        "tr": `${appConfig.baseUrl}/tr`,
-        "pl": `${appConfig.baseUrl}/pl`,
       }
     },
     icons: [
@@ -60,7 +52,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <NextIntlClientProvider messages={messages}>
-        <body>
+        <body className={montserrat.className}>
           <NProgressBar />
           <RootProvider
             i18n={{
