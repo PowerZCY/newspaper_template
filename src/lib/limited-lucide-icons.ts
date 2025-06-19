@@ -57,6 +57,7 @@ export {
     PanelsTopLeft,
     Pencil,
     Pi,
+    Palette,
     ReceiptText,
     Regex,
     Replace,

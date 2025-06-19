@@ -29,7 +29,7 @@
       {
         "title": "Privacy Assured",
         "description": "Design worry-free—your data is safely stored in your browser, protecting your privacy with no data shared.",
-        "iconKey": "Eye"
+        "iconKey": "ShieldUser"
       },
       {
         "title": "Download and Share Easily",
@@ -39,7 +39,7 @@
       {
         "title": "No Design Experience Needed",
         "description": "Our user-friendly platform makes it easy for anyone to create professional-looking newspapers, regardless of design skills.",
-        "iconKey": "BookX"
+        "iconKey": "Palette"
       }
     ]
   },
