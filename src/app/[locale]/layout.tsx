@@ -8,6 +8,8 @@ import { RootProvider } from "fumadocs-ui/provider";
 import './globals.css';
 import { cn as cnUtils } from '@/lib/utils';
 import { montserrat } from '@/lib/fonts';
+import { GoogleAnalyticsScript } from "@/components/script/GoogleAnalyticsScript";
+import MicrosoftClarityScript from "@/components/script/MicrosoftClarityScript";
 
 export const dynamic = 'force-dynamic'
 
@@ -68,7 +70,8 @@ export default async function RootLayout({
             {children}
           </RootProvider>
         </body>
-        {/* <GoogleAnalyticsScript /> */}
+        <GoogleAnalyticsScript />
+        <MicrosoftClarityScript />
       </NextIntlClientProvider>
     </html>
   )
