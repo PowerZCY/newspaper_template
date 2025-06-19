@@ -308,7 +308,7 @@ export function Hero() {
           ))}
         </aside>
         {/* 报纸内容块+操作按钮整体竖直居中 */}
-        <div className="flex flex-col items-center mt-[-2px] mr-8">
+        <div className="flex flex-col items-center mt-[-40px] mr-8">
           {/* 操作区：社交图标+导出按钮 */}
           <div className="mb-2 w-full max-w-[700px] px-8 flex flex-row justify-between items-center">
             {/* 社交图标区 */}
