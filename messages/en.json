@@ -1,83 +1,68 @@
 {
   "home": {
-    "title": "Re8ger",
+    "title": "Newspaper Template",
     "slug": "Rethink | Redefine | Rebuild",
     "banner": "Rethink | Redefine | Rebuild",
     "webTitle": "Reve Image Directory - Showcase Beautiful Images & Tips",
     "webDescription": "Discover stunning AI-generated images and learn expert tips for creating beautiful visuals with Reve Image's powerful text-to-image technology.",
     "keywords": "AI image generation, text-to-image, digital art, creative tools, Reve Image, free image generation"
   },
-  "hero": {
-    "mainTitle": "Create Stunning Images with",
-    "mainEyesOn": "Reve Image",
-    "description": "Transform your ideas into breathtaking visuals with Reve Image's AI-powered image generation. Unleash your creativity with the cutting-edge technology.",
-    "button": "Get Started",
-    "about": "Enjoy 20 free images daily with Reve Image",
-    "heroImageAlt": "Reve Image AI-generated artwork showcasing the power of the platform"
-  },
   "features": {
     "title": "Why Choose",
-    "eyesOn": "Reve Image",
+    "eyesOn": "US",
+    "description": "Create stunning newspapers with our template website! Here's why you'll love it.",
     "items": [
       {
-        "title": "High-Quality Output",
-        "description": "Reve Image produces stunning, detailed images that rival professional artwork.",
-        "icon": "✨"
+        "title": "Quick and Easy to Use",
+        "description": "Edit text directly in the text area and hover over images to upload new ones. Customize your newspaper in minutes with a simple, intuitive interface.",
+        "iconKey": "Sparkles"
       },
       {
-        "title": "20 Free Images Daily",
-        "description": "Enjoy a generous daily allowance of 20 free images with your Reve Image account.",
-        "icon": "🎁"
+        "title": "Totally Free",
+        "description": "Enjoy full access to all features at no cost. No hidden fees, no subscriptions—just free, unlimited creativity.",
+        "iconKey": "Gift"
       },
       {
-        "title": "Intuitive Prompting",
-        "description": "The advanced AI understands natural language, making it easy to describe your vision.",
-        "icon": "💬"
+        "title": "Customizable Templates",
+        "description": "Choose from a variety of professionally designed templates to match your style.",
+        "iconKey": "BringToFront"
+      },
+      {
+        "title": "Instant Preview",
+        "description": "See your changes in real-time as you edit, ensuring your newspaper looks perfect before you download or share.",
+        "iconKey": "Eye"
+      },
+      {
+        "title": "Download and Share Easily",
+        "description": "Export your newspaper as a high-quality PDF or share it directly online with just a few clicks.",
+        "iconKey": "Download"
+      },
+      {
+        "title": "No Design Experience Needed",
+        "description": "Our user-friendly platform makes it easy for anyone to create professional-looking newspapers, regardless of design skills.",
+        "iconKey": "BookX"
       }
     ]
   },
-  "gallery": {
-    "titleL": "Gallery of",
-    "eyesOn": "Reve Image",
-    "titleR": "Creations",
-    "description": "Explore the incredible possibilities with Reve Image. Each image below was generated using the AI technology with the accompanying prompt.",
-    "button": "Create Your Own Images",
-    "prompts": [
-      "A futuristic cityscape with flying vehicles and neon lights",
-      "A serene mountain landscape at sunset with a lake reflection",
-      "A magical forest with glowing plants and mystical creatures",
-      "An underwater scene with colorful coral reefs and exotic fish",
-      "A steampunk-inspired mechanical dragon with brass gears",
-      "A cosmic scene with planets, nebulae, and a spaceship"
-    ]
-  },
-  "tips": {
-    "title": "Tips for Getting the Best Results with",
-    "eyesOn": "Reve Image",
-    "sections": [
+  "usage": {
+    "title": "How to create your own with",
+    "eyesOn": "Newspaper Template",
+    "description": "",
+    "steps": [
       {
-        "title": "Be Specific in Your Prompts",
-        "description": "When using Reve Image, the more specific your prompt, the better the results. Include details about style, lighting, mood, and composition to guide the AI toward your vision."
+        "title": "Select a Template",
+        "description": "Click on your favorite template on the left side to get started.",
+        "iconKey": "MousePointerClick"
       },
       {
-        "title": "Experiment with Different Styles",
-        "description": "Reve Image can generate images in various artistic styles. Try adding style descriptors like \"oil painting,\" \"digital art,\" \"photorealistic,\" or \"watercolor\" to your prompts."
+        "title": "Customize Your Content",
+        "description": "Edit text directly in the text area and hover over images to upload new ones.",
+        "iconKey": "Pencil"
       },
       {
-        "title": "Use Reference Artists",
-        "description": "Mentioning specific artists in your Reve Image prompts can help achieve particular aesthetics. For example, \"in the style of Van Gogh\" or \"like a Wes Anderson film.\""
-      },
-      {
-        "title": "Iterate and Refine",
-        "description": "Don't be afraid to generate multiple images with Reve Image and refine your prompt based on the results. Each iteration brings you closer to your perfect image."
-      },
-      {
-        "title": "Consider Composition Elements",
-        "description": "Include composition details in your Reve Image prompts, such as \"close-up,\" \"wide shot,\" \"from above,\" or \"symmetrical composition\" to control the framing."
-      },
-      {
-        "title": "Maximize Your Daily Allowance",
-        "description": "With Reve Image's generous 20 free images per day, plan your creative sessions to make the most of this allowance. Save your best results to build a personal inspiration library."
+        "title": "Download & Share",
+        "description": "Download as an image, PDF, or share to X, Instagram, etc",
+        "iconKey": "Download"
       }
     ]
   },
@@ -108,19 +93,6 @@
       }
     ],
     "conclusion": "As AI image generation continues to evolve, Reve Image remains at the forefront, constantly improving its capabilities and offering users new ways to express their creativity. By understanding how to effectively communicate with the Reve Image AI through well-crafted prompts, you can unlock extraordinary visual possibilities and transform how you approach creative projects."
-  },
-  "cta": {
-    "title": "Ready to Create with",
-    "eyesOn": "Reve Image",
-    "description1": "Start generating beautiful images today with your 20 free daily creations.",
-    "description2": "No credit card required.",
-    "button": "Get Started Now"
-  },
-  "languageDetection": {
-    "title": "Language Detection",
-    "description": "Would you like to switch to",
-    "close": "No, thanks",
-    "changeAction": "Yes, switch"
   },
   "footer": {
     "company": "WindRun · Huaiin",
