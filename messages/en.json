@@ -44,7 +44,7 @@
     ]
   },
   "usage": {
-    "title": "How to create your own with",
+    "title": "How to use",
     "eyesOn": "Newspaper Template",
     "description": "",
     "steps": [
@@ -112,14 +112,10 @@
     ]
   },
   "footer": {
-    "company": "WindRun · Huaiin",
+    "company": "Newspaper Template",
     "copyright": "Copyright © {year} {name} All rights reserved.",
     "privacy": "Privacy Policy",
-    "terms": "Terms of Service",
-    "dpa": "Data Protection Agreement",
-    "sitemap": "Sitemap",
-    "contact": "Contact Us",
-    "thanks": "Thanks to"
+    "terms": "Terms of Service"
   },
   "clerk": {
     "signIn": "Sign In",
