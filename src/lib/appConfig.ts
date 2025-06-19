@@ -1,6 +1,6 @@
 export const appConfig = {
   // 基础配置
-  baseUrl: process.env.NEXT_PUBLIC_BASE_URL || 'https://ddaas.de8ger.com',
+  baseUrl: process.env.NEXT_PUBLIC_BASE_URL || 'https://newspaper-template.org',
 
   i18n: {
     // locales: ["en", "zh", "ja", "ko", "fr", "de", "es", "it", "pt", "tr", "pl"] as const,
@@ -74,14 +74,14 @@ export const appConfig = {
       href: "",
       top: false
     },
-    {
-      name: "Sponsored",
-      type: "ads",
-      thumb: "/3.webp",
-      href: "https://ddaas.d8ger.com",
-      key: "ad-1",
-      top: false
-    }
+    // {
+    //   name: "Sponsored",
+    //   type: "ads",
+    //   thumb: "/3.webp",
+    //   href: "https://ddaas.d8ger.com",
+    //   key: "ad-1",
+    //   top: false
+    // }
   ],
   newspaperCard: {
     cardWidth: 200,
@@ -92,8 +92,8 @@ export const appConfig = {
     pdfScale: 4, // PDF导出JPEG的清晰度
   },
   socialIcons: [
-    { key: 'Twitter', name: 'Twitter' },
-    { key: 'Facebook', name: 'Facebook' },
+    // { key: 'Twitter', name: 'Twitter' },
+    // { key: 'Facebook', name: 'Facebook' },
   ],
 };
 
