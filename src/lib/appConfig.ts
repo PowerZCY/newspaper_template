@@ -1,3 +1,9 @@
+// 定义社交图标类型
+export type SocialIcon = {
+  key: string;
+  name: string;
+};
+
 export const appConfig = {
   // 基础配置
   baseUrl: process.env.NEXT_PUBLIC_BASE_URL || 'https://newspaper-template.org',
@@ -94,7 +100,7 @@ export const appConfig = {
   socialIcons: [
     // { key: 'Twitter', name: 'Twitter' },
     // { key: 'Facebook', name: 'Facebook' },
-  ],
+  ] as SocialIcon[],
 };
 
 export const iconColor = appConfig.style.icon.uniformColor

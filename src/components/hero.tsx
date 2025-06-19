@@ -313,7 +313,7 @@ export function Hero() {
           <div className="mb-2 w-full max-w-[700px] px-8 flex flex-row justify-between items-center">
             {/* 社交图标区 */}
             <div className="flex flex-row">
-              {appConfig.socialIcons.map(icon => {
+              {Array.isArray(appConfig.socialIcons) && appConfig.socialIcons.length > 0 && appConfig.socialIcons.map(icon => {
                 const iconKey = icon.key as keyof typeof icons;
                 const IconComp = icons[iconKey];
                 return IconComp ? (
