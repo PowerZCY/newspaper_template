@@ -3,6 +3,7 @@ import React from "react";
 import { Usage } from '@/components/usage';
 import { Features } from '@/components/features';
 import { Hero } from '@/components/hero';
+import { FAQ } from '@/components/faq';
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
           <Hero />
           <Usage />
           <Features />
+          <FAQ />
         </main>
       </div>
     </>
