@@ -27,8 +27,8 @@
         "iconKey": "BringToFront"
       },
       {
-        "title": "Instant Preview",
-        "description": "See your changes in real-time as you edit, ensuring your newspaper looks perfect before you download or share.",
+        "title": "Privacy Assured",
+        "description": "Design worry-free—your data is safely stored in your browser, protecting your privacy with no data shared.",
         "iconKey": "Eye"
       },
       {
@@ -75,7 +75,7 @@
       },
       {
         "question": "Is the website free to use?",
-        "answer": "Yes, our platform is completely free! You can access all features, including templates, editing tools, and downloads, without any cost or hidden fees. No watermark—free to use for commercial purposes."
+        "answer": "Yes, our platform is completely free! Access all features—templates, editing tools, and watermark-free downloads—without any cost or hidden fees. Perfect for commercial use!"
       },
       {
         "question": "How do I edit the text and images?",
@@ -91,11 +91,11 @@
       },
       {
         "question": "What file formats can I download my newspaper in?",
-        "answer": "You can download your newspaper as a high-quality PDF or PNG, suitable for printing or digital sharing."
+        "answer": "You can download your newspaper as a high-quality PDF, PNG, JPG, or SVG, suitable for printing or digital sharing."
       },
       {
         "question": "Can I save my work and come back to it later?",
-        "answer": "Currently, you can complete your newspaper in one session. We recommend downloading your project as a PDF to save your work. Future updates may include a save feature."
+        "answer": "Currently, you can complete your newspaper in one session. Future updates may include a save feature."
       },
       {
         "question": "Are there limits to how many newspapers I can create?",
@@ -103,11 +103,11 @@
       },
       {
         "question": "Can I use my own fonts or colors?",
-        "answer": "At this time, you can choose from a variety of pre-set fonts and color schemes within our templates to maintain a professional look. Custom font uploads may be added in future updates."
+        "answer": "You can choose from a variety of pre-set fonts and color schemes in our free online newspaper templates for a professional look. Custom font uploads may be available in future updates."
       },
       {
         "question": "How can I share my finished newspaper?",
-        "answer": "After completing your newspaper, you can download it as a PDF or PNG and share it via email, social media, or print it for physical distribution."
+        "answer": "After completing your newspaper, you can download it as a PDF, PNG, JPG, or SVG and share it via email, social media, or print it for physical distribution."
       }
     ]
   },
