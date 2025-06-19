@@ -44,22 +44,64 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
   return (
     <div className={cn("newspaper-bg flex flex-col gap-0", montserrat.className)} style={{ background: "#f5f5e5" }}>
       {/* 顶部区：三列flex布局，左右文字底部对齐，图片居中 */}
-      <div style={{display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', width: '100%', marginBottom: '4px'}}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'flex-end',
+          justifyContent: 'center',
+          width: '100%',
+          marginBottom: '4px',
+          position: 'relative'
+        }}
+      >
         <span
           contentEditable
           suppressContentEditableWarning
-          className="editable text-xs text-neutral-700 whitespace-nowrap"
-          style={{whiteSpace: 'nowrap', alignSelf: 'flex-end'}}
+          className="editable text-xs text-neutral-700"
+          style={{
+            width: 240,
+            minWidth: 0,
+            maxWidth: 240,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            alignSelf: 'flex-end',
+            textAlign: 'left',
+            flex: 'none'
+          }}
           onBlur={e => onContentChange("leftTop", e.currentTarget.innerText)}
-        >{content.leftTop}</span>
-        <Image src={flowers} alt="Flowers" width={82} height={30} style={{display: 'block', margin: '0 16px', height: '30px', alignSelf: 'center'}} className="pointer-events-none" />
+        >
+          {content.leftTop}
+        </span>
+        <div style={{ flex: '1 1 0', display: 'flex', justifyContent: 'center' }}>
+          <Image
+            src={flowers}
+            alt="Flowers"
+            width={82}
+            height={30}
+            style={{ display: 'block', margin: '0 16px', height: '30px', alignSelf: 'center' }}
+            className="pointer-events-none"
+          />
+        </div>
         <span
           contentEditable
           suppressContentEditableWarning
-          className="editable text-xs text-neutral-700 whitespace-nowrap"
-          style={{whiteSpace: 'nowrap', alignSelf: 'flex-end'}}
+          className="editable text-xs text-neutral-700"
+          style={{
+            width: 240,
+            minWidth: 0,
+            maxWidth: 240,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            alignSelf: 'flex-end',
+            textAlign: 'right',
+            flex: 'none'
+          }}
           onBlur={e => onContentChange("rightTop", e.currentTarget.innerText)}
-        >{content.rightTop}</span>
+        >
+          {content.rightTop}
+        </span>
       </div>
       <div className="newspaper-divider" style={{borderTop: '2px solid #222', width: '100%', marginBottom: '4px'}}></div>
       <div
