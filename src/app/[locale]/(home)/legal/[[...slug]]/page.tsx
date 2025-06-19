@@ -17,7 +17,7 @@ export default async function Page({
   const { slug, locale } = await params;
   const page = legalSource.getPage(slug, locale);
   if (!page) notFound();
-	const tocFooterElement = <TocFooter lastModified={page.data.lastModified} />;
+	const tocFooterElement = <TocFooter lastModified={page.data.date} />;
  
   // Markdown content requires await if you config 'async: true' in source.config.ts
   // const { body: MdxContent, toc } = await page.data.load();

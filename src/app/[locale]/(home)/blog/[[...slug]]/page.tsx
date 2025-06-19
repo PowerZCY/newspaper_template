@@ -18,7 +18,7 @@ export default async function Page({
   const page = blogSource.getPage(slug, locale);
   if (!page) notFound();
 
-  const tocFooterElement = <TocFooter lastModified={page.data.lastModified} />;
+  const tocFooterElement = <TocFooter lastModified={page.data.date} />;
  
  
   // Markdown content requires await if you config 'async: true' in source.config.ts

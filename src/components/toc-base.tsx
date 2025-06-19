@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useCopyButton } from 'fumadocs-ui/utils/use-copy-button';
 import { globalLucideIcons as icons } from '@/components/global-icon'
-import {formatTimestamp} from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 
 const cache = new Map<string, string>();
@@ -64,11 +63,11 @@ export function LLMCopyButton() {
 }
 
 // New component for displaying the last updated date with an icon
-export function LastUpdatedDate({ gitTimestamp }: { gitTimestamp: Date | undefined }) {
+export function LastUpdatedDate({ date }: { date: string | undefined }) {
   return (
     <div className="flex items-center gap-x-2 text-stone-600 dark:text-stone-400 text-sm">
       <icons.LastUpdated/>
-      First on {gitTimestamp ? formatTimestamp(gitTimestamp.toString(), "yyyy-MM-dd") : "Ages ago"}
+      Lastest on {date ? date : "Ages ago"}
     </div>
   );
 }

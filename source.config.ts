@@ -92,6 +92,7 @@ export const legal = defineDocs({
       icon: createIconSchema(),
       preview: z.string().optional(),
       index: z.boolean().default(false),
+      date: createDateSchema(),
       keywords: z.array(z.string()).optional(),
       method: z.string().optional(),
     }),
