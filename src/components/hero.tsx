@@ -360,8 +360,21 @@ export function Hero() {
                   <button onClick={handleExportPDF} className="flex items-center w-full px-4 py-3 transition hover:bg-neutral-200 dark:hover:bg-neutral-600 text-left disabled:opacity-60" disabled={exportingPDF || !pageFocused}>
                     <icons.Download className="w-5 h-5 mr-2" />Download PDF
                   </button>
-                  <button onClick={handleExportSVG} className="flex items-center w-full px-4 py-3 transition hover:bg-neutral-200 dark:hover:bg-neutral-600 text-left disabled:opacity-60" disabled={exportingSVG || !pageFocused}>
-                    <icons.ImageDown className="w-5 h-5 mr-2" />Download SVG
+                  <button
+                    className="flex items-center w-full px-4 py-3 transition hover:bg-neutral-200 dark:hover:bg-neutral-600 text-left disabled:opacity-60 relative"
+                    disabled={exportingSVG || !pageFocused}
+                    onClick={handleExportSVG}
+                  >
+                    <span className="flex items-center">
+                      <icons.ImageDown className="w-5 h-5 mr-2" />
+                      Download SVG
+                    </span>
+                    <span
+                      className="absolute right-3 top-1 text-[10px] font-semibold"
+                      style={{ color: '#a855f7', pointerEvents: 'none' }}
+                    >
+                      Beta
+                    </span>
                   </button>
                 </div>
               )}
