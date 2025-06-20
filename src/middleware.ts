@@ -25,6 +25,6 @@ export default function middleware(req: NextRequest) {
 export const config = {
   matcher: [
     // Skip Next.js internals, static files, sitemap, robots, unless found in search params, skip api and trpc
-    '/((?!api|trpc|_next|sitemap.xml?|robots.txt?|[^?]*.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest|otf)).*)',
+    '/((?!api|trpc|_next|sitemap.xml?|txt?|[^?]*.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest|otf)).*)',
   ],
 };
