@@ -189,16 +189,18 @@ export function Hero() {
         link.click();
         finish();
       } else if (type === 'pdf') {
-        const jsPDF = (await import("jspdf")).default;
-        const pdf = new jsPDF("p", "pt", "a4");
-        const pageWidth = pdf.internal.pageSize.getWidth();
-        const imgWidth = pageWidth - 40;
+        const { default: jsPDF } = await import('jspdf');
         const img = new window.Image();
         img.src = dataUrl;
         img.onload = function() {
           try {
-            const imgHeight = img.height * imgWidth / img.width;
-            pdf.addImage(dataUrl, "JPEG", 20, 20, imgWidth, imgHeight);
+            // 用图片实际宽高创建PDF画布，图片填满整个PDF页面，无边距
+            const pdf = new jsPDF({
+              orientation: img.width > img.height ? 'l' : 'p',
+              unit: 'pt',
+              format: [img.width, img.height]
+            });
+            pdf.addImage(dataUrl, "JPEG", 0, 0, img.width, img.height);
             pdf.save(`${selectedKey || 'newspaper'}.pdf`);
           } finally {
             finish();
@@ -355,11 +357,11 @@ export function Hero() {
                   <button onClick={handleExportPNG} className="flex items-center w-full px-4 py-3 transition hover:bg-neutral-200 dark:hover:bg-neutral-600 text-left disabled:opacity-60" disabled={exportingImg || !pageFocused}>
                     <icons.ImageDown className="w-5 h-5 mr-2" />Download PNG
                   </button>
-                  <button onClick={handleExportSVG} className="flex items-center w-full px-4 py-3 transition hover:bg-neutral-200 dark:hover:bg-neutral-600 text-left disabled:opacity-60" disabled={exportingSVG || !pageFocused}>
-                    <icons.ImageDown className="w-5 h-5 mr-2" />Download SVG
-                  </button>
                   <button onClick={handleExportPDF} className="flex items-center w-full px-4 py-3 transition hover:bg-neutral-200 dark:hover:bg-neutral-600 text-left disabled:opacity-60" disabled={exportingPDF || !pageFocused}>
                     <icons.Download className="w-5 h-5 mr-2" />Download PDF
+                  </button>
+                  <button onClick={handleExportSVG} className="flex items-center w-full px-4 py-3 transition hover:bg-neutral-200 dark:hover:bg-neutral-600 text-left disabled:opacity-60" disabled={exportingSVG || !pageFocused}>
+                    <icons.ImageDown className="w-5 h-5 mr-2" />Download SVG
                   </button>
                 </div>
               )}
