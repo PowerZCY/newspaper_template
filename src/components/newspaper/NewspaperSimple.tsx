@@ -94,8 +94,9 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
             contentEditable
             suppressContentEditableWarning
             className="editable text-base text-neutral-900 leading-relaxed"
-            onBlur={e => onContentChange("mainText", e.currentTarget.innerText)}
-          >{content.mainText}</div>
+            onBlur={e => onContentChange("mainText", e.currentTarget.innerHTML)}
+            dangerouslySetInnerHTML={{ __html: content.mainText }}
+          />
         </div>
         {/* 垂直分割线 */}
         <div className="h-auto absolute newspaper-divider" style={{borderLeft:'2px solid #222', height:'100%', left:'66.6667%', top:0, bottom:0}}></div>
@@ -129,8 +130,9 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
             contentEditable
             suppressContentEditableWarning
             className="editable text-base text-neutral-700 leading-snug mb-2"
-            onBlur={e => onContentChange("sideDesc", e.currentTarget.innerText)}
-          >{content.sideDesc}</div>
+            onBlur={e => onContentChange("sideDesc", e.currentTarget.innerHTML)}
+            dangerouslySetInnerHTML={{ __html: content.sideDesc }}
+          />
           <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%', marginTop:'25px', marginBottom:'5px'}}></div>
           {/* 行5：小标题+横图 */}
           <div
@@ -158,8 +160,9 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
             contentEditable
             suppressContentEditableWarning
             className="editable text-base text-neutral-700 leading-snug mb-2"
-            onBlur={e => onContentChange("bottomDesc", e.currentTarget.innerText)}
-          >{content.bottomDesc}</div>
+            onBlur={e => onContentChange("bottomDesc", e.currentTarget.innerHTML)}
+            dangerouslySetInnerHTML={{ __html: content.bottomDesc }}
+          />
         </div>
       </div>
       <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%', marginTop:'25px', marginBottom:'5px'}}></div>

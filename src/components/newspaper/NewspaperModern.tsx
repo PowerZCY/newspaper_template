@@ -138,8 +138,9 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
             contentEditable
             suppressContentEditableWarning
             className="editable text-base leading-relaxed flex-1 text-neutral-900"
-            onBlur={e => onContentChange("aboutText", e.currentTarget.innerText)}
-          >{content.aboutText}</div>
+            onBlur={e => onContentChange("aboutText", e.currentTarget.innerHTML)}
+            dangerouslySetInnerHTML={{ __html: content.aboutText }}
+          />
         </div>
         {/* 右：大竖图 70% */}
         <div className="flex flex-col items-center" style={{ width: '65%' }}>
@@ -233,8 +234,9 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
             contentEditable
             suppressContentEditableWarning
             className="editable text-base leading-relaxed flex-1 text-neutral-900"
-            onBlur={e => onContentChange("joinText", e.currentTarget.innerText)}
-          >{content.joinText}</div>
+            onBlur={e => onContentChange("joinText", e.currentTarget.innerHTML)}
+            dangerouslySetInnerHTML={{ __html: content.joinText }}
+          />
         </div>
       </div>
       <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%', marginTop:'5px', marginBottom:'5px'}}></div>
