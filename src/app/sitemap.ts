@@ -14,30 +14,29 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const blogDir = path.join(process.cwd(), 'src/mdx/blog');
   const blogFiles = fs.readdirSync(blogDir).filter(f => f.endsWith('.mdx'));
 
-  // 2. 排除 ioc.mdx 和 index.mdx
-  const filtered = blogFiles.filter(f => f !== 'ioc.mdx');
-
   // 3. 处理 index.mdx（博客起始页）和其它 slug
-  const blogRoutes = locales.flatMap(locale =>
-    filtered.flatMap(f => {
+  const blogRoutes: MetadataRoute.Sitemap = [];
+
+  for (const locale of locales) {
+    for (const f of blogFiles) {
       if (f === 'index.mdx') {
-        return [{
+        blogRoutes.push({
           url: `${baseUrl}/${locale}/blog`,
           lastModified: new Date(),
-          changeFrequency: 'monthly' as const,
-          priority: 0.8
-        }];
+          changeFrequency: 'daily',
+          priority: 1
+        });
       } else {
         const slug = f.replace(/\.mdx$/, '');
-        return [{
+        blogRoutes.push({
           url: `${baseUrl}/${locale}/blog/${slug}`,
           lastModified: new Date(),
-          changeFrequency: 'monthly' as const,
+          changeFrequency: f === 'ioc.mdx' ? 'daily' : 'monthly',
           priority: 0.8
-        }];
+        });
       }
-    })
-  );
+    }
+  }
 
   // 4. 主页面（各语言版本）
   const mainRoutes = locales.map(locale => ({
