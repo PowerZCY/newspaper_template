@@ -13,6 +13,9 @@ import { iconColor } from '@/lib/appConfig';
 
 // Define all custom image-based icons in this object
 const customImageIcons = {
+  // 网站icon
+  ME: iconFromSVG("/news-icon.svg", "ME"),
+  // 其他icon
   ByteCry: iconFromSVG("/icons/bytecry.svg", "ByteCry"),
   GitHub: iconFromSVG("/icons/github.svg", "GitHub"),
   LastUpdated: iconFromSVG("/icons/latest.svg", "Last updated"),
@@ -160,6 +163,6 @@ export function getGlobalIcon(
 
 // Define the site icon as a functional component
 export const SiteIcon = () => (
-  <globalLucideIcons.Zap className={`h-8 w-8 rounded-full p-1 shadow-lg ring-0.5 border border-purple-500 ring-purple-500/20 ${iconColor}`} />
+  <globalLucideIcons.ME className={`h-8 w-8 rounded-full p-1 shadow-lg ring-0.5 border border-purple-500 ring-purple-500/20 ${iconColor}`} />
 );
 
