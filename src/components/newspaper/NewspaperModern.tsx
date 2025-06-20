@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { globalLucideIcons as icons } from "@/components/global-icon";
 import { montserrat, engravers } from '@/lib/fonts';
-import { cn } from '@/lib/utils';
+import { cn, handlePastePlainText } from '@/lib/utils';
 
 interface NewspaperModernProps {
   mainImg: string;
@@ -70,6 +70,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
             flex: 'none'
           }}
           onBlur={e => onContentChange("leftTop", e.currentTarget.innerText)}
+          onPaste={handlePastePlainText}
         >
           {content.leftTop}
         </span>
@@ -99,6 +100,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
             flex: 'none'
           }}
           onBlur={e => onContentChange("rightTop", e.currentTarget.innerText)}
+          onPaste={handlePastePlainText}
         >
           {content.rightTop}
         </span>
@@ -113,6 +115,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
         )}
         style={{ fontWeight: 600, letterSpacing: '0.05em' }}
         onBlur={e => onContentChange("headline", e.currentTarget.innerText)}
+        onPaste={handlePastePlainText}
       >{content.headline}</div>
       <div className="newspaper-divider" style={{borderTop:'4px solid #222', width:'100%', marginBottom:'2px'}}></div>
       <div className="newspaper-divider" style={{borderTop:'4px solid #222', width:'100%', marginBottom:'4px'}}></div>
@@ -121,6 +124,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
         suppressContentEditableWarning
         className="editable text-center text-lg tracking-[0.3em] uppercase mb-1 text-neutral-900"
         onBlur={e => onContentChange("subTitle", e.currentTarget.innerText)}
+        onPaste={handlePastePlainText}
       >{content.subTitle}</div>
       <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%', marginBottom:'8px'}}></div>
       {/* 上半部分：左右结构 */}
@@ -133,13 +137,15 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
             className="editable text-xl font-bold"
             style={{borderBottom:'3px solid #222', marginBottom:'8px', paddingBottom:'4px', color:'#222'}}
             onBlur={e => onContentChange("aboutTitle", e.currentTarget.innerText)}
+            onPaste={handlePastePlainText}
           >{content.aboutTitle}</div>
           <div
             contentEditable
             suppressContentEditableWarning
-            className="editable text-base leading-relaxed flex-1 text-neutral-900"
+            className="editable text-[0.95rem] leading-relaxed flex-1 text-neutral-900"
             onBlur={e => onContentChange("aboutText", e.currentTarget.innerHTML)}
             dangerouslySetInnerHTML={{ __html: content.aboutText }}
+            onPaste={handlePastePlainText}
           />
         </div>
         {/* 右：大竖图 70% */}
@@ -187,30 +193,35 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
               suppressContentEditableWarning
               className="editable text-3xl font-bold leading-tight mb-1 mt-2 text-center text-neutral-900"
               onBlur={e => onContentChange("dateDay", e.currentTarget.innerText)}
+              onPaste={handlePastePlainText}
             >{content.dateDay}</div>
             <div
               contentEditable
               suppressContentEditableWarning
               className="editable text-3xl font-bold leading-tight mb-2 text-center text-neutral-900"
               onBlur={e => onContentChange("dateMonth", e.currentTarget.innerText)}
+              onPaste={handlePastePlainText}
             >{content.dateMonth}</div>
             <div
               contentEditable
               suppressContentEditableWarning
               className="editable text-base mb-2 text-center text-neutral-900"
               onBlur={e => onContentChange("addr1", e.currentTarget.innerText)}
+              onPaste={handlePastePlainText}
             >{content.addr1}</div>
             <div
               contentEditable
               suppressContentEditableWarning
               className="editable text-base mb-2 text-center text-neutral-900"
               onBlur={e => onContentChange("addr2", e.currentTarget.innerText)}
+              onPaste={handlePastePlainText}
             >{content.addr2}</div>
             <div
               contentEditable
               suppressContentEditableWarning
               className="editable text-base mb-2 text-center text-neutral-900"
               onBlur={e => onContentChange("addr3", e.currentTarget.innerText)}
+              onPaste={handlePastePlainText}
             >{content.addr3}</div>
             <div className="newspaper-divider" style={{borderTop:'1.5px dashed #222', width:'100%', margin:'16px 0'}}></div>
             <div
@@ -218,6 +229,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
               suppressContentEditableWarning
               className="editable text-2xl font-bold text-center text-neutral-900"
               onBlur={e => onContentChange("dateTime", e.currentTarget.innerText)}
+              onPaste={handlePastePlainText}
             >{content.dateTime}</div>
           </div>
         </div>
@@ -229,13 +241,15 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
             className="editable text-xl font-bold"
             style={{borderBottom:'3px solid #222', marginBottom:'8px', paddingBottom:'4px', color:'#222'}}
             onBlur={e => onContentChange("joinTitle", e.currentTarget.innerText)}
+            onPaste={handlePastePlainText}
           >{content.joinTitle}</div>
           <div
             contentEditable
             suppressContentEditableWarning
-            className="editable text-base leading-relaxed flex-1 text-neutral-900"
+            className="editable text-[0.95rem] leading-relaxed flex-1 text-neutral-900"
             onBlur={e => onContentChange("joinText", e.currentTarget.innerHTML)}
             dangerouslySetInnerHTML={{ __html: content.joinText }}
+            onPaste={handlePastePlainText}
           />
         </div>
       </div>

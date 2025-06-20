@@ -36,3 +36,22 @@ export function formatTimestamp(timestamp: string, formatter: string) {
      return fail;
   }
 }
+
+// 只允许粘贴纯文本，禁止带样式内容进入 contentEditable
+export function handlePastePlainText(e: React.ClipboardEvent<HTMLElement>) {
+  e.preventDefault();
+  const text = e.clipboardData.getData('text/plain');
+  const selection = window.getSelection();
+  if (!selection || !selection.rangeCount) return;
+  // 删除当前选中内容
+  selection.deleteFromDocument();
+  // 插入纯文本
+  const textNode = document.createTextNode(text);
+  const range = selection.getRangeAt(0);
+  range.insertNode(textNode);
+  // 移动光标到插入文本后
+  range.setStartAfter(textNode);
+  range.collapse(true);
+  selection.removeAllRanges();
+  selection.addRange(range);
+}

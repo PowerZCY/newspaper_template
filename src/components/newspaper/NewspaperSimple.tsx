@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { globalLucideIcons as icons } from "@/components/global-icon";
 import { montserrat, adorable } from '@/lib/fonts';
-import { cn } from '@/lib/utils';
+import { cn, handlePastePlainText } from '@/lib/utils';
 
 interface NewspaperSimpleProps {
   mainImg: string;
@@ -42,11 +42,19 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
     <div className={cn("newspaper-bg flex flex-col gap-0", montserrat.className)} style={{ background: "#f5f5e5" }}>
       {/* 顶部区 */}
       <div
+      
         contentEditable
         suppressContentEditableWarning
         className="editable text-center text-base text-neutral-700 mt-2 mb-1 tracking-wide whitespace-nowrap"
-        style={{whiteSpace: 'nowrap'}}
+        style={{
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          maxWidth: 640, 
+          margin: '0 auto'
+        }}
         onBlur={e => onContentChange("edition", e.currentTarget.innerText)}
+        onPaste={handlePastePlainText}
         >{content.edition}</div>
       <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%'}}></div>
       <div
@@ -58,6 +66,7 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
         )}
         style={{ fontWeight: 600 }}
         onBlur={e => onContentChange("headline", e.currentTarget.innerText)}
+        onPaste={handlePastePlainText}
       >{content.headline}</div>
       <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%'}}></div>
       <div className="newspaper-divider" style={{borderTop:'4px solid #222', width:'100%', marginTop:'2px', marginBottom:'8px'}}></div>
@@ -88,14 +97,16 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
             suppressContentEditableWarning
             className="editable mb-1 text-xl font-extrabold tracking-wide text-neutral-900"
             onBlur={e => onContentChange("title", e.currentTarget.innerText)}
+            onPaste={handlePastePlainText}
           >{content.title}</div>
           {/* 行3：正文 */}
           <div
             contentEditable
             suppressContentEditableWarning
-            className="editable text-base text-neutral-900 leading-relaxed"
+            className="editable text-[0.95rem] text-neutral-900 leading-relaxed"
             onBlur={e => onContentChange("mainText", e.currentTarget.innerHTML)}
             dangerouslySetInnerHTML={{ __html: content.mainText }}
+            onPaste={handlePastePlainText}
           />
         </div>
         {/* 垂直分割线 */}
@@ -108,6 +119,7 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
             suppressContentEditableWarning
             className="editable text-xs font-bold tracking-wide leading-tight mb-1"
             onBlur={e => onContentChange("sideTitle", e.currentTarget.innerText)}
+            onPaste={handlePastePlainText}
           >{content.sideTitle}</div>
           {/* 行2：竖图 */}
           <div className="mb-1">
@@ -129,9 +141,10 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
           <div
             contentEditable
             suppressContentEditableWarning
-            className="editable text-base text-neutral-700 leading-snug mb-2"
+            className="editable text-[0.95rem] text-neutral-700 leading-snug mb-1"
             onBlur={e => onContentChange("sideDesc", e.currentTarget.innerHTML)}
             dangerouslySetInnerHTML={{ __html: content.sideDesc }}
+            onPaste={handlePastePlainText}
           />
           <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%', marginTop:'25px', marginBottom:'5px'}}></div>
           {/* 行5：小标题+横图 */}
@@ -140,6 +153,7 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
             suppressContentEditableWarning
             className="editable text-xs font-bold tracking-wide leading-tight mb-1"
             onBlur={e => onContentChange("bottomTitle", e.currentTarget.innerText)}
+            onPaste={handlePastePlainText}
           >{content.bottomTitle}</div>
           <div>
             <div className="relative group w-full">
@@ -159,9 +173,10 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
           <div
             contentEditable
             suppressContentEditableWarning
-            className="editable text-base text-neutral-700 leading-snug mb-2"
+            className="editable text-[0.95rem] text-neutral-700 leading-snug mb-1"
             onBlur={e => onContentChange("bottomDesc", e.currentTarget.innerHTML)}
             dangerouslySetInnerHTML={{ __html: content.bottomDesc }}
+            onPaste={handlePastePlainText}
           />
         </div>
       </div>
@@ -171,6 +186,7 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
         suppressContentEditableWarning
         className="editable text-xs text-neutral-700 text-center tracking-widest uppercase mb-1"
         onBlur={e => onContentChange("footer", e.currentTarget.innerText)}
+        onPaste={handlePastePlainText}
       >{content.footer}</div>
     </div>
   );
