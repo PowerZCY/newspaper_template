@@ -8,7 +8,7 @@ export const NEWSPAPER_TEMPLATES = {
     defaultContent: {
       edition: 'Newspaper Template',
       headline: 'NEWSPAPER',
-      title: "Newspaper Template",
+      title: "NEWSPAPER TEMPLATE",
       mainText: 'The Newspaper Template provides a timeless layout, ideal for delivering breaking news or captivating stories. Featuring a bold headline section, the Newspaper Template instantly grabs attention with its striking design. Perfect for crafting professional newsletters or special editions, the Newspaper Template seamlessly blends style and functionality. Utilize the Newspaper Template for personal projects, school newspapers, or business updates by customizing text and graphics to meet your specific needs.',
       sideTitle: 'EDIT TEXT DIRECTLY IN THE TEXT AREA.',
       sideDesc: 'Hover over the images to show the upload button in the bottom right corner, then click to upload a new picture.',
