@@ -20,7 +20,7 @@ export function FAQ() {
   };
 
   return (
-    <section id="faq" className="px-16 py-20 mx-16 md:mx-32">
+    <section id="faq" className="px-16 py-10 mx-16 md:mx-32">
       <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
         {t('title')}
       </h2>

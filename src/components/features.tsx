@@ -14,7 +14,7 @@ export function Features() {
   }>;
 
   return (
-    <section id="features" className="px-16 py-20 mx-16 md:mx-32">
+    <section id="features" className="px-16 py-10 mx-16 md:mx-32">
       <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
         {t('title')} <span className="text-purple-500">{t('eyesOn')}</span>
       </h2>
