@@ -25,6 +25,6 @@ export default function middleware(req: NextRequest) {
 export const config = {
   matcher: [
     // Skip Next.js internals, static files, sitemap, robots, 以及所有.txt文件，除非在search params中，skip api 和 trpc
-    '/((?!api|trpc|_next|sitemap.xml?|robots.txt|[^?]*.txt|[^?]*.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest|otf)).*)',
+    '/((?!api|trpc|_next|[^?]*.(?:html?|txt|xml|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|pdf|mp3|mp4|docx?|xlsx?|zip|webmanifest|otf)).*)',
   ],
 };
