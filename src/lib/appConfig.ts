@@ -68,7 +68,7 @@ export const appConfig = {
       name: "Simple Template",
       type: "normal",
       key: "simple",
-      thumb: "/simple.png",
+      thumb: "/template/simple.webp",
       href: "",
       top: true
     },
@@ -76,18 +76,18 @@ export const appConfig = {
       name: "Modern Template",
       type: "normal",
       key: "modern",
-      thumb: "/modern.png",
+      thumb: "/template/modern.webp",
       href: "",
       top: false
     },
-    // {
-    //   name: "Sponsored",
-    //   type: "ads",
-    //   thumb: "/3.webp",
-    //   href: "https://ddaas.d8ger.com",
-    //   key: "ad-1",
-    //   top: false
-    // }
+    {
+      name: "Sponsored",
+      type: "ads",
+      thumb: "/ads/Ad-Pollo.webp",
+      href: "https://pollo.ai/home?ref=mzmzndj&tm_news=news",
+      key: "ad-1",
+      top: false
+    }
   ],
   newspaperCard: {
     cardWidth: 200,

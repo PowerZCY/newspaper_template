@@ -248,8 +248,8 @@ export function Hero() {
         onOpenChange={open => { if (!open) setExportError(null); }}
         title="Download message"
         description={exportError}
-        // imgSrc="/default.webp"
-        // imgHref="https://github.com/PowerZCY/formato"
+        imgSrc="/ads/Ad-Pollo.webp"
+        imgHref="https://pollo.ai/home?ref=mzmzndj&tm_news=news"
       />
       <div className="flex justify-center items-start py-2 gap-2 px-4 md:gap-4 md:px-12">
         {/* 模板卡片区 */}
