@@ -1,21 +1,14 @@
 "use client";
-import { NewspaperModern } from "@/components/newspaper/NewspaperModern";
-import { NewspaperSimple } from "@/components/newspaper/NewspaperSimple";
-import React, { useRef, useState, useEffect, useCallback } from "react";
-import Image from "next/image";
-import { appConfig } from "@/lib/appConfig";
+import { AdsAlertDialog } from "@/components/ads-alert-dialog";
 import { globalLucideIcons as icons } from "@/components/global-icon";
 import { NEWSPAPER_TEMPLATES } from "@/components/newspaper/BaseConfig";
-import { usePathname } from 'next/navigation';
+import { NewspaperModern } from "@/components/newspaper/NewspaperModern";
+import { NewspaperSimple } from "@/components/newspaper/NewspaperSimple";
+import { appConfig } from "@/lib/appConfig";
 import { useTheme } from 'next-themes';
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogAction,
-} from "@/components/ui/alert-dialog";
+import Image from "next/image";
+import { usePathname } from 'next/navigation';
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 export function Hero() {
   const [template, setTemplate] = useState<"simple" | "modern">("simple");
@@ -100,10 +93,11 @@ export function Hero() {
     setPendingImgUpload(null);
   };
   // 导出相关逻辑
+  const exportErrorMsg = 'Please refresh page or switch template and try again!';
   const handleExportJPEG = async () => {
     if (!pageFocused) return;
     if (!areaRef.current) {
-      setExportError('Please refresh page or switch template and try again！');
+      setExportError(exportErrorMsg);
       return;
     }
     setExportMenuOpen(false);
@@ -112,7 +106,7 @@ export function Hero() {
   const handleExportPNG = async () => {
     if (!pageFocused) return;
     if (!areaRef.current) {
-      setExportError('Please refresh page or switch template and try again！');
+      setExportError(exportErrorMsg);
       return;
     }
     setExportMenuOpen(false);
@@ -121,7 +115,7 @@ export function Hero() {
   const handleExportSVG = async () => {
     if (!pageFocused) return;
     if (!areaRef.current) {
-      setExportError('Please refresh page or switch template and try again！');
+      setExportError(exportErrorMsg);
       return;
     }
     setExportMenuOpen(false);
@@ -130,7 +124,7 @@ export function Hero() {
   const handleExportPDF = async () => {
     if (!pageFocused) return;
     if (!areaRef.current) {
-      setExportError('Please refresh page or switch template and try again！');
+      setExportError(exportErrorMsg);
       return;
     }
     setExportMenuOpen(false);
@@ -147,8 +141,9 @@ export function Hero() {
       setExportingJPEG(false);
       setExportingSVG(false);
       setExportingPDF(false);
-      setExportError('Export timeout, please try again！');
-    }, 7000);
+      setExportError('Your Downloading maybe timeout, please check or try again!');
+      // 10s超时
+    }, 10000);
     let finished = false;
     const finish = (isTimeout = false) => {
       if (finished) return;
@@ -161,7 +156,7 @@ export function Hero() {
       clearTimeout(timeoutId);
       clearTimeout(pdfTimeoutId);
       if (isTimeout) {
-        setExportError('Export timeout, please try again！');
+        setExportError('Your Downloading maybe timeout, please check or try again!');
       }
     };
     const pdfTimeoutId = setTimeout(() => {
@@ -214,7 +209,7 @@ export function Hero() {
     } catch (e) {
       console.error(e);
       finish();
-      setExportError('Export failed, please try again');
+      setExportError('Your Downloading maybe failed, please check or try again');
     }
   }, [selectedKey, prepareForExport, restoreAfterExport, areaRef]);
   useEffect(() => {
@@ -248,19 +243,14 @@ export function Hero() {
 
   return (
     <>
-      <AlertDialog open={!!exportError} onOpenChange={open => { if (!open) setExportError(null); }}>
-        <AlertDialogContent className="bg-white dark:bg-neutral-900 rounded-xl shadow-2xl border border-neutral-200 dark:border-neutral-700 text-center">
-          <AlertDialogHeader>
-            <AlertDialogTitle>Download Failed</AlertDialogTitle>
-            <AlertDialogDescription className="text-lg font-semibold text-neutral-800 dark:text-neutral-100 mt-2 mb-4">
-              {exportError}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogAction onClick={() => setExportError(null)}>
-            Confirm
-          </AlertDialogAction>
-        </AlertDialogContent>
-      </AlertDialog>
+      <AdsAlertDialog
+        open={!!exportError}
+        onOpenChange={open => { if (!open) setExportError(null); }}
+        title="Download message"
+        description={exportError}
+        // imgSrc="/default.webp"
+        // imgHref="https://github.com/PowerZCY/formato"
+      />
       <div className="flex justify-center items-start py-2 gap-2 px-4 md:gap-4 md:px-12">
         {/* 模板卡片区 */}
         <aside className="grid grid-cols-2 gap-4 ml-8" style={{ width: CARD_WIDTH * 2 + 32 }}>

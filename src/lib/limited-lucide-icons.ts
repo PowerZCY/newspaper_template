@@ -42,6 +42,7 @@ export {
     Handshake,
     Highlighter,
     HousePlus,
+    Info,
     ImageDown,
     ImageUp,
     Keyboard,
