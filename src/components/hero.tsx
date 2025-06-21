@@ -29,6 +29,7 @@ export function Hero() {
   const [exportMenuOpen, setExportMenuOpen] = useState(false);
   const exportBtnRef = useRef<HTMLButtonElement>(null);
   const exportMenuRef = useRef<HTMLDivElement>(null);
+  const [exportingWEBP, setExportingWEBP] = useState(false);
 
   const templates = [...appConfig.newspaperTemplates].sort((a, b) => (b.top ? 1 : 0) - (a.top ? 1 : 0));
   const [selectedKey, setSelectedKey] = useState<string>(template);
@@ -129,6 +130,69 @@ export function Hero() {
     }
     setExportMenuOpen(false);
     tryExport('pdf');
+  };
+  const handleExportWEBP = async () => {
+    if (!pageFocused) return;
+    if (!areaRef.current) {
+      setExportError(exportErrorMsg);
+      return;
+    }
+    setExportMenuOpen(false);
+    setExportingWEBP(true);
+    const timeoutId = setTimeout(() => {
+      setExportingWEBP(false);
+      setExportError('Your Downloading maybe timeout, please check or try again!');
+    }, 10000);
+    try {
+      await prepareForExport();
+      if (!areaRef.current) throw new Error('Export area lost');
+      const domtoimage = await import('dom-to-image-more');
+      const dataUrl = await domtoimage.toPng(areaRef.current as HTMLElement, { scale: appConfig.export?.scale || window.devicePixelRatio || 2 });
+      // PNG转WEBP
+      const img = new window.Image();
+      img.src = dataUrl;
+      img.onload = function() {
+        try {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.drawImage(img, 0, 0);
+            canvas.toBlob(blob => {
+              if (blob) {
+                const link = document.createElement('a');
+                link.download = `${selectedKey || 'newspaper'}.webp`;
+                link.href = URL.createObjectURL(blob);
+                link.click();
+                setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+              }
+              setExportingWEBP(false);
+              clearTimeout(timeoutId);
+            }, 'image/webp', 0.95);
+          } else {
+            setExportingWEBP(false);
+            setExportError('Canvas not supported');
+            clearTimeout(timeoutId);
+          }
+        } catch (e) {
+          console.error(e);
+          setExportingWEBP(false);
+          setExportError('Your Downloading maybe failed, please check or try again');
+          clearTimeout(timeoutId);
+        }
+      };
+      img.onerror = function() {
+        setExportingWEBP(false);
+        setExportError('Your Downloading maybe failed, please check or try again');
+        clearTimeout(timeoutId);
+      };
+    } catch (e) {
+      console.error(e);
+      setExportingWEBP(false);
+      setExportError('Your Downloading maybe failed, please check or try again');
+      clearTimeout(timeoutId);
+    }
   };
   const tryExport = useCallback(async (type: 'png' | 'jpeg' | 'svg' | 'pdf') => {
     if (type === 'png') setExportingImg(true);
@@ -346,6 +410,9 @@ export function Hero() {
                   </button>
                   <button onClick={handleExportPNG} className="flex items-center w-full px-4 py-3 transition hover:bg-neutral-200 dark:hover:bg-neutral-600 text-left disabled:opacity-60" disabled={exportingImg || !pageFocused}>
                     <icons.ImageDown className="w-5 h-5 mr-2" />Download PNG
+                  </button>
+                  <button onClick={handleExportWEBP} className="flex items-center w-full px-4 py-3 transition hover:bg-neutral-200 dark:hover:bg-neutral-600 text-left disabled:opacity-60" disabled={exportingWEBP || !pageFocused}>
+                    <icons.ImageDown className="w-5 h-5 mr-2" />Download WEBP
                   </button>
                   <button onClick={handleExportPDF} className="flex items-center w-full px-4 py-3 transition hover:bg-neutral-200 dark:hover:bg-neutral-600 text-left disabled:opacity-60" disabled={exportingPDF || !pageFocused}>
                     <icons.Download className="w-5 h-5 mr-2" />Download PDF
