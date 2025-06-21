@@ -18,6 +18,7 @@ export {
     Bug,
     Car,
     Circle,
+    CircleAlert,
     CircleSmall,
     Check,
     ChevronDown,

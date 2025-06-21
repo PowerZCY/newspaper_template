@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { globalLucideIcons as icons } from "@/components/global-icon";
 import {
@@ -34,6 +34,8 @@ export function AdsAlertDialog({
   confirmText,
   onConfirm,
 }: AdsAlertDialogProps) {
+  const [imgError, setImgError] = useState(false);
+
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent
@@ -63,30 +65,37 @@ export function AdsAlertDialog({
         </AlertDialogDescription>
         {/* 图片区（可选） */}
         {imgSrc && (
-          <div className="flex justify-center mb-2">
-            {imgHref ? (
-              <a href={imgHref} target="_blank" rel="noopener noreferrer" className="block w-full">
+          <div className="w-full max-w-[400px] h-[220px] relative flex items-center justify-center mb-2">
+            {imgError ? (
+              <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-neutral-800 border border-dashed border-neutral-300 dark:border-neutral-700 rounded-lg text-neutral-400 text-sm">
+                <icons.CircleAlert className="w-5 h-5 mr-2" />
+                <span>Image loading failed</span>
+              </div>
+            ) : imgHref ? (
+              <a href={imgHref} target="_blank" rel="noopener noreferrer" className="block w-full h-full">
                 <Image
                   src={imgSrc}
                   alt="image"
-                  width={400}
-                  height={220}
-                  className="object-contain rounded-lg shadow border border-neutral-200 dark:border-neutral-700 bg-gray-100 dark:bg-neutral-800 w-full max-h-[260px]"
+                  fill
+                  className="object-contain rounded-lg"
                   priority={false}
                   placeholder="empty"
                   unoptimized
+                  onError={() => setImgError(true)}
+                  sizes="(max-width: 400px) 100vw, 400px"
                 />
               </a>
             ) : (
               <Image
                 src={imgSrc}
                 alt="image"
-                width={400}
-                height={220}
-                className="object-contain rounded-lg shadow border border-neutral-200 dark:border-neutral-700 bg-gray-100 dark:bg-neutral-800 w-full max-h-[260px]"
+                fill
+                className="object-contain rounded-lg"
                 priority={false}
                 placeholder="empty"
                 unoptimized
+                onError={() => setImgError(true)}
+                sizes="(max-width: 400px) 100vw, 400px"
               />
             )}
           </div>
