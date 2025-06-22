@@ -20,7 +20,7 @@ export default async function Page({
     return <NotFoundPage />;
   }
 
-  const tocFooterElement = <TocFooter lastModified={page.data.date} />;
+  const tocFooterElement = <TocFooter lastModified={page.data.date} showCopy={true} />;
  
  
   // Markdown content requires await if you config 'async: true' in source.config.ts

@@ -5,6 +5,7 @@ export type SocialIcon = {
 };
 
 export const appConfig = {
+  githubBaseUrl: process.env.NEXT_PUBLIC_GITHUB_BASE_URL,
   // 基础配置
   baseUrl: process.env.NEXT_PUBLIC_BASE_URL || 'https://newspaper-template.org',
 
