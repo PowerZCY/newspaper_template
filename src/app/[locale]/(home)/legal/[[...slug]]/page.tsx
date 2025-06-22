@@ -5,9 +5,9 @@ import {
   DocsPage,
   DocsTitle,
 } from 'fumadocs-ui/page';
-import { notFound } from 'next/navigation';
 import { getMDXComponents } from '@/components/mdx-components';
 import { TocFooter } from '@/components/toc';
+import { NotFoundPage } from '@/components/404-page';
 
 export default async function Page({
   params,
@@ -16,7 +16,9 @@ export default async function Page({
 }) {
   const { slug, locale } = await params;
   const page = legalSource.getPage(slug, locale);
-  if (!page) notFound();
+  if (!page) {
+    return <NotFoundPage />;
+  }
 	const tocFooterElement = <TocFooter lastModified={page.data.date} />;
  
   // Markdown content requires await if you config 'async: true' in source.config.ts
@@ -53,7 +55,12 @@ export async function generateMetadata(props: {
 }) {
   const params = await props.params;
   const page = legalSource.getPage(params.slug);
-  if (!page) notFound();
+  if (!page) {
+    return {
+      title: '404 - Page Not Found',
+      description: 'This page could not be found.',
+    };
+  }
  
   return {
     title: page.data.title,
