@@ -5,9 +5,10 @@
 Create professional-looking newspapers easily with our free, browser-based editor. Edit text directly, upload images, and export watermark-free files instantly.
 
 ## Core Features
-- [Free Templates](https://newspaper-template.org/en): Professional newspaper templates - completely free, no hidden fees
-- [Easy Editor](https://newspaper-template.org/en): Click to edit text, hover to upload images, real-time preview
-- [Export Options](https://newspaper-template.org/en): Download as PDF, PNG, JPG, or SVG - no watermark, commercial use allowed
+- [Completely Free](https://newspaper-template.org/en): Professional newspaper templates - completely free, no hidden fees
+- [Easy to Use](https://newspaper-template.org/en#usage): Click to edit text, hover to upload images, real-time preview
+- [Export Options](https://newspaper-template.org/en#hero): Download as PDF, PNG, JPG, WEBP, or SVG - no watermark, commercial use allowed
+- [FAQ](https://newspaper-template.org/en#faq): Frequently asked questions and troubleshooting
 - [Privacy First](https://newspaper-template.org/en/legal/privacy): Your data stays in your browser, fully private
 
 ## Resources

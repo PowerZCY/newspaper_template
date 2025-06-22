@@ -12,11 +12,21 @@ export default function Home() {
       <div className="min-h-screen flex flex-col bg-neutral-100 dark:bg-neutral-900 transition-colors duration-300">
         {/* 主体内容区 */}
         <main>
-          <Hero />
-          <Usage />
-          <Features />
-          <SeoContent />
-          <FAQ />
+          <section id="hero">
+            <Hero />
+          </section>
+          <section id="usage">
+            <Usage />
+          </section>
+          <section id="features">
+            <Features />
+          </section>
+          <section id="seo-content">
+            <SeoContent />
+          </section>
+          <section id="faq">
+            <FAQ />
+          </section>
         </main>
       </div>
     </>

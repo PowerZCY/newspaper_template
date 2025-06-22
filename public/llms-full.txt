@@ -27,7 +27,7 @@ Perfect for students, educators, small businesses, and individuals who need prof
 
 ### Export Options
 - Download as PDF (perfect for printing)
-- Export as PNG, JPG, or SVG images
+- Export as PNG, JPG, WEBP, or SVG images
 - High-resolution output
 - One-click sharing to social media
 
