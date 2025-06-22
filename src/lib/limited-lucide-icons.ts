@@ -45,6 +45,7 @@ export {
     HousePlus,
     Info,
     ImageDown,
+    ImageOff,
     ImageUp,
     Keyboard,
     LandPlot,

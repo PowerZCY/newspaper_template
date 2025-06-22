@@ -67,8 +67,8 @@ export function AdsAlertDialog({
         {imgSrc && (
           <div className="w-full max-w-[400px] h-[220px] relative flex items-center justify-center mb-2">
             {imgError ? (
-              <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-neutral-800 border border-dashed border-neutral-300 dark:border-neutral-700 rounded-lg text-neutral-400 text-sm">
-                <icons.CircleAlert className="w-5 h-5 mr-2" />
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-100 dark:bg-neutral-800 border border-dashed border-neutral-300 dark:border-neutral-700 rounded-lg text-neutral-400 text-sm">
+                <icons.ImageOff className="w-12 h-12 mb-2" />
                 <span>Image loading failed</span>
               </div>
             ) : imgHref ? (
