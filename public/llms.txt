@@ -1,0 +1,15 @@
+# Newspaper Template
+
+> Free online newspaper template creator with editable, professional designs. No design experience needed - create stunning newspapers for school projects, events, or personal use.
+
+Create professional-looking newspapers easily with our free, browser-based editor. Edit text directly, upload images, and export watermark-free files instantly.
+
+## Core Features
+- [Free Templates](https://newspaper-template.org/en): Professional newspaper templates - completely free, no hidden fees
+- [Easy Editor](https://newspaper-template.org/en): Click to edit text, hover to upload images, real-time preview
+- [Export Options](https://newspaper-template.org/en): Download as PDF, PNG, JPG, or SVG - no watermark, commercial use allowed
+- [Privacy First](https://newspaper-template.org/en/legal/privacy): Your data stays in your browser, fully private
+
+## Resources
+- [Blog](https://newspaper-template.org/en/blog): Design tips and tutorials
+- [Legal](https://newspaper-template.org/en/legal): Privacy policy and terms of service 
