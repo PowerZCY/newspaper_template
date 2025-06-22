@@ -12,19 +12,19 @@ export default function Home() {
       <div className="min-h-screen flex flex-col bg-neutral-100 dark:bg-neutral-900 transition-colors duration-300">
         {/* 主体内容区 */}
         <main>
-          <section id="hero">
+          <section id="hero" className="scroll-mt-20">
             <Hero />
           </section>
-          <section id="usage">
+          <section id="usage" className="scroll-mt-20">
             <Usage />
           </section>
-          <section id="features">
+          <section id="features" className="scroll-mt-20">
             <Features />
           </section>
-          <section id="seo-content">
+          <section id="seo-content" className="scroll-mt-20">
             <SeoContent />
           </section>
-          <section id="faq">
+          <section id="faq" className="scroll-mt-20">
             <FAQ />
           </section>
         </main>
