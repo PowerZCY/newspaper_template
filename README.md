@@ -1,9 +1,11 @@
 # Newspaper Template
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3-38B2AC)](https://tailwindcss.com/)
+[![Next.js](https://img.shields.io/badge/Next.js-15.3-black)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.1-38B2AC)](https://tailwindcss.com/)
+[![React](https://img.shields.io/badge/React-19.1-61DAFB)](https://reactjs.org/)
+[![Fumadocs](https://img.shields.io/badge/Fumadocs-15.3-FF6B6B)](https://fumadocs.vercel.app/)
+[![Clerk](https://img.shields.io/badge/Clerk-6.19-6C5CE7)](https://clerk.com/)
 
 > Free online newspaper template creator with professional, editable designs. No design experience needed - create stunning newspapers for school projects, events, or personal use.
 
@@ -25,13 +27,16 @@ Visit [newspaper-template.org](https://newspaper-template.org/en) to try it out!
 
 ## 🛠️ Tech Stack
 
-- **Framework**: [Next.js 14](https://nextjs.org/) with App Router
-- **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **UI Components**: [shadcn/ui](https://ui.shadcn.com/)
+- **Framework**: [Next.js 15.3](https://nextjs.org/) with App Router
+- **Runtime**: [React 19.1](https://reactjs.org/)
+- **Language**: [TypeScript 5.8](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS 4.1](https://tailwindcss.com/)
+- **UI Components**: [shadcn/ui](https://ui.shadcn.com/) + [Radix UI](https://www.radix-ui.com/)
 - **Icons**: [Lucide React](https://lucide.dev/)
-- **Internationalization**: [next-intl](https://next-intl-docs.vercel.app/)
-- **Authentication**: [Clerk](https://clerk.com/) (optional features)
+- **Documentation**: [Fumadocs 15.3](https://fumadocs.vercel.app/) - Modern documentation framework
+- **Authentication**: [Clerk 6.19](https://clerk.com/) - Complete authentication solution
+- **Internationalization**: [next-intl 3.26](https://next-intl-docs.vercel.app/)
+- **Export**: [jsPDF](https://github.com/parallax/jsPDF) + [dom-to-image-more](https://github.com/1904labs/dom-to-image-more)
 - **Deployment**: [Vercel](https://vercel.com/)
 
 ## 📦 Installation
