@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { notFound } from "next/navigation";
 import { AdsAlertDialog } from "@/components/ads-alert-dialog";
 
 // 仅在开发环境中存在
@@ -18,13 +19,16 @@ const DevTestDialogPage = function TestDialogPage() {
         onOpenChange={setOpen}
         title="Download message"
         description="Please refresh page or switch template and try again!"
-        imgSrc="/default.webp"
+        imgSrc="/default1.webp"
         imgHref="https://pollo.ai/home?ref=mzmzndj&tm_news=news"
       />
     </div>
   );
 };
 
-const EmptyPage = () => null;
+// 在生产环境中返回404
+const ProductionPage = () => {
+  notFound();
+};
 
-export default process.env.NODE_ENV === "development" ? DevTestDialogPage : EmptyPage;
+export default process.env.NODE_ENV !== "production" ? DevTestDialogPage : ProductionPage;
