@@ -91,7 +91,7 @@
       },
       {
         "question": "What file formats can I download my newspaper in?",
-        "answer": "You can download your newspaper as a high-quality PDF, PNG, JPG, or SVG, suitable for printing or digital sharing."
+        "answer": "You can download your newspaper as a high-quality PDF, PNG, JPG, WEBP, or SVG, suitable for printing or digital sharing."
       },
       {
         "question": "Can I save my work and come back to it later?",
@@ -107,7 +107,7 @@
       },
       {
         "question": "How can I share my finished newspaper?",
-        "answer": "After completing your newspaper, you can download it as a PDF, PNG, JPG, or SVG and share it via email, social media, or print it for physical distribution."
+        "answer": "After completing your newspaper, you can download it as a PDF, PNG, JPG, WEBP, or SVG and share it via email, social media, or print it for physical distribution."
       }
     ]
   },

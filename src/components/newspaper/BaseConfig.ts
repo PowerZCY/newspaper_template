@@ -14,7 +14,7 @@ export const NEWSPAPER_TEMPLATES = {
       sideDesc: 'Hover over the images to show the upload button in the bottom right corner, then click to upload a new picture.',
       bottomTitle: 'BEAUTIFUL NEWSPAPER TEMPLATE',
       bottomDesc: 'The Newspaper Template is user-friendly and adaptable for any occasion.',
-      footer: 'MORE INFORMATION AT NEWSPAPER-TEMPLATE.ORG',
+      footer: 'MORE TEMPLATES AT NEWSPAPER-TEMPLATE.ORG',
     },
     defaultImgs: {
       mainImg: '/0.webp',
