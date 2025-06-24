@@ -117,7 +117,7 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
           <div
             contentEditable
             suppressContentEditableWarning
-            className="editable text-xs font-bold tracking-wide leading-tight mb-1"
+            className="editable text-xs font-bold tracking-wide leading-tight mb-1 text-neutral-900"
             onBlur={e => onContentChange("sideTitle", e.currentTarget.innerText)}
             onPaste={handlePastePlainText}
           >{content.sideTitle}</div>
@@ -151,7 +151,7 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
           <div
             contentEditable
             suppressContentEditableWarning
-            className="editable text-xs font-bold tracking-wide leading-tight mb-1"
+            className="editable text-xs font-bold tracking-wide leading-tight mb-1 text-neutral-900"
             onBlur={e => onContentChange("bottomTitle", e.currentTarget.innerText)}
             onPaste={handlePastePlainText}
           >{content.bottomTitle}</div>

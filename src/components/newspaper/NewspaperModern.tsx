@@ -223,11 +223,11 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
               onBlur={e => onContentChange("addr3", e.currentTarget.innerText)}
               onPaste={handlePastePlainText}
             >{content.addr3}</div>
-            <div className="newspaper-divider" style={{borderTop:'1.5px dashed #222', width:'100%', margin:'16px 0'}}></div>
+            <div className="newspaper-divider" style={{borderTop:'1.5px dashed #222', width:'100%', margin:'16px 0 6px 0'}}></div>
             <div
               contentEditable
               suppressContentEditableWarning
-              className="editable text-2xl font-bold text-center text-neutral-900"
+              className="editable text-base text-center text-neutral-900"
               onBlur={e => onContentChange("dateTime", e.currentTarget.innerText)}
               onPaste={handlePastePlainText}
             >{content.dateTime}</div>
