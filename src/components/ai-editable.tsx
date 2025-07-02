@@ -74,6 +74,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
     } else {
       setShowAIModal(false);
       setShowAIButton(false);
+      setAIPrompt("");
     }
   };
 
@@ -137,7 +138,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
         open={errorDialogOpen}
         onOpenChange={setErrorDialogOpen}
         title="AI generate failed"
-        description="AI content generate request failed, please try again later."
+        description="AI generate timeout, please try again later."
         imgSrc="/ads/Ad-Pollo.webp"
         imgHref="https://pollo.ai/home?ref=mzmzndj&tm_news=news"
       />
@@ -146,13 +147,14 @@ export const AIEditable: React.FC<AIEditableProps> = ({
         open={showCancelConfirm}
         onOpenChange={setShowCancelConfirm}
         title="Cancel AI Generating?"
-        description="AI is working, please wait a moment, are you sure to cancel?"
+        description="AI buddy is working on the task. Please wait a moment. Are you sure you want to cancel?"
         confirmText="Confirm"
         cancelText="Cancel"
         onConfirm={() => {
           handleAIStop();
           setShowAIModal(false);
           setShowAIButton(false);
+          setAIPrompt("");
           setShowCancelConfirm(false);
         }}
         onCancel={() => setShowCancelConfirm(false)}
@@ -204,9 +206,8 @@ export const AIEditable: React.FC<AIEditableProps> = ({
                   className="p-2 rounded-full hover:bg-neutral-200 transition"
                   onClick={handleCloseModal}
                   aria-label="Close"
-                  disabled={aiLoading}
                 >
-                  <icons.X size={16} />
+                  <icons.X size={20} />
                 </button>
               </div>
               {/* Modal body: textarea with send icon button in bottom right */}
