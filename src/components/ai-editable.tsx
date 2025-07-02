@@ -1,6 +1,7 @@
 import React, { useRef, useState, useId, useEffect } from "react";
 import { useAIEditableContext } from '@/components/AIEditableContext';
 import { AdsAlertDialog } from "@/components/ads-alert-dialog";
+import { globalLucideIcons as icons } from "@/components/global-icon";
 
 interface AIEditableProps {
   value: string;
@@ -33,12 +34,11 @@ export const AIEditable: React.FC<AIEditableProps> = ({
   const [aiPrompt, setAIPrompt] = useState(aiPromptDefault);
   const [aiLoading, setAILoading] = useState(false);
   const editableRef = useRef<HTMLDivElement>(null);
-  const [buttonPos, setButtonPos] = useState<{top: number, left: number} | null>(null);
   const lastMousePos = useRef<{x: number, y: number} | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [errorDialogOpen, setErrorDialogOpen] = useState(false);
 
-  // 只在当前激活区域且edit态时显示Try AI按钮
+  // Only show Try AI button when current active area and edit state
   const isActive = activeId === selfId;
   const showButton = isActive && showAIButton && !showAIModal;
 
@@ -46,27 +46,6 @@ export const AIEditable: React.FC<AIEditableProps> = ({
   const handleMouseDownEditable = (e: React.MouseEvent<HTMLDivElement>) => {
     lastMousePos.current = { x: e.clientX, y: e.clientY };
   };
-
-  // Locate button to mouse click position when edit state (without window.scrollY/scrollX)
-  useEffect(() => {
-    if (showButton) {
-      if (lastMousePos.current) {
-        setButtonPos({
-          top: lastMousePos.current.y + 8,
-          left: lastMousePos.current.x + 8,
-        });
-      } else if (editableRef.current) {
-        // fallback: locate to the top left corner of the area
-        const rect = editableRef.current.getBoundingClientRect();
-        setButtonPos({
-          top: rect.top + 8,
-          left: rect.left + 8,
-        });
-      }
-    } else {
-      setButtonPos(null);
-    }
-  }, [showButton, isActive, showAIButton, showAIModal]);
 
   // Auto adjust textarea height
   useEffect(() => {
@@ -150,17 +129,18 @@ export const AIEditable: React.FC<AIEditableProps> = ({
           dangerouslySetInnerHTML={{ __html: value }}
           {...editableProps}
         />
-        {/* Try AI按钮：绝对定位在编辑区右上角外侧，顶部对齐，edit态显示 */}
+        {/* Try AI button: absolute position at the top right corner of the edit area, top aligned, show when edit state */}
         {showButton && (
           aiButtonRender
             ? aiButtonRender({ onClick: () => setShowAIModal(true), loading: aiLoading })
             : (
               <div
-                className="absolute z-50 bg-white dark:bg-neutral-900 text-foreground border border-border rounded-lg shadow-lg px-3 py-1 flex items-center cursor-pointer hover:bg-accent transition"
+                className="absolute z-50 bg-[#f5f5e5] text-neutral-700 border border-purple-500 rounded-lg shadow-lg px-3 py-1 flex items-center cursor-pointer hover:bg-accent transition"
                 style={{ top: '-6px', right: '-66px' }}
                 onMouseDown={e => { e.preventDefault(); e.stopPropagation(); setShowAIModal(true); }}
               >
-                <span className="mr-1">⭐️</span> <span>AI</span>
+                <icons.Sparkles size={16} /> 
+                <span className="ml-1"> AI</span>
               </div>
             )
         )}
@@ -172,7 +152,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
             className="fixed inset-0 z-50 flex items-end justify-center bg-black/30"
           >
             <div
-              className="w-full max-w-4xl bg-white dark:bg-neutral-900 text-foreground border border-border rounded-t-2xl shadow-xl p-6"
+              className="w-full max-w-4xl bg-[#f5f5e5] text-neutral-700 border border-purple-500 rounded-lg rounded-t-2xl shadow-xl p-6"
               onClick={e => e.stopPropagation()}
             >
               <textarea
