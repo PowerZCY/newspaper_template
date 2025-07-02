@@ -37,9 +37,9 @@ const nextConfig: NextConfig = {
   },
   
   experimental: {
-    webpackBuildWorker: true,
-    parallelServerBuildTraces: true,
-    parallelServerCompiles: true,
+    webpackBuildWorker: false,
+    parallelServerBuildTraces: false,
+    parallelServerCompiles: false,
   },
 
   // Ensuring outputFileTracingIncludes is a top-level property
