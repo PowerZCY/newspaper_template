@@ -96,7 +96,7 @@ export const appConfig = {
   },
   newsAI: {
     apiKey: process.env.OPENROUTER_API_KEY || '',
-    modelName: process.env.OPENROUTER_MODEL_NAME || '',
+    modelName: process.env.NEXT_PUBLIC_OPENROUTER_MODEL_NAME || '',
     // 默认启用mock，防止DEV飞速消耗token数量
     enableMock: process.env.OPENROUTER_MOCK || true,
     mockAds: process.env.OPENROUTER_MOCK_ADS || false,
@@ -120,6 +120,7 @@ export const showBanner = appConfig.style.showBanner
 export const clerkPageBanner = appConfig.style.clerkPageBanner
 export const clerkAuthInModal = appConfig.style.clerkAuthInModal
 export const placeHolderImage = appConfig.style.placeHolder.image
+export const viewModelName = appConfig.newsAI.modelName?.split('/')?.pop()?.replace(/:free$/, '')
 
 // 辅助函数：检查是否为支持的语言
 function isSupportedLocale(locale: string): locale is typeof appConfig.i18n.locales[number] {

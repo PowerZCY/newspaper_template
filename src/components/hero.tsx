@@ -9,7 +9,7 @@ import { useTheme } from 'next-themes';
 import Image from "next/image";
 import { usePathname } from 'next/navigation';
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { AIEditableProvider } from "./AIEditableContext";
+import { AIEditableProvider } from "@/components/AIEditableContext";
 
 export function Hero() {
   const [template, setTemplate] = useState<"simple" | "modern">("simple");
