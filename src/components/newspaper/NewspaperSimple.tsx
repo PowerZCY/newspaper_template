@@ -1,8 +1,10 @@
-import React, { useRef, useState } from "react";
-import Image from "next/image";
 import { globalLucideIcons as icons } from "@/components/global-icon";
-import { montserrat, adorable } from '@/lib/fonts';
-import { cn, handlePastePlainText } from '@/lib/utils';
+import { adorable, montserrat } from '@/lib/fonts';
+import { cn } from '@/lib/utils';
+import Image from "next/image";
+import React from "react";
+import { AIEditable } from '@/components/ai-editable';
+import { AIEditableProvider } from '@/components/AIEditableContext';
 
 interface NewspaperSimpleProps {
   mainImg: string;
@@ -37,277 +39,145 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
   content,
   onContentChange,
 }) => {
-  // AI相关状态
-  const [showAIIcon, setShowAIIcon] = useState(false);
-  const [aiIconPos, setAIIconPos] = useState<{ x: number; y: number } | null>(null);
-  const [showAIModal, setShowAIModal] = useState(false);
-  const [aiPrompt, setAIPrompt] = useState("English please, write a man kiss a beautiful women, keep exciting and worm, hard");
-  const [aiLoading, setAILoading] = useState(false);
-  const mainTextDivRef = useRef<HTMLDivElement>(null);
-
-  // 处理mainText区域点击，显示AI图标
-  const handleMainTextClick = (e: React.MouseEvent) => {
-    const rect = (e.target as HTMLElement).getBoundingClientRect();
-    setAIIconPos({ x: e.clientX, y: rect.top });
-    setShowAIIcon(true);
-  };
-
-  // 关闭AI图标
-  const handleMainTextBlur = () => {
-    setTimeout(() => setShowAIIcon(false), 200); // 延迟隐藏，避免点击icon时消失
-  };
-
-  // 点击AI图标，弹出AI chat模态框
-  const handleAIIconClick = () => {
-    setShowAIModal(true);
-    setShowAIIcon(false);
-  };
-
-  // 关闭AI chat模态框
-  const handleAIModalClose = () => {
-    setShowAIModal(false);
-    setAIPrompt("");
-  };
-
-  // 提交AI提示词
-  const handleAISubmit = async () => {
-    if (!aiPrompt.trim()) return;
-    setAILoading(true);
-    try {
-      const res = await fetch("/api/ai-generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: aiPrompt, maxChars: 400 }),
-      });
-      if (!res.ok) {
-        // 这里可以打印错误信息
-        const text = await res.text();
-        console.error('AI接口错误:', text);
-        alert("AI生成失败");
-        setAILoading(false);
-        return;
-      }
-      const data = await res.json();
-      onContentChange("mainText", data.text);
-      setShowAIModal(false);
-      setAIPrompt("");
-    } catch(e) {
-      console.error(e);
-      alert("AI生成失败");
-    } finally {
-      setAILoading(false);
-    }
-  };
-
   return (
-    <div className={cn("newspaper-bg flex flex-col gap-0", montserrat.className)} style={{ background: "#f5f5e5" }}>
-      {/* 顶部区 */}
-      <div
-      
-        contentEditable
-        suppressContentEditableWarning
-        className="editable text-center text-base text-neutral-700 mt-2 mb-1 tracking-wide whitespace-nowrap"
-        style={{
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          maxWidth: 640, 
-          margin: '0 auto'
-        }}
-        onBlur={e => onContentChange("edition", e.currentTarget.innerText)}
-        onPaste={handlePastePlainText}
-        >{content.edition}</div>
-      <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%'}}></div>
-      <div
-        contentEditable
-        suppressContentEditableWarning
-        className={cn(
-          "editable text-center text-[2.8rem] md:text-6xl font-extrabold tracking-[0.14em] text-neutral-900 leading-tight",
-          adorable.className
-        )}
-        style={{ fontWeight: 600 }}
-        onBlur={e => onContentChange("headline", e.currentTarget.innerText)}
-        onPaste={handlePastePlainText}
-      >{content.headline}</div>
-      <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%'}}></div>
-      <div className="newspaper-divider" style={{borderTop:'4px solid #222', width:'100%', marginTop:'2px', marginBottom:'8px'}}></div>
-      {/* 主体区 */}
-      <div className="flex flex-row w-full min-h-[320px] gap-0 relative" style={{paddingBottom: '5px'}}>
-        {/* 左列 2/3 */}
-        <div className="w-2/3 pr-6 flex flex-col justify-start">
-          {/* 行1：大图 */}
-          <div className="mb-2">
-            <div className="relative group w-full">
-              <Image
-                src={mainImg}
-                alt="Main image"
-                width={700}
-                height={400}
-                priority={false}
-                className="img-shadow w-full h-[400px] object-cover select-none"
-                unoptimized={mainImg.startsWith('data:')}
-              />
-              <button type="button" className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onClick={e => { e.stopPropagation(); onTriggerImgUpload('mainImg', onMainImgChange); }}>
-                <icons.Replace className="w-6 h-6 text-black" />
-              </button>
+    <AIEditableProvider>
+      <div className={cn("newspaper-bg flex flex-col gap-0", montserrat.className)} style={{ background: "#f5f5e5" }}>
+        {/* Top area */}
+        <AIEditable
+          value={content.edition}
+          onChange={val => onContentChange("edition", val)}
+          className="editable text-center text-base text-neutral-700 mt-2 mb-1 tracking-wide whitespace-nowrap"
+          style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 640, margin: '0 auto' }}
+          aiPromptDefault="请帮我生成报纸期刊信息"
+          aiMaxChars={40}
+        />
+        <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%'}}></div>
+        <AIEditable
+          value={content.headline}
+          onChange={val => onContentChange("headline", val)}
+          className={cn("editable text-center text-[2.8rem] md:text-6xl font-extrabold tracking-[0.14em] text-neutral-900 leading-tight", adorable.className)}
+          style={{ fontWeight: 600 }}
+          aiPromptDefault="请帮我生成报纸大标题"
+          aiMaxChars={30}
+        />
+        <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%'}}></div>
+        <div className="newspaper-divider" style={{borderTop:'4px solid #222', width:'100%', marginTop:'2px', marginBottom:'8px'}}></div>
+        {/* Main area */}
+        <div className="flex flex-row w-full min-h-[320px] gap-0 relative" style={{paddingBottom: '5px'}}>
+          {/* Left column 2/3 */}
+          <div className="w-2/3 pr-6 flex flex-col justify-start">
+            {/* Row 1: Big image */}
+            <div className="mb-2">
+              <div className="relative group w-full">
+                <Image
+                  src={mainImg}
+                  alt="Main image"
+                  width={700}
+                  height={400}
+                  priority={false}
+                  className="img-shadow w-full h-[400px] object-cover select-none"
+                  unoptimized={mainImg.startsWith('data:')}
+                />
+                <button type="button" className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onClick={e => { e.stopPropagation(); onTriggerImgUpload('mainImg', onMainImgChange); }}>
+                  <icons.Replace className="w-6 h-6 text-black" />
+                </button>
+              </div>
             </div>
+            {/* Row 2: Big title */}
+            <AIEditable
+              value={content.title}
+              onChange={val => onContentChange("title", val)}
+              className="editable mb-1 text-xl font-extrabold tracking-wide text-neutral-900"
+              aiPromptDefault="请帮我生成报纸副标题"
+              aiMaxChars={40}
+            />
+            {/* Row 3: Main text (AIEditable) */}
+            <AIEditable
+              value={content.mainText}
+              onChange={val => onContentChange("mainText", val)}
+              className="editable text-[0.95rem] text-neutral-900 leading-relaxed"
+              aiPromptDefault="请帮我生成一段新闻正文"
+              aiMaxChars={400}
+            />
           </div>
-          {/* 行2：大标题 */}
-          <div
-            contentEditable
-            suppressContentEditableWarning
-            className="editable mb-1 text-xl font-extrabold tracking-wide text-neutral-900"
-            onBlur={e => onContentChange("title", e.currentTarget.innerText)}
-            onPaste={handlePastePlainText}
-          >{content.title}</div>
-          {/* 行3：正文 */}
-          <div
-            ref={mainTextDivRef}
-            contentEditable
-            suppressContentEditableWarning
-            className="editable text-[0.95rem] text-neutral-900 leading-relaxed"
-            onBlur={e => { onContentChange("mainText", e.currentTarget.innerHTML); handleMainTextBlur(); }}
-            onClick={handleMainTextClick}
-            dangerouslySetInnerHTML={{ __html: content.mainText }}
-            onPaste={handlePastePlainText}
-            style={{ position: 'relative', minHeight: 80 }}
-          />
-          {/* AI图标悬浮 */}
-          {showAIIcon && aiIconPos && (
-            <div
-              style={{
-                position: 'fixed',
-                left: aiIconPos.x + 16,
-                top: aiIconPos.y + 8,
-                zIndex: 1000,
-                background: 'white',
-                borderRadius: 8,
-                boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
-                padding: '4px 10px',
-                display: 'flex',
-                alignItems: 'center',
-                cursor: 'pointer',
-                fontSize: 16
-              }}
-              onClick={handleAIIconClick}
-            >
-              <span style={{fontSize: 18, marginRight: 4}}>⭐️</span> <span>Try AI</span>
+          {/* Vertical divider */}
+          <div className="h-auto absolute newspaper-divider" style={{borderLeft:'2px solid #222', height:'100%', left:'66.6667%', top:0, bottom:0}}></div>
+          {/* Right column 1/3 */}
+          <div className="w-1/3 pl-6 flex flex-col justify-start">
+            {/* Row 1: Small title */}
+            <AIEditable
+              value={content.sideTitle}
+              onChange={val => onContentChange("sideTitle", val)}
+              className="editable text-xs font-bold tracking-wide leading-tight mb-1 text-neutral-900"
+              aiPromptDefault="请帮我生成侧边小标题"
+              aiMaxChars={20}
+            />
+            {/* Row 2: Vertical image */}
+            <div className="mb-1">
+              <div className="relative group w-full">
+                <Image
+                  src={sideImg}
+                  alt="Side image"
+                  width={700}
+                  height={200}
+                  className="img-shadow w-full h-[200px] object-cover select-none"
+                  unoptimized={sideImg.startsWith('data:')}
+                />
+                <button type="button" className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onClick={e => { e.stopPropagation(); onTriggerImgUpload('sideImg', onSideImgChange); }}>
+                  <icons.Replace className="w-6 h-6 text-black" />
+                </button>
+              </div>
             </div>
-          )}
+            {/* Row 3: Description */}
+            <AIEditable
+              value={content.sideDesc}
+              onChange={val => onContentChange("sideDesc", val)}
+              className="editable text-[0.95rem] text-neutral-700 leading-snug mb-1"
+              aiPromptDefault="请帮我生成侧边描述"
+              aiMaxChars={100}
+            />
+            <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%', marginTop:'25px', marginBottom:'5px'}}></div>
+            {/* Row 5: Small title + horizontal image */}
+            <AIEditable
+              value={content.bottomTitle}
+              onChange={val => onContentChange("bottomTitle", val)}
+              className="editable text-xs font-bold tracking-wide leading-tight mb-1 text-neutral-900"
+              aiPromptDefault="请帮我生成底部小标题"
+              aiMaxChars={20}
+            />
+            <div>
+              <div className="relative group w-full">
+                <Image
+                  src={bottomImg}
+                  alt="Bottom image"
+                  width={700}
+                  height={200}
+                  className="img-shadow w-full h-[200px] object-cover select-none"
+                  unoptimized={bottomImg.startsWith('data:')}
+                />
+                <button type="button" className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onClick={e => { e.stopPropagation(); onTriggerImgUpload('bottomImg', onBottomImgChange); }}>
+                  <icons.Replace className="w-6 h-6 text-black" />
+                </button>
+              </div>
+            </div>
+            <AIEditable
+              value={content.bottomDesc}
+              onChange={val => onContentChange("bottomDesc", val)}
+              className="editable text-[0.95rem] text-neutral-700 leading-snug mb-1"
+              aiPromptDefault="请帮我生成底部描述"
+              aiMaxChars={100}
+            />
+          </div>
         </div>
-        {/* 垂直分割线 */}
-        <div className="h-auto absolute newspaper-divider" style={{borderLeft:'2px solid #222', height:'100%', left:'66.6667%', top:0, bottom:0}}></div>
-        {/* 右列 1/3 */}
-        <div className="w-1/3 pl-6 flex flex-col justify-start">
-          {/* 行1：小标题 */}
-          <div
-            contentEditable
-            suppressContentEditableWarning
-            className="editable text-xs font-bold tracking-wide leading-tight mb-1 text-neutral-900"
-            onBlur={e => onContentChange("sideTitle", e.currentTarget.innerText)}
-            onPaste={handlePastePlainText}
-          >{content.sideTitle}</div>
-          {/* 行2：竖图 */}
-          <div className="mb-1">
-            <div className="relative group w-full">
-              <Image
-                src={sideImg}
-                alt="Side image"
-                width={700}
-                height={200}
-                className="img-shadow w-full h-[200px] object-cover select-none"
-                unoptimized={sideImg.startsWith('data:')}
-              />
-              <button type="button" className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onClick={e => { e.stopPropagation(); onTriggerImgUpload('sideImg', onSideImgChange); }}>
-                <icons.Replace className="w-6 h-6 text-black" />
-              </button>
-            </div>
-          </div>
-          {/* 行3：描述 */}
-          <div
-            contentEditable
-            suppressContentEditableWarning
-            className="editable text-[0.95rem] text-neutral-700 leading-snug mb-1"
-            onBlur={e => onContentChange("sideDesc", e.currentTarget.innerHTML)}
-            dangerouslySetInnerHTML={{ __html: content.sideDesc }}
-            onPaste={handlePastePlainText}
-          />
-          <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%', marginTop:'25px', marginBottom:'5px'}}></div>
-          {/* 行5：小标题+横图 */}
-          <div
-            contentEditable
-            suppressContentEditableWarning
-            className="editable text-xs font-bold tracking-wide leading-tight mb-1 text-neutral-900"
-            onBlur={e => onContentChange("bottomTitle", e.currentTarget.innerText)}
-            onPaste={handlePastePlainText}
-          >{content.bottomTitle}</div>
-          <div>
-            <div className="relative group w-full">
-              <Image
-                src={bottomImg}
-                alt="Bottom image"
-                width={700}
-                height={200}
-                className="img-shadow w-full h-[200px] object-cover select-none"
-                unoptimized={bottomImg.startsWith('data:')}
-              />
-              <button type="button" className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onClick={e => { e.stopPropagation(); onTriggerImgUpload('bottomImg', onBottomImgChange); }}>
-                <icons.Replace className="w-6 h-6 text-black" />
-              </button>
-            </div>
-          </div>
-          <div
-            contentEditable
-            suppressContentEditableWarning
-            className="editable text-[0.95rem] text-neutral-700 leading-snug mb-1"
-            onBlur={e => onContentChange("bottomDesc", e.currentTarget.innerHTML)}
-            dangerouslySetInnerHTML={{ __html: content.bottomDesc }}
-            onPaste={handlePastePlainText}
-          />
-        </div>
+        <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%', marginTop:'25px', marginBottom:'5px'}}></div>
+        <AIEditable
+          value={content.footer}
+          onChange={val => onContentChange("footer", val)}
+          className="editable text-xs text-neutral-700 text-center tracking-widest uppercase mb-1"
+          aiPromptDefault="请帮我生成报纸页脚"
+          aiMaxChars={40}
+        />
       </div>
-      <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%', marginTop:'25px', marginBottom:'5px'}}></div>
-      <div
-        contentEditable
-        suppressContentEditableWarning
-        className="editable text-xs text-neutral-700 text-center tracking-widest uppercase mb-1"
-        onBlur={e => onContentChange("footer", e.currentTarget.innerText)}
-        onPaste={handlePastePlainText}
-      >{content.footer}</div>
-      {/* AI chat模态框 */}
-      {showAIModal && (
-        <div
-          style={{
-            position: 'fixed',
-            left: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: 2000,
-            background: 'rgba(255,255,255,0.98)',
-            borderTop: '1.5px solid #ccc',
-            boxShadow: '0 -2px 12px rgba(0,0,0,0.10)',
-            padding: '24px 16px 16px 16px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <div style={{marginBottom: 12, fontWeight: 600}}>AI智能生成正文</div>
-          <textarea
-            value={aiPrompt}
-            onChange={e => setAIPrompt(e.target.value)}
-            placeholder="please input your prompt"
-            style={{width: '100%', maxWidth: 480, minHeight: 60, fontSize: 16, padding: 8, borderRadius: 6, border: '1px solid #ccc', marginBottom: 12}}
-            disabled={aiLoading}
-          />
-          <div style={{display: 'flex', gap: 12}}>
-            <button type="button" onClick={handleAIModalClose} disabled={aiLoading}>取消</button>
-            <button type="button" onClick={handleAISubmit} disabled={aiLoading || !aiPrompt.trim()} style={{background:'#6c47ff',color:'#fff',border:'none',padding:'6px 18px',borderRadius:4}}>
-              {aiLoading ? '生成中...' : '生成'}
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
+    </AIEditableProvider>
   );
 }; 

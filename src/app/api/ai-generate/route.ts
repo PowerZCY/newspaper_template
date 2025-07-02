@@ -1,5 +1,6 @@
 import { createOpenRouter } from '@openrouter/ai-sdk-provider';
 import { streamText } from 'ai';
+import { error } from 'console';
 
 export async function POST(req: Request) {
   const { prompt, maxChars } = await req.json();
@@ -12,6 +13,10 @@ export async function POST(req: Request) {
 
   if (mockSwitch !== 'false') {
     // mock模式，直接返回模拟数据
+    if (process.env.NODE_ENV !== 'production' && process.env.OPENROUTER_MOCK_ADS === 'true') {
+        // 模拟广告弹窗
+        throw  error('MOCK TEST!')
+    }
     const mockText = `【MockData】${fullPrompt}`;
     return Response.json({ text: mockText });
   }
