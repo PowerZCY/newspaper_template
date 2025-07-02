@@ -113,6 +113,18 @@ export const appConfig = {
     // { key: 'Twitter', name: 'Twitter' },
     // { key: 'Facebook', name: 'Facebook' },
   ] as SocialIcon[],
+  pricePlan: {
+    billingOptions: [
+      { key: 'monthly', discount: -0.25 },
+      { key: 'yearly', discount: 0.16 }
+    ],
+    prices: {
+      premium: 9,
+      ultimate: 24,
+      enterprise: 'Custom'
+    },
+    minPlanFeaturesCount: 8
+  }
 };
 
 export const iconColor = appConfig.style.icon.uniformColor

@@ -24,6 +24,7 @@ export {
     Check,
     ChevronDown,
     ChevronLeft,
+    ShieldQuestion,
     ChevronRight,
     ChevronUp,
     Cpu,

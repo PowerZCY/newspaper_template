@@ -65,6 +65,64 @@
       }
     ]
   },
+  "pricePlan": {
+    "title": "Choose Your Plan",
+    "subtitle": "Get the best of Raphael AI with faster generation and commercial usage",
+    "billingSwitch": {
+      "options": [
+        { "key": "monthly", "name": "Monthly", "unit": "/month", "discountText": "Much {percent}%" },
+        { "key": "yearly", "name": "Yearly", "unit": "/month", "discountText": "Save {percent}%" }
+      ],
+      "defaultKey": "yearly"
+    },
+    "plans": [
+      {
+        "key": "premium",
+        "title": "Premium",
+        "titleTags": ["ZCY"],
+        "subTitle": "Billed Annually",
+        "features": [
+          { "description": "Unlimited image generation" },
+          { "description": "Fast generation (5x speed)", "tooltip": "Generate images in approximately 10 seconds per image." },
+          { "description": "No ads" },
+          { "description": "No watermarks" }
+        ],
+        "button": { "text": "Upgrade to Premium" }
+      },
+      {
+        "key": "ultimate",
+        "title": "Ultimate",
+        "titleTags": ["Most Popular"],
+        "subTitle": "Billed Annually",
+        "features": [
+          { "description": "Unlimited image generation" },
+          { "description": "Fastest generation", "tooltip": "Generate images in approximately 3 seconds per image. Even under heavy load, we guarantee the highest priority in queued image generation." },
+          { "description": "No ads" },
+          { "description": "No watermarks" },
+          { "description": "Advanced Refine feature" },
+          { "description": "Private generation", "tag": "Beta" },
+          { "description": "HD image generation", "tag": "Alpha" },
+          { "description": "Early access to new features" }
+        ],
+        "button": { "text": "Upgrade to Ultimate" }
+      },
+      {
+        "key": "enterprise",
+        "title": "Enterprise",
+        "titleTags": [],
+        "subTitle": "",
+        "features": [
+          { "description": "Full privacy", "tooltip": "Your data is fully isolated..." },
+          { "description": "Custom models" },
+          { "description": "Custom integrations" },
+          { "description": "Dedicated support" },
+          { "description": "API Access" },
+          { "description": "High volume" }
+        ],
+        "button": { "text": "Coming soon", "disabled": true }
+      }
+    ]
+  },
   "faq": {
     "title": "Frequently Asked Questions",
     "description": "",

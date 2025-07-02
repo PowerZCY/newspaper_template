@@ -14,19 +14,19 @@ interface EditCacheProps {
 }
 
 /**
- * EditCache 组件：封装本地缓存、导入、导出功能
- * - 自动保存content到localStorage
- * - 提供导入/导出按钮
- * - 导入成功后回调onImport
+ * EditCache: Wrap local cache, import, and export functions
+ * - Auto save content to localStorage
+ * - Provide import/export buttons
+ * - Callback onImport after import success
  */
 export const EditCache: React.FC<EditCacheProps> = ({ templateType, content, onImport, children }) => {
-  // 自动保存到localStorage
+  // Auto save to localStorage
   React.useEffect(() => {
     const data: NewspaperCache = { templateType, content };
     localStorage.setItem(`newspaper_template_${templateType}`, JSON.stringify(data));
   }, [templateType, content]);
 
-  // 导出JSON
+  // Export JSON
   const handleExport = () => {
     const data: NewspaperCache = { templateType, content };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -38,7 +38,7 @@ export const EditCache: React.FC<EditCacheProps> = ({ templateType, content, onI
     URL.revokeObjectURL(url);
   };
 
-  // 导入JSON
+  // Import JSON
   const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -50,22 +50,22 @@ export const EditCache: React.FC<EditCacheProps> = ({ templateType, content, onI
           onImport(data);
           localStorage.setItem(`newspaper_template_${data.templateType}`, JSON.stringify(data));
         } else {
-          alert('JSON结构不正确');
+          alert('JSON structure is incorrect');
         }
       } catch {
-        alert('解析失败');
+        alert('Parse failed');
       }
     };
     reader.readAsText(file);
-    // 清空input值，便于连续导入
+    // Clear input value, for continuous import
     e.target.value = '';
   };
 
   return (
     <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-      <button type="button" onClick={handleExport}>导出JSON</button>
+      <button type="button" onClick={handleExport}>Export JSON</button>
       <label style={{ cursor: 'pointer' }}>
-        导入JSON
+        Import JSON
         <input type="file" accept="application/json" style={{ display: 'none' }} onChange={handleImport} />
       </label>
       {children}

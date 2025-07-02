@@ -5,6 +5,7 @@ import { Features } from '@/components/features';
 import { Hero } from '@/components/hero';
 import { FAQ } from '@/components/faq';
 import { SeoContent } from '@/components/seo-content';
+import { PricePlan } from "@/components/price-plan";
 
 export default function Home() {
   return (
@@ -14,6 +15,9 @@ export default function Home() {
         <main>
           <section id="hero" className="scroll-mt-20">
             <Hero />
+          </section>
+          <section id="price-plan" className="scroll-mt-20">
+            <PricePlan />
           </section>
           <section id="usage" className="scroll-mt-20">
             <Usage />
