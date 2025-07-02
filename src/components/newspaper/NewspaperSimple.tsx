@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import Image from "next/image";
 import { globalLucideIcons as icons } from "@/components/global-icon";
 import { montserrat, adorable } from '@/lib/fonts';
@@ -37,6 +37,67 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
   content,
   onContentChange,
 }) => {
+  // AI相关状态
+  const [showAIIcon, setShowAIIcon] = useState(false);
+  const [aiIconPos, setAIIconPos] = useState<{ x: number; y: number } | null>(null);
+  const [showAIModal, setShowAIModal] = useState(false);
+  const [aiPrompt, setAIPrompt] = useState("English please, write a man kiss a beautiful women, keep exciting and worm, hard");
+  const [aiLoading, setAILoading] = useState(false);
+  const mainTextDivRef = useRef<HTMLDivElement>(null);
+
+  // 处理mainText区域点击，显示AI图标
+  const handleMainTextClick = (e: React.MouseEvent) => {
+    const rect = (e.target as HTMLElement).getBoundingClientRect();
+    setAIIconPos({ x: e.clientX, y: rect.top });
+    setShowAIIcon(true);
+  };
+
+  // 关闭AI图标
+  const handleMainTextBlur = () => {
+    setTimeout(() => setShowAIIcon(false), 200); // 延迟隐藏，避免点击icon时消失
+  };
+
+  // 点击AI图标，弹出AI chat模态框
+  const handleAIIconClick = () => {
+    setShowAIModal(true);
+    setShowAIIcon(false);
+  };
+
+  // 关闭AI chat模态框
+  const handleAIModalClose = () => {
+    setShowAIModal(false);
+    setAIPrompt("");
+  };
+
+  // 提交AI提示词
+  const handleAISubmit = async () => {
+    if (!aiPrompt.trim()) return;
+    setAILoading(true);
+    try {
+      const res = await fetch("/api/ai-generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: aiPrompt, maxChars: 400 }),
+      });
+      if (!res.ok) {
+        // 这里可以打印错误信息
+        const text = await res.text();
+        console.error('AI接口错误:', text);
+        alert("AI生成失败");
+        setAILoading(false);
+        return;
+      }
+      const data = await res.json();
+      onContentChange("mainText", data.text);
+      setShowAIModal(false);
+      setAIPrompt("");
+    } catch(e) {
+      console.error(e);
+      alert("AI生成失败");
+    } finally {
+      setAILoading(false);
+    }
+  };
 
   return (
     <div className={cn("newspaper-bg flex flex-col gap-0", montserrat.className)} style={{ background: "#f5f5e5" }}>
@@ -101,13 +162,38 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
           >{content.title}</div>
           {/* 行3：正文 */}
           <div
+            ref={mainTextDivRef}
             contentEditable
             suppressContentEditableWarning
             className="editable text-[0.95rem] text-neutral-900 leading-relaxed"
-            onBlur={e => onContentChange("mainText", e.currentTarget.innerHTML)}
+            onBlur={e => { onContentChange("mainText", e.currentTarget.innerHTML); handleMainTextBlur(); }}
+            onClick={handleMainTextClick}
             dangerouslySetInnerHTML={{ __html: content.mainText }}
             onPaste={handlePastePlainText}
+            style={{ position: 'relative', minHeight: 80 }}
           />
+          {/* AI图标悬浮 */}
+          {showAIIcon && aiIconPos && (
+            <div
+              style={{
+                position: 'fixed',
+                left: aiIconPos.x + 16,
+                top: aiIconPos.y + 8,
+                zIndex: 1000,
+                background: 'white',
+                borderRadius: 8,
+                boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
+                padding: '4px 10px',
+                display: 'flex',
+                alignItems: 'center',
+                cursor: 'pointer',
+                fontSize: 16
+              }}
+              onClick={handleAIIconClick}
+            >
+              <span style={{fontSize: 18, marginRight: 4}}>⭐️</span> <span>Try AI</span>
+            </div>
+          )}
         </div>
         {/* 垂直分割线 */}
         <div className="h-auto absolute newspaper-divider" style={{borderLeft:'2px solid #222', height:'100%', left:'66.6667%', top:0, bottom:0}}></div>
@@ -188,6 +274,40 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
         onBlur={e => onContentChange("footer", e.currentTarget.innerText)}
         onPaste={handlePastePlainText}
       >{content.footer}</div>
+      {/* AI chat模态框 */}
+      {showAIModal && (
+        <div
+          style={{
+            position: 'fixed',
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 2000,
+            background: 'rgba(255,255,255,0.98)',
+            borderTop: '1.5px solid #ccc',
+            boxShadow: '0 -2px 12px rgba(0,0,0,0.10)',
+            padding: '24px 16px 16px 16px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <div style={{marginBottom: 12, fontWeight: 600}}>AI智能生成正文</div>
+          <textarea
+            value={aiPrompt}
+            onChange={e => setAIPrompt(e.target.value)}
+            placeholder="please input your prompt"
+            style={{width: '100%', maxWidth: 480, minHeight: 60, fontSize: 16, padding: 8, borderRadius: 6, border: '1px solid #ccc', marginBottom: 12}}
+            disabled={aiLoading}
+          />
+          <div style={{display: 'flex', gap: 12}}>
+            <button type="button" onClick={handleAIModalClose} disabled={aiLoading}>取消</button>
+            <button type="button" onClick={handleAISubmit} disabled={aiLoading || !aiPrompt.trim()} style={{background:'#6c47ff',color:'#fff',border:'none',padding:'6px 18px',borderRadius:4}}>
+              {aiLoading ? '生成中...' : '生成'}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }; 
