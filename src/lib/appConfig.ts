@@ -94,6 +94,16 @@ export const appConfig = {
     cardWidth: 200,
     cardHeight: 300,
   },
+  newsAI: {
+    apiKey: process.env.OPENROUTER_API_KEY || '',
+    modelName: process.env.OPENROUTER_MODEL_NAME || '',
+    // 默认启用mock，防止DEV飞速消耗token数量
+    enableMock: process.env.OPENROUTER_MOCK || true,
+    mockAds: process.env.OPENROUTER_MOCK_ADS || false,
+    mockTimeout: process.env.OPENROUTER_MOCK_TIMEOUT || false,
+    // 单词请求限制消耗的token数量
+    limitMaxChars: 1000
+  },
   export: {
     scale: 3, // 图片导出清晰度
     pdfScale: 4, // PDF导出JPEG的清晰度

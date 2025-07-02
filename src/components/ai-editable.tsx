@@ -8,25 +8,29 @@ interface AIEditableProps {
   onChange: (val: string) => void;
   placeholder?: string;
   aiPromptDefault?: string;
-  aiMaxChars?: number;
   className?: string;
   style?: React.CSSProperties;
   editableProps?: React.HTMLAttributes<HTMLDivElement>;
   aiButtonRender?: (props: { onClick: () => void; loading: boolean }) => React.ReactNode;
   modalTitle?: string;
   disabled?: boolean;
+  type?: 'title' | 'text';
+  aiTitleMaxChars?: number;
+  aiMaxChars?: number;
 }
 
 export const AIEditable: React.FC<AIEditableProps> = ({
   value,
   onChange,
   placeholder = "Please enter your prompt here...",
-  aiMaxChars = 400,
   className,
   style, 
   editableProps,
   aiButtonRender,
-  disabled
+  disabled,
+  type = 'text',
+  aiTitleMaxChars = 30,
+  aiMaxChars = 600,
 }) => {
   const { activeId, setActiveId, showAIButton, setShowAIButton, showAIModal, setShowAIModal } = useAIEditableContext();
   const selfId = useId();
@@ -40,6 +44,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
   // Only show Try AI button when current active area and edit state
   const isActive = activeId === selfId;
   const showButton = isActive && showAIButton && !showAIModal;
+  const maxChars = type === 'title' ? aiTitleMaxChars : aiMaxChars;
 
   // Auto adjust textarea height
   useEffect(() => {

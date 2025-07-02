@@ -24,6 +24,8 @@ interface NewspaperSimpleProps {
     bottomTitle: string;
     bottomDesc: string;
     footer: string;
+    aiTitleMaxChars: number;
+    aiMaxChars: number;
   };
   onContentChange: (key: keyof NewspaperSimpleProps["content"], value: string) => void;
 }
@@ -49,7 +51,8 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
           className="editable text-center text-base text-neutral-700 mt-2 mb-1 tracking-wide whitespace-nowrap"
           style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 640, margin: '0 auto' }}
           aiPromptDefault=""
-          aiMaxChars={40}
+          type="title"
+          aiTitleMaxChars={content.aiTitleMaxChars}
         />
         <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%'}}></div>
         <AIEditable
@@ -58,7 +61,8 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
           className={cn("editable text-center text-[2.8rem] md:text-6xl font-extrabold tracking-[0.14em] text-neutral-900 leading-tight", adorable.className)}
           style={{ fontWeight: 600 }}
           aiPromptDefault=""
-          aiMaxChars={40}
+          type="title"
+          aiTitleMaxChars={content.aiTitleMaxChars}
         />
         <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%'}}></div>
         <div className="newspaper-divider" style={{borderTop:'4px solid #222', width:'100%', marginTop:'2px', marginBottom:'8px'}}></div>
@@ -89,7 +93,8 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
               onChange={val => onContentChange("title", val)}
               className="editable mb-1 text-xl font-extrabold tracking-wide text-neutral-900"
               aiPromptDefault=""
-              aiMaxChars={20}
+              type="title"
+              aiTitleMaxChars={content.aiTitleMaxChars}
             />
             {/* Row 3: Main text (AIEditable) */}
             <AIEditable
@@ -97,7 +102,8 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
               onChange={val => onContentChange("mainText", val)}
               className="editable text-[0.95rem] text-neutral-900 leading-relaxed"
               aiPromptDefault=""
-              aiMaxChars={500}
+              type="text"
+              aiMaxChars={content.aiMaxChars}
             />
           </div>
           {/* Vertical divider */}
@@ -110,7 +116,8 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
               onChange={val => onContentChange("sideTitle", val)}
               className="editable text-xs font-bold tracking-wide leading-tight mb-1 text-neutral-900"
               aiPromptDefault=""
-              aiMaxChars={30}
+              type="title"
+              aiTitleMaxChars={content.aiTitleMaxChars}
             />
             {/* Row 2: Vertical image */}
             <div className="mb-1">
@@ -134,7 +141,8 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
               onChange={val => onContentChange("sideDesc", val)}
               className="editable text-[0.95rem] text-neutral-700 leading-snug mb-1"
               aiPromptDefault=""
-              aiMaxChars={300}
+              type="text"
+              aiMaxChars={content.aiMaxChars}
             />
             <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%', marginTop:'25px', marginBottom:'5px'}}></div>
             {/* Row 5: Small title + horizontal image */}
@@ -143,7 +151,8 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
               onChange={val => onContentChange("bottomTitle", val)}
               className="editable text-xs font-bold tracking-wide leading-tight mb-1 text-neutral-900"
               aiPromptDefault=""
-              aiMaxChars={30}
+              type="title"
+              aiTitleMaxChars={content.aiTitleMaxChars}
             />
             <div>
               <div className="relative group w-full">
@@ -165,7 +174,8 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
               onChange={val => onContentChange("bottomDesc", val)}
               className="editable text-[0.95rem] text-neutral-700 leading-snug mb-1"
               aiPromptDefault=""
-              aiMaxChars={300}
+              type="text"
+              aiMaxChars={content.aiMaxChars}
             />
           </div>
         </div>
@@ -175,7 +185,8 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
           onChange={val => onContentChange("footer", val)}
           className="editable text-xs text-neutral-700 text-center tracking-widest uppercase mb-1"
           aiPromptDefault=""
-          aiMaxChars={100}
+          type="text"
+          aiMaxChars={content.aiMaxChars}
         />
       </div>
     </AIEditableProvider>

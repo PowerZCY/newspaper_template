@@ -15,6 +15,8 @@ export const NEWSPAPER_TEMPLATES = {
       bottomTitle: 'BEAUTIFUL NEWSPAPER TEMPLATE',
       bottomDesc: 'The Newspaper Template is user-friendly and adaptable for any occasion.',
       footer: 'MORE TEMPLATES AT NEWSPAPER-TEMPLATE.ORG',
+      aiTitleMaxChars: 30,
+      aiMaxChars: 600
     },
     defaultImgs: {
       mainImg: '/0.webp',
@@ -40,6 +42,8 @@ export const NEWSPAPER_TEMPLATES = {
       dateTime: 'Important',
       joinTitle: 'Easy to use',
       joinText: 'It\'s quick and easy to Use. Edit text directly in the text area and hover over the images to show the upload button in the bottom right corner, then click to upload a new picture.',
+      aiTitleMaxChars: 30,
+      aiMaxChars: 600
     },
     defaultImgs: {
       mainImg: '/6.webp',
