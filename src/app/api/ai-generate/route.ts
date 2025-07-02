@@ -16,11 +16,13 @@ export async function POST(req: Request) {
   if (enableMock !== 'false') {
     console.warn('[AI-Mock-Switch]', enableMock);
     // mock mode, return mock data
-    if (process.env.NODE_ENV !== 'production' && appConfig.newsAI.mockTimeout) {
+    if (process.env.NODE_ENV !== 'production' && appConfig.newsAI.enableMockTimeout) {
       // mock timeout 3s
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      const timeout = appConfig.newsAI.mockTimeoutSeconds * 1000;
+      await new Promise(resolve => setTimeout(resolve, timeout));
+      console.warn(`[AI-Mock-Timeout]${timeout}ms`);
     }
-    if (process.env.NODE_ENV !== 'production' && appConfig.newsAI.mockAds) {
+    if (process.env.NODE_ENV !== 'production' && appConfig.newsAI.enableMockAds) {
         // mock ads dialog
         throw  error('MOCK TEST!')
     }

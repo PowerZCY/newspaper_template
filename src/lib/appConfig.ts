@@ -98,9 +98,10 @@ export const appConfig = {
     apiKey: process.env.OPENROUTER_API_KEY || '',
     modelName: process.env.NEXT_PUBLIC_OPENROUTER_MODEL_NAME || '',
     // 默认启用mock，防止DEV飞速消耗token数量
-    enableMock: process.env.OPENROUTER_MOCK || true,
-    mockAds: process.env.OPENROUTER_MOCK_ADS || false,
-    mockTimeout: process.env.OPENROUTER_MOCK_TIMEOUT || false,
+    enableMock: process.env.OPENROUTER_ENABLE_MOCK || true,
+    enableMockAds: process.env.OPENROUTER_ENABLE_MOCK_ADS || false,
+    enableMockTimeout: process.env.OPENROUTER_ENABLE_MOCK_TIMEOUT || false,
+    mockTimeoutSeconds: Number(process.env.OPENROUTER_MOCK_TIMEOUT_SECONDS) || 3,
     // 单词请求限制消耗的token数量
     limitMaxChars: 1000
   },

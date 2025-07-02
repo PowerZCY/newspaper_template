@@ -38,10 +38,12 @@ export const AIEditable: React.FC<AIEditableProps> = ({
   const selfId = useId();
   const [aiPrompt, setAIPrompt] = useState("");
   const [aiLoading, setAILoading] = useState(false);
+  const [abortController, setAbortController] = useState<AbortController | null>(null);
   const editableRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [errorDialogOpen, setErrorDialogOpen] = useState(false);
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
+  const [dotCount, setDotCount] = useState(1);
 
   // Only show Try AI button when current active area and edit state
   const isActive = activeId === selfId;
@@ -55,6 +57,15 @@ export const AIEditable: React.FC<AIEditableProps> = ({
       textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
     }
   }, [aiPrompt]);
+
+  // "..." animation
+  useEffect(() => {
+    if (!aiLoading) return;
+    const timer = setInterval(() => {
+      setDotCount(prev => (prev % 3) + 1);
+    }, 300);
+    return () => clearInterval(timer);
+  }, [aiLoading]);
 
   // Close modal logic
   const handleCloseModal = () => {
@@ -70,20 +81,35 @@ export const AIEditable: React.FC<AIEditableProps> = ({
   const handleAISubmit = async () => {
     if (!aiPrompt.trim()) return;
     setAILoading(true);
+    const controller = new AbortController();
+    setAbortController(controller);
     try {
       const res = await fetch("/api/ai-generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt: aiPrompt, maxChars: aiMaxChars }),
+        signal: controller.signal,
       });
       const data = await res.json();
       onChange(data.text);
-      setShowAIModal(false);
-      setShowAIButton(false);
-    } catch {
-      setErrorDialogOpen(true);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (e: any) {
+      if (e.name !== "AbortError") {
+        setErrorDialogOpen(true);
+      }
     } finally {
       setAILoading(false);
+      setAbortController(null);
+    }
+  };
+
+  // Stop AI request
+  const handleAIStop = () => {
+    if (abortController) {
+      console.warn(`[AI-Generate]: Abort request`);
+      abortController.abort();
+      setAILoading(false);
+      setAbortController(null);
     }
   };
 
@@ -124,6 +150,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
         confirmText="Confirm"
         cancelText="Cancel"
         onConfirm={() => {
+          handleAIStop();
           setShowAIModal(false);
           setShowAIButton(false);
           setShowCancelConfirm(false);
@@ -201,19 +228,50 @@ export const AIEditable: React.FC<AIEditableProps> = ({
                   }}
                   maxLength={aiMaxChars}
                 />
-                {/* Send icon button: always fixed to bottom right of textarea */}
-                <button
-                  type="button"
-                  aria-label="Send"
-                  onClick={handleAISubmit}
-                  disabled={aiLoading || !aiPrompt.trim()}
-                  className={`absolute right-1 bottom-2 p-2 rounded-full transition ${aiLoading || !aiPrompt.trim() ? 'opacity-60 pointer-events-none' : 'hover:bg-neutral-200'}`}
-                >
-                  <icons.SendHorizontal size={20} />
-                </button>
+                {/* Send/Stop icon button: always fixed to bottom right of textarea */}
+                {aiLoading ? (
+                  <button
+                    type="button"
+                    aria-label="Stop"
+                    onClick={handleAIStop}
+                    className="absolute right-1 bottom-2 p-2 rounded-full transition hover:bg-neutral-200"
+                  >
+                    <span className="inline-flex items-center justify-center animate-spin">
+                      <icons.CircleStop size={20} />
+                    </span>
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    aria-label="Send"
+                    onClick={handleAISubmit}
+                    disabled={!aiPrompt.trim()}
+                    className={`absolute right-1 bottom-2 p-2 rounded-full transition ${!aiPrompt.trim() ? 'opacity-60 pointer-events-none' : 'hover:bg-neutral-200'}`}
+                  >
+                    <icons.SendHorizontal size={20} />
+                  </button>
+                )}
               </div>
               {/* Character count below textarea */}
-              <div className="text-xs text-purple-500 mt-1 select-none">{aiPrompt.length}/{maxChars}</div>
+              <div className="flex flex-row justify-between items-center mt-1 select-none text-xs text-purple-500">
+                <span>{aiPrompt.length}/{maxChars}</span>
+                {aiLoading && (
+                  <span
+                    className="ml-auto"
+                    style={{
+                      minWidth: '100px',
+                      textAlign: 'right',
+                      display: 'inline-block',
+                      fontVariantNumeric: 'tabular-nums',
+                      letterSpacing: '0.02em',
+                    }}
+                  >
+                    Generating
+                    <span>{'.'.repeat(dotCount)}</span>
+                    <span style={{ opacity: 0 }}>{'.'.repeat(3 - dotCount)}</span>
+                  </span>
+                )}
+              </div>
             </div>
           </div>
         )}

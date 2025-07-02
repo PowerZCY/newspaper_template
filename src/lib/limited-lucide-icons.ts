@@ -20,6 +20,7 @@ export {
     Circle,
     CircleAlert,
     CircleSmall,
+    CircleStop,
     Check,
     ChevronDown,
     ChevronLeft,
