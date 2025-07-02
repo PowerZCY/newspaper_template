@@ -206,7 +206,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
                   aria-label="Close"
                   disabled={aiLoading}
                 >
-                  <icons.X size={24} />
+                  <icons.X size={16} />
                 </button>
               </div>
               {/* Modal body: textarea with send icon button in bottom right */}
@@ -234,10 +234,10 @@ export const AIEditable: React.FC<AIEditableProps> = ({
                     type="button"
                     aria-label="Stop"
                     onClick={handleAIStop}
-                    className="absolute right-1 bottom-2 p-2 rounded-full transition hover:bg-neutral-200"
+                    className="absolute right-1 bottom-2 p-1 w-8 h-8 flex items-center justify-center rounded-full transition bg-transparent hover:bg-neutral-200"
                   >
-                    <span className="inline-flex items-center justify-center animate-spin">
-                      <icons.CircleStop size={20} />
+                    <span className="inline-flex items-center justify-center">
+                      <icons.CircleStop size={20} className="animate-spin" />
                     </span>
                   </button>
                 ) : (
@@ -246,7 +246,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
                     aria-label="Send"
                     onClick={handleAISubmit}
                     disabled={!aiPrompt.trim()}
-                    className={`absolute right-1 bottom-2 p-2 rounded-full transition ${!aiPrompt.trim() ? 'opacity-60 pointer-events-none' : 'hover:bg-neutral-200'}`}
+                    className={`absolute right-1 bottom-2 p-1 w-8 h-8 flex items-center justify-center rounded-full transition bg-transparent hover:bg-neutral-200 ${!aiPrompt.trim() ? 'opacity-60 pointer-events-none' : ''}`}
                   >
                     <icons.SendHorizontal size={20} />
                   </button>
