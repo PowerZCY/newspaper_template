@@ -20,8 +20,7 @@ interface AIEditableProps {
 export const AIEditable: React.FC<AIEditableProps> = ({
   value,
   onChange,
-  placeholder,
-  aiPromptDefault = "English please, write a man kiss a beautiful women, keep exciting and worm, hard",
+  placeholder = "Please enter your prompt here...",
   aiMaxChars = 400,
   className,
   style, 
@@ -31,7 +30,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
 }) => {
   const { activeId, setActiveId, showAIButton, setShowAIButton, showAIModal, setShowAIModal } = useAIEditableContext();
   const selfId = useId();
-  const [aiPrompt, setAIPrompt] = useState(aiPromptDefault);
+  const [aiPrompt, setAIPrompt] = useState("");
   const [aiLoading, setAILoading] = useState(false);
   const editableRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -159,7 +158,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
             className="fixed inset-0 z-50 flex items-end justify-center bg-black/30"
           >
             <div
-              className="w-full max-w-4xl bg-[#f5f5e5] text-neutral-700 border border-purple-500 rounded-lg shadow-xl p-4 pt-3"
+              className="fixed left-[615px] z-50 w-[700px] bg-[#f5f5e5] text-neutral-700 border border-purple-500 rounded-lg shadow-xl p-4 pt-3 mb-12"
               onClick={e => e.stopPropagation()}
             >
               {/* Modal header: title left, close button right */}
@@ -182,14 +181,14 @@ export const AIEditable: React.FC<AIEditableProps> = ({
                   value={aiPrompt}
                   onChange={e => setAIPrompt(e.target.value)}
                   placeholder={placeholder}
-                  className="w-full min-h-[60px] max-h-[200px] text-base p-2 rounded border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 transition resize-none overflow-y-auto pr-10"
+                  className="w-full min-h-[108px] max-h-[300px] text-base p-2 rounded border border-[#e0d7fa] bg-background text-foreground focus:outline-none focus:border-purple-500 focus:ring-0 transition resize-none overflow-y-auto pr-10"
                   disabled={aiLoading}
-                  rows={1}
+                  rows={3}
                   onInput={e => {
                     const ta = e.currentTarget;
                     ta.style.height = 'auto';
-                    // Limit max height to 200px
-                    const maxHeight = 200;
+                    // Limit max height to 300px
+                    const maxHeight = 300;
                     ta.style.height = Math.min(ta.scrollHeight, maxHeight) + 'px';
                   }}
                   maxLength={aiMaxChars}
