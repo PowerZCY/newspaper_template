@@ -123,7 +123,7 @@ export const appConfig = {
       ultimate: 24,
       enterprise: 'Custom'
     },
-    minPlanFeaturesCount: 8
+    minPlanFeaturesCount: 3
   }
 };
 

@@ -77,15 +77,24 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
 
   // 价格渲染逻辑
   function renderPrice(plan: any) {
-    if (prices[plan.key] === undefined || prices[plan.key] === null) {
-      return <span className="text-3xl font-extrabold text-gray-900 dark:text-gray-100">--</span>
-    }
-    if (plan.price?.type === 'custom') {
+    const priceValue = prices[plan.key];
+    // 非数字（如 'Custom'）直接展示
+    if (typeof priceValue !== 'number' || isNaN(priceValue)) {
       return (
-        <span className="text-3xl font-extrabold text-gray-900 dark:text-gray-100">{prices[plan.key]}</span>
-      )
+        <div className="flex flex-col items-start w-full">
+          <div className="flex items-end gap-2">
+            <span className="text-4xl font-extrabold text-gray-900 dark:text-gray-100">{priceValue}</span>
+          </div>
+          <div className="flex items-center gap-2 min-h-[24px] mt-1">
+            <span className={clsx('text-xs text-gray-700 dark:text-gray-300 font-medium', !plan.subTitle && 'opacity-0 select-none')}>
+              {plan.subTitle || ''}
+            </span>
+          </div>
+        </div>
+      );
     }
-    const originValue = Number(prices[plan.key])
+    // 数字价格逻辑
+    const originValue = Number(priceValue)
     const discount = currentBilling.discount
     const hasDiscount = discount !== 0
     const saleValue = originValue * (1 - discount)
