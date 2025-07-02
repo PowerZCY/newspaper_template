@@ -12,16 +12,20 @@ export async function POST(req: Request) {
   console.log('[AI-Mock-Switch]', mockSwitch);
 
   if (mockSwitch !== 'false') {
-    // mock模式，直接返回模拟数据
+    // mock mode, return mock data
     if (process.env.NODE_ENV !== 'production' && process.env.OPENROUTER_MOCK_ADS === 'true') {
-        // 模拟广告弹窗
+        // mock ads dialog
         throw  error('MOCK TEST!')
+    }
+    if (process.env.NODE_ENV !== 'production' && process.env.OPENROUTER_MOCK_TIMEOUT === 'true') {
+      // mock timeout 3s
+      await new Promise(resolve => setTimeout(resolve, 3000));
     }
     const mockText = `【MockData】${fullPrompt}`;
     return Response.json({ text: mockText });
   }
 
-  // 打印请求日志
+  // print request log
   console.log('[AI-Request]', { modelName, prompt, maxChars, fullPrompt });
   
   const openrouter = createOpenRouter({ apiKey: process.env.OPENROUTER_API_KEY });
@@ -32,7 +36,7 @@ export async function POST(req: Request) {
 
   await response.consumeStream();
 
-  // 打印AI返回内容日志
+  // print AI response log
   console.log('[AI-Response]', { text: response.text });
 
   return Response.json({ text: response.text });
