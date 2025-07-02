@@ -9,6 +9,7 @@ import { useTheme } from 'next-themes';
 import Image from "next/image";
 import { usePathname } from 'next/navigation';
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { AIEditableProvider } from "./AIEditableContext";
 
 export function Hero() {
   const [template, setTemplate] = useState<"simple" | "modern">("simple");
@@ -448,30 +449,32 @@ export function Hero() {
               border: '1px solid rgba(255,255,255,0)', // 透明白色边框，兜底黑线
             }}
           >
-            {template === "simple" ? (
-              <NewspaperSimple
-                mainImg={simpleImgs.mainImg}
-                sideImg={simpleImgs.sideImg}
-                bottomImg={simpleImgs.bottomImg}
-                onMainImgChange={file => handleImgChange("simple", "mainImg", file)}
-                onSideImgChange={file => handleImgChange("simple", "sideImg", file)}
-                onBottomImgChange={file => handleImgChange("simple", "bottomImg", file)}
-                onTriggerImgUpload={(key, cb) => handleGlobalImgUpload("simple", key, cb)}
-                content={simpleContent}
-                onContentChange={(key, value) => handleContentChange("simple", key, value)}
-              />
-            ) : (
-              <NewspaperModern
-                mainImg={modernImgs.mainImg}
-                subImg={modernImgs.subImg}
-                flowers={modernImgs.flowers}
-                onMainImgChange={file => handleImgChange("modern", "mainImg", file)}
-                onSubImgChange={file => handleImgChange("modern", "subImg", file)}
-                onTriggerImgUpload={(key, cb) => handleGlobalImgUpload("modern", key, cb)}
-                content={modernContent}
-                onContentChange={(key, value) => handleContentChange("modern", key, value)}
-              />
-            )}
+            <AIEditableProvider>
+              {template === "simple" ? (
+                <NewspaperSimple
+                  mainImg={simpleImgs.mainImg}
+                  sideImg={simpleImgs.sideImg}
+                  bottomImg={simpleImgs.bottomImg}
+                  onMainImgChange={file => handleImgChange("simple", "mainImg", file)}
+                  onSideImgChange={file => handleImgChange("simple", "sideImg", file)}
+                  onBottomImgChange={file => handleImgChange("simple", "bottomImg", file)}
+                  onTriggerImgUpload={(key, cb) => handleGlobalImgUpload("simple", key, cb)}
+                  content={simpleContent}
+                  onContentChange={(key, value) => handleContentChange("simple", key, value)}
+                />
+              ) : (
+                <NewspaperModern
+                  mainImg={modernImgs.mainImg}
+                  subImg={modernImgs.subImg}
+                  flowers={modernImgs.flowers}
+                  onMainImgChange={file => handleImgChange("modern", "mainImg", file)}
+                  onSubImgChange={file => handleImgChange("modern", "subImg", file)}
+                  onTriggerImgUpload={(key, cb) => handleGlobalImgUpload("modern", key, cb)}
+                  content={modernContent}
+                  onContentChange={(key, value) => handleContentChange("modern", key, value)}
+                />
+              )}
+            </AIEditableProvider>
           </section>
         </div>
       </div>

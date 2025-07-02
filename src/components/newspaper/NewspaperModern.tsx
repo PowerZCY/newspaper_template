@@ -1,8 +1,9 @@
-import React from "react";
-import Image from "next/image";
 import { globalLucideIcons as icons } from "@/components/global-icon";
-import { montserrat, engravers } from '@/lib/fonts';
-import { cn, handlePastePlainText } from '@/lib/utils';
+import { engravers, montserrat } from '@/lib/fonts';
+import { cn } from '@/lib/utils';
+import Image from "next/image";
+import React from "react";
+import { AIEditable } from "../ai-editable";
 
 interface NewspaperModernProps {
   mainImg: string;
@@ -26,6 +27,8 @@ interface NewspaperModernProps {
     dateTime: string;
     joinTitle: string;
     joinText: string;
+    aiTitleMaxChars: number;
+    aiMaxChars: number;
   };
   onContentChange: (key: keyof NewspaperModernProps["content"], value: string) => void;
 }
@@ -54,9 +57,9 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
           position: 'relative'
         }}
       >
-        <span
-          contentEditable
-          suppressContentEditableWarning
+        <AIEditable
+          value={content.leftTop}
+          onChange={val => onContentChange("leftTop", val)}
           className="editable text-xs text-neutral-700"
           style={{
             width: 240,
@@ -69,11 +72,9 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
             textAlign: 'left',
             flex: 'none'
           }}
-          onBlur={e => onContentChange("leftTop", e.currentTarget.innerText)}
-          onPaste={handlePastePlainText}
-        >
-          {content.leftTop}
-        </span>
+          type="title"
+          aiTitleMaxChars={content.aiTitleMaxChars}
+        />
         <div style={{ flex: '1 1 0', display: 'flex', justifyContent: 'center' }}>
           <Image
             src={flowers}
@@ -84,9 +85,9 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
             className="pointer-events-none"
           />
         </div>
-        <span
-          contentEditable
-          suppressContentEditableWarning
+        <AIEditable
+          value={content.rightTop}
+          onChange={val => onContentChange("rightTop", val)}
           className="editable text-xs text-neutral-700"
           style={{
             width: 240,
@@ -99,53 +100,50 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
             textAlign: 'right',
             flex: 'none'
           }}
-          onBlur={e => onContentChange("rightTop", e.currentTarget.innerText)}
-          onPaste={handlePastePlainText}
-        >
-          {content.rightTop}
-        </span>
+          type="title"
+          aiTitleMaxChars={content.aiTitleMaxChars}
+        />
       </div>
       <div className="newspaper-divider" style={{borderTop: '2px solid #222', width: '100%', marginBottom: '4px'}}></div>
-      <div
-        contentEditable
-        suppressContentEditableWarning
+      <AIEditable
+        value={content.headline}
+        onChange={val => onContentChange("headline", val)}
         className={cn(
           "editable text-center text-[3.5rem] md:text-7xl font-black tracking-wide text-neutral-900 leading-tight mb-2.5 w-full flex items-center justify-center",
           engravers.className
         )}
         style={{ fontWeight: 600, letterSpacing: '0.05em' }}
-        onBlur={e => onContentChange("headline", e.currentTarget.innerText)}
-        onPaste={handlePastePlainText}
-      >{content.headline}</div>
+        type="title"
+        aiTitleMaxChars={content.aiTitleMaxChars}
+      />
       <div className="newspaper-divider" style={{borderTop:'4px solid #222', width:'100%', marginBottom:'2px'}}></div>
       <div className="newspaper-divider" style={{borderTop:'4px solid #222', width:'100%', marginBottom:'4px'}}></div>
-      <div
-        contentEditable
-        suppressContentEditableWarning
+      <AIEditable
+        value={content.subTitle}
+        onChange={val => onContentChange("subTitle", val)}
         className="editable text-center text-lg tracking-[0.3em] uppercase mb-1 text-neutral-900"
-        onBlur={e => onContentChange("subTitle", e.currentTarget.innerText)}
-        onPaste={handlePastePlainText}
-      >{content.subTitle}</div>
+        type="title"
+        aiTitleMaxChars={content.aiTitleMaxChars}
+      />
       <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%', marginBottom:'8px'}}></div>
       {/* 上半部分：左右结构 */}
       <div className="flex flex-row w-full mb-2 items-stretch">
         {/* 左：About me 30% */}
         <div className="flex flex-col justify-start newspaper-border-right" style={{ width: '35%', borderRight: '2px solid #222', paddingRight: '10px', marginRight: '10px' }}>
-          <div
-            contentEditable
-            suppressContentEditableWarning
+          <AIEditable
+            value={content.aboutTitle}
+            onChange={val => onContentChange("aboutTitle", val)}
             className="editable text-xl font-bold"
             style={{borderBottom:'3px solid #222', marginBottom:'8px', paddingBottom:'4px', color:'#222'}}
-            onBlur={e => onContentChange("aboutTitle", e.currentTarget.innerText)}
-            onPaste={handlePastePlainText}
-          >{content.aboutTitle}</div>
-          <div
-            contentEditable
-            suppressContentEditableWarning
+            type="title"
+            aiTitleMaxChars={content.aiTitleMaxChars}
+          />
+          <AIEditable
+            value={content.aboutText}
+            onChange={val => onContentChange("aboutText", val)}
             className="editable text-[0.95rem] leading-relaxed flex-1 text-neutral-900"
-            onBlur={e => onContentChange("aboutText", e.currentTarget.innerHTML)}
-            dangerouslySetInnerHTML={{ __html: content.aboutText }}
-            onPaste={handlePastePlainText}
+            type="text"
+            aiMaxChars={content.aiMaxChars}
           />
         </div>
         {/* 右：大竖图 70% */}
@@ -188,68 +186,67 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
         {/* 中：票据风格日期 */}
         <div className="flex flex-col items-center justify-center px-2">
           <div className="w-full h-[260px] flex flex-col items-center justify-center newspaper-border-all" style={{border:'1.5px solid #222', borderRadius:'12px', padding:'12px'}}>
-            <div
-              contentEditable
-              suppressContentEditableWarning
+            <AIEditable
+              value={content.dateDay}
+              onChange={val => onContentChange("dateDay", val)}
               className="editable text-3xl font-bold leading-tight mb-1 mt-2 text-center text-neutral-900"
-              onBlur={e => onContentChange("dateDay", e.currentTarget.innerText)}
-              onPaste={handlePastePlainText}
-            >{content.dateDay}</div>
-            <div
-              contentEditable
-              suppressContentEditableWarning
+              type="title"
+              aiTitleMaxChars={content.aiTitleMaxChars}
+            />
+            <AIEditable
+              value={content.dateMonth}
+              onChange={val => onContentChange("dateMonth", val)}
               className="editable text-3xl font-bold leading-tight mb-2 text-center text-neutral-900"
-              onBlur={e => onContentChange("dateMonth", e.currentTarget.innerText)}
-              onPaste={handlePastePlainText}
-            >{content.dateMonth}</div>
-            <div
-              contentEditable
-              suppressContentEditableWarning
+              type="title"
+              aiTitleMaxChars={content.aiTitleMaxChars}
+            />
+            <AIEditable
+              value={content.addr1}
+              onChange={val => onContentChange("addr1", val)}
               className="editable text-base mb-2 text-center text-neutral-900"
-              onBlur={e => onContentChange("addr1", e.currentTarget.innerText)}
-              onPaste={handlePastePlainText}
-            >{content.addr1}</div>
-            <div
-              contentEditable
-              suppressContentEditableWarning
+              type="title"
+              aiTitleMaxChars={content.aiTitleMaxChars}
+            />
+            <AIEditable
+              value={content.addr2}
+              onChange={val => onContentChange("addr2", val)}
               className="editable text-base mb-2 text-center text-neutral-900"
-              onBlur={e => onContentChange("addr2", e.currentTarget.innerText)}
-              onPaste={handlePastePlainText}
-            >{content.addr2}</div>
-            <div
-              contentEditable
-              suppressContentEditableWarning
+              type="title"
+              aiTitleMaxChars={content.aiTitleMaxChars}
+            />
+            <AIEditable
+              value={content.addr3}
+              onChange={val => onContentChange("addr3", val)}
               className="editable text-base mb-2 text-center text-neutral-900"
-              onBlur={e => onContentChange("addr3", e.currentTarget.innerText)}
-              onPaste={handlePastePlainText}
-            >{content.addr3}</div>
+              type="title"
+              aiTitleMaxChars={content.aiTitleMaxChars}
+            />
             <div className="newspaper-divider" style={{borderTop:'1.5px dashed #222', width:'100%', margin:'16px 0 6px 0'}}></div>
-            <div
-              contentEditable
-              suppressContentEditableWarning
+            <AIEditable
+              value={content.dateTime}
+              onChange={val => onContentChange("dateTime", val)}
               className="editable text-base text-center text-neutral-900"
-              onBlur={e => onContentChange("dateTime", e.currentTarget.innerText)}
-              onPaste={handlePastePlainText}
-            >{content.dateTime}</div>
+              type="title"
+              aiTitleMaxChars={content.aiTitleMaxChars}
+            />
           </div>
         </div>
         {/* 右：Join us! */}
         <div className="flex flex-col newspaper-border-left" style={{borderLeft:'2px solid #222', paddingLeft:'16px'}}>
-          <div
-            contentEditable
-            suppressContentEditableWarning
+          <AIEditable
+            value={content.joinTitle}
+            onChange={val => onContentChange("joinTitle", val)}
             className="editable text-xl font-bold"
             style={{borderBottom:'3px solid #222', marginBottom:'8px', paddingBottom:'4px', color:'#222'}}
-            onBlur={e => onContentChange("joinTitle", e.currentTarget.innerText)}
-            onPaste={handlePastePlainText}
-          >{content.joinTitle}</div>
-          <div
-            contentEditable
-            suppressContentEditableWarning
+            type="title"
+            aiTitleMaxChars={content.aiTitleMaxChars}
+          />
+          <AIEditable
+            value={content.joinText}
+            onChange={val => onContentChange("joinText", val)}
             className="editable text-[0.95rem] leading-relaxed flex-1 text-neutral-900"
-            onBlur={e => onContentChange("joinText", e.currentTarget.innerHTML)}
-            dangerouslySetInnerHTML={{ __html: content.joinText }}
-            onPaste={handlePastePlainText}
+            type="text"
+            aiMaxChars={content.aiMaxChars}
           />
         </div>
       </div>
