@@ -210,7 +210,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
                 </button>
               </div>
               {/* Character count below textarea */}
-              <div className="text-xs text-purple-500 mt-1 select-none">{aiPrompt.length}/{aiMaxChars}</div>
+              <div className="text-xs text-purple-500 mt-1 select-none">{aiPrompt.length}/{maxChars}</div>
             </div>
           </div>
         )}
