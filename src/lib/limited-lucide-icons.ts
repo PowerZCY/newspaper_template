@@ -67,6 +67,7 @@ export {
     Rss,
     Scale,
     Search,
+    SendHorizontal,
     Share,
     ShieldUser,
     SquareDashedBottomCode,

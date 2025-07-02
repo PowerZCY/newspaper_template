@@ -34,18 +34,13 @@ export const AIEditable: React.FC<AIEditableProps> = ({
   const [aiPrompt, setAIPrompt] = useState(aiPromptDefault);
   const [aiLoading, setAILoading] = useState(false);
   const editableRef = useRef<HTMLDivElement>(null);
-  const lastMousePos = useRef<{x: number, y: number} | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [errorDialogOpen, setErrorDialogOpen] = useState(false);
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
 
   // Only show Try AI button when current active area and edit state
   const isActive = activeId === selfId;
   const showButton = isActive && showAIButton && !showAIModal;
-
-  // Record mouse position when mouse click into edit area
-  const handleMouseDownEditable = (e: React.MouseEvent<HTMLDivElement>) => {
-    lastMousePos.current = { x: e.clientX, y: e.clientY };
-  };
 
   // Auto adjust textarea height
   useEffect(() => {
@@ -58,10 +53,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
   // Close modal logic
   const handleCloseModal = () => {
     if (aiLoading) {
-      if (window.confirm('AI is working, confirm to cancel?')) {
-        setShowAIModal(false);
-        setShowAIButton(false);
-      }
+      setShowCancelConfirm(true);
     } else {
       setShowAIModal(false);
       setShowAIButton(false);
@@ -117,6 +109,21 @@ export const AIEditable: React.FC<AIEditableProps> = ({
         imgSrc="/ads/Ad-Pollo.webp"
         imgHref="https://pollo.ai/home?ref=mzmzndj&tm_news=news"
       />
+      {/* Cancel AI generating confirm dialog */}
+      <AdsAlertDialog
+        open={showCancelConfirm}
+        onOpenChange={setShowCancelConfirm}
+        title="Cancel AI Generating?"
+        description="AI is working, please wait a moment, are you sure to cancel?"
+        confirmText="Confirm"
+        cancelText="Cancel"
+        onConfirm={() => {
+          setShowAIModal(false);
+          setShowAIButton(false);
+          setShowCancelConfirm(false);
+        }}
+        onCancel={() => setShowCancelConfirm(false)}
+      />
       <div className="relative">
         <div
           ref={editableRef}
@@ -144,7 +151,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
               </div>
             )
         )}
-        {/* AI modal：Only show when current active area and showAIModal is true */}
+        {/* AI modal: Only show when current active area and showAIModal is true */}
         {isActive && showAIModal && (
           <div
             ref={modalBgRef}
@@ -152,43 +159,54 @@ export const AIEditable: React.FC<AIEditableProps> = ({
             className="fixed inset-0 z-50 flex items-end justify-center bg-black/30"
           >
             <div
-              className="w-full max-w-4xl bg-[#f5f5e5] text-neutral-700 border border-purple-500 rounded-lg rounded-t-2xl shadow-xl p-6"
+              className="w-full max-w-4xl bg-[#f5f5e5] text-neutral-700 border border-purple-500 rounded-lg shadow-xl p-4 pt-3"
               onClick={e => e.stopPropagation()}
             >
-              <textarea
-                ref={textareaRef}
-                value={aiPrompt}
-                onChange={e => setAIPrompt(e.target.value)}
-                placeholder={placeholder}
-                className="w-full min-h-[60px] text-base p-2 rounded border border-border mb-1 bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 transition resize-none overflow-auto"
-                disabled={aiLoading}
-                rows={1}
-                onInput={e => {
-                  const ta = e.currentTarget;
-                  ta.style.height = 'auto';
-                  ta.style.height = ta.scrollHeight + 'px';
-                }}
-                maxLength={aiMaxChars}
-              />
-              <div className="w-full text-right text-xs text-muted-foreground mb-2 select-none">{aiPrompt.length}/{aiMaxChars}</div>
-              <div className="flex gap-3 justify-center">
+              {/* Modal header: title left, close button right */}
+              <div className="flex items-center justify-between mb-1">
+                <div className="font-bold text-lg text-purple-500">AI Generate</div>
                 <button
                   type="button"
+                  className="p-2 rounded-full hover:bg-neutral-200 transition"
                   onClick={handleCloseModal}
-                  disabled={aiLoading && false}
-                  className="rounded-full border border-border w-32 px-0 py-2 text-base font-bold text-foreground bg-transparent hover:border-primary transition-all duration-300 text-center"
+                  aria-label="Close"
+                  disabled={aiLoading}
                 >
-                  Cancel
-                </button>
-                <button
-                  type="button"
-                  onClick={handleAISubmit}
-                  disabled={aiLoading || !aiPrompt.trim()}
-                  className="w-32 bg-gradient-to-r from-purple-400 to-pink-500 hover:from-purple-500 hover:to-pink-600 dark:from-purple-500 dark:to-pink-600 dark:hover:from-purple-600 dark:hover:to-pink-700 text-white text-base font-bold shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-0 py-2 disabled:opacity-60 text-center"
-                >
-                  {aiLoading ? 'AI Generating...' : 'AI Generate'}
+                  <icons.X size={24} />
                 </button>
               </div>
+              {/* Modal body: textarea with send icon button in bottom right */}
+              <div className="relative">
+                <textarea
+                  ref={textareaRef}
+                  value={aiPrompt}
+                  onChange={e => setAIPrompt(e.target.value)}
+                  placeholder={placeholder}
+                  className="w-full min-h-[60px] max-h-[200px] text-base p-2 rounded border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 transition resize-none overflow-y-auto pr-10"
+                  disabled={aiLoading}
+                  rows={1}
+                  onInput={e => {
+                    const ta = e.currentTarget;
+                    ta.style.height = 'auto';
+                    // Limit max height to 200px
+                    const maxHeight = 200;
+                    ta.style.height = Math.min(ta.scrollHeight, maxHeight) + 'px';
+                  }}
+                  maxLength={aiMaxChars}
+                />
+                {/* Send icon button: always fixed to bottom right of textarea */}
+                <button
+                  type="button"
+                  aria-label="Send"
+                  onClick={handleAISubmit}
+                  disabled={aiLoading || !aiPrompt.trim()}
+                  className={`absolute right-1 bottom-2 p-2 rounded-full transition ${aiLoading || !aiPrompt.trim() ? 'opacity-60 pointer-events-none' : 'hover:bg-neutral-200'}`}
+                >
+                  <icons.SendHorizontal size={20} />
+                </button>
+              </div>
+              {/* Character count below textarea */}
+              <div className="text-xs text-purple-500 mt-1 select-none">{aiPrompt.length}/{aiMaxChars}</div>
             </div>
           </div>
         )}
