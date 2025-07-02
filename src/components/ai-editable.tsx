@@ -2,6 +2,7 @@ import React, { useRef, useState, useId, useEffect } from "react";
 import { useAIEditableContext } from '@/components/AIEditableContext';
 import { AdsAlertDialog } from "@/components/ads-alert-dialog";
 import { globalLucideIcons as icons } from "@/components/global-icon";
+import { handlePastePlainText } from '@/lib/utils';
 
 interface AIEditableProps {
   value: string;
@@ -135,6 +136,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
           suppressContentEditableWarning
           className={className}
           style={{ ...style, position: 'relative', zIndex: 1 }}
+          onPaste={handlePastePlainText}
           onBlur={handleBlur}
           onFocus={handleFocus}
           dangerouslySetInnerHTML={{ __html: value }}
