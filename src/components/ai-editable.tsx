@@ -38,7 +38,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [errorDialogOpen, setErrorDialogOpen] = useState(false);
 
-  // Only show Try AI button when current active area and edit state
+  // 只在当前激活区域且edit态时显示Try AI按钮
   const isActive = activeId === selfId;
   const showButton = isActive && showAIButton && !showAIModal;
 
@@ -147,21 +147,20 @@ export const AIEditable: React.FC<AIEditableProps> = ({
           style={{ ...style, position: 'relative', zIndex: 1 }}
           onBlur={handleBlur}
           onFocus={handleFocus}
-          onMouseDown={handleMouseDownEditable}
           dangerouslySetInnerHTML={{ __html: value }}
           {...editableProps}
         />
-        {/* Try AI button: use fixed to locate the mouse click position, only show when edit state */}
-        {showButton && buttonPos && (
+        {/* Try AI按钮：绝对定位在编辑区右上角外侧，顶部对齐，edit态显示 */}
+        {showButton && (
           aiButtonRender
             ? aiButtonRender({ onClick: () => setShowAIModal(true), loading: aiLoading })
             : (
               <div
-                className="fixed z-50 bg-white dark:bg-neutral-900 text-foreground border border-border rounded-lg shadow-lg px-3 py-1 flex items-center cursor-pointer hover:bg-accent transition"
-                style={{ top: buttonPos.top, left: buttonPos.left }}
+                className="absolute z-50 bg-white dark:bg-neutral-900 text-foreground border border-border rounded-lg shadow-lg px-3 py-1 flex items-center cursor-pointer hover:bg-accent transition"
+                style={{ top: '-6px', right: '-66px' }}
                 onMouseDown={e => { e.preventDefault(); e.stopPropagation(); setShowAIModal(true); }}
               >
-                <span className="mr-1">⭐️</span> <span>Try AI</span>
+                <span className="mr-1">⭐️</span> <span>AI</span>
               </div>
             )
         )}
