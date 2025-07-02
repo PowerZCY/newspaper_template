@@ -6,6 +6,7 @@ Create professional-looking newspapers easily with our free, browser-based edito
 
 ## Core Features
 - [Completely Free](https://newspaper-template.org/en): Professional newspaper templates - completely free, no hidden fees
+- [Pricing](https://newspaper-template.org/en#pricing): List free and paid plans, base function is always free! But paid plans have more features.
 - [Easy to Use](https://newspaper-template.org/en#usage): Click to edit text, hover to upload images, real-time preview
 - [Export Options](https://newspaper-template.org/en#hero): Download as PDF, PNG, JPG, WEBP, or SVG - no watermark, commercial use allowed
 - [FAQ](https://newspaper-template.org/en#faq): Frequently asked questions and troubleshooting

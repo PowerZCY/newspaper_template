@@ -157,7 +157,7 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
   }
 
   return (
-    <section id="price-plan" className="px-4 py-10 md:px-16 md:py-16 mx-auto max-w-7xl">
+    <section id="pricing" className="px-4 py-10 md:px-16 md:py-16 mx-auto max-w-7xl">
       {/* 大标题和副标题 */}
       <h2 className="text-3xl md:text-4xl font-bold text-center mb-3">
         {t('title')}
