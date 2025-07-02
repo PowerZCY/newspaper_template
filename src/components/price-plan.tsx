@@ -174,7 +174,7 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
             className={clsx(
               'min-w-[120px] px-6 py-2 rounded-full font-medium border transition text-lg',
               billingKey === 'monthly'
-                ? 'bg-purple-600 text-white border-purple-600 shadow'
+                ? 'text-white bg-gradient-to-r from-purple-400 to-pink-500 hover:from-purple-500 hover:to-pink-600 dark:from-purple-500 dark:to-pink-600 dark:hover:from-purple-600'
                 : 'bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 hover:border-purple-400',
               'mr-4'
             )}
@@ -207,7 +207,7 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
             className={clsx(
               'min-w-[120px] px-6 py-2 rounded-full font-medium border transition text-lg',
               billingKey === 'yearly'
-                ? 'bg-purple-600 text-white border-purple-600 shadow'
+                ? 'text-white bg-gradient-to-r from-purple-400 to-pink-500 hover:from-purple-500 hover:to-pink-600 dark:from-purple-500 dark:to-pink-600 dark:hover:from-purple-600'
                 : 'bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 hover:border-purple-400',
               'ml-4'
             )}
@@ -310,10 +310,10 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
             {/* 按钮 */}
             <button
               className={clsx(
-                'w-full py-2 mt-auto rounded-lg font-semibold text-base transition',
+                'w-full py-2 mt-auto text-white text-base font-bold shadow-lg hover:shadow-xl transition-all duration-300 rounded-full',
                 plan.button?.disabled
-                  ? 'bg-gray-300 text-gray-500 dark:bg-gray-700 dark:text-gray-400 cursor-not-allowed'
-                  : 'bg-purple-600 hover:bg-purple-700 text-white shadow'
+                  ? 'bg-gray-400 cursor-not-allowed'
+                  : 'bg-gradient-to-r from-purple-400 to-pink-500 hover:from-purple-500 hover:to-pink-600 dark:from-purple-500 dark:to-pink-600 dark:hover:from-purple-600 dark:hover:to-pink-700'
               )}
               disabled={plan.button?.disabled}
               type="button"
