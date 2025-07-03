@@ -272,9 +272,11 @@ interface AIChatCache {
   messages: AIMessage[];
 }
 ```
-- 本地缓存key建议：`ai_chat_{editableId}`。
+- 本地缓存key建议：`ai_chat_{editableId}`，缓存过期时间4小时。
 - 每次对话消息变更（发送/响应/重新生成）后，自动序列化存入localStorage。
-- 关闭对话框时不清空缓存，便于下次打开继续。
+- 每个AIEditable区域有且仅有一个独立的对话消息缓存，互不干扰。
+- 每次打开对话框时，都是新建缓存（如有历史缓存先清理再新建），关闭对话框时要清空缓存，避免本地缓存超载！
+- 缓存过期策略：每次写入时记录时间戳，读取时如超4小时则自动清理。
 
 ### 8.4 发送与响应流程
 1. 用户输入提示词，点击发送：
@@ -367,18 +369,110 @@ function handleReGenerate() {
 sequenceDiagram
   participant User
   participant UI as AIEditable
+  participant Cache as 对话缓存(localStorage)
   participant API as AI后端
   User->>UI: 输入提示词/点击发送
-  UI->>UI: 追加user消息
+  UI->>Cache: 写入user消息
   UI->>API: 请求AI生成
   API-->>UI: 返回AI内容
-  UI->>UI: 追加ai消息
-  UI->>UI: 保存消息到localStorage
+  UI->>Cache: 写入ai消息
   User->>UI: 点击Replace/Copy/ReGenerate
-  UI->>UI: 执行对应操作
+  UI->>Cache: 读取最新AI消息
   User->>UI: 点击X关闭
-  UI->>UI: 仅关闭对话框，缓存保留
+  UI->>Cache: 清空缓存
 ```
 
+### 8.10 数据交互及流向图
+```mermaid
+graph TD
+  U["用户"] -->|输入提示词| T["提示词输入区"]
+  T -->|写入user消息| C["对话缓存<br/>(localStorage)"]
+  T -->|请求| A["AI后端"]
+  A -->|AI响应| C
+  C -->|渲染| M["消息区"]
+  M -->|Replace/Copy/ReGenerate| C
+  X["关闭按钮"] -->|点击| C
+  C -->|清空缓存| E["缓存清空"]
+  style C fill:#f9f,stroke:#333,stroke-width:2;
+  style A fill:#bbf,stroke:#333,stroke-width:2;
+  style T fill:#ffd,stroke:#333,stroke-width:2;
+  style M fill:#bfb,stroke:#333,stroke-width:2;
+  style X fill:#faa,stroke:#333,stroke-width:2;
+  style E fill:#eee,stroke:#333,stroke-width:2;
+```
+
+
+## 代码修改执行计划
+
+### 1. 对话消息流与本地缓存
+
+- **新增状态**：在AIEditable组件中为每个对话框维护`messages`（问答消息数组）和`messagesTimestamp`（缓存时间戳）。
+- **缓存机制**：
+  - 打开对话框时，检查并清理过期缓存，初始化空消息数组。
+  - 每次用户或AI消息变更时，自动将`messages`和`messagesTimestamp`写入localStorage，key为`ai_chat_{editableId}`。
+  - 关闭对话框时，清空本地缓存（移除对应key）。
+- **过期策略**：每次读取缓存时，若时间戳超4小时则自动清理。
+
+### 2. 对话框关闭逻辑
+
+- **唯一关闭入口**：只允许通过X按钮关闭AI对话框，其他方式（如点击遮罩、失焦等）全部禁用。
+- **关闭时清理**：关闭时必须清空本地缓存，并重置`messages`状态。
+
+### 3. 问答消息渲染
+
+- **消息区**：在AI对话框中部渲染消息流，用户消息靠右，AI消息靠左，支持滚动。
+- **最小/最大高度**：设置对话框body的最小/最大高度，超出部分出现滚动条。
+
+### 4. 多轮对话流程
+
+- **用户发送**：用户输入提示词，点击发送，立即在右侧追加user消息，进入生成中状态。
+- **AI响应**：AI返回后，左侧追加ai消息，结束生成中状态。
+- **ReGenerate**：点击ReGenerate按钮，自动用最近一次user消息重新发起请求，追加新ai消息。
+
+### 5. 功能按钮区
+
+- **Replace**：将最近一条AI消息内容写入主文本区域（onChange），可选自动关闭对话框。
+- **Copy**：将最近一条AI消息内容复制到剪切板。
+- **ReGenerate**：用最近一条user消息内容重新发起AI请求。
+- **Insert**：本期忽略，不实现。
+
+### 6. 兼容与隔离
+
+- **不影响外部**：AIEditable的主value、onChange、激活管理、AI按钮等逻辑全部保留。
+- **仅对AI对话框内部做增强**，其余区域不做变动。
+
 ---
+
+## 伪代码结构参考
+
+```tsx
+// 新增状态
+const [messages, setMessages] = useState<AIMessage[]>([]);
+const editableId = useId();
+
+// 打开对话框时
+useEffect(() => {
+  if (showAIModal) {
+    // 检查并清理过期缓存
+    // 初始化messages
+  }
+}, [showAIModal]);
+
+// 关闭对话框时
+const handleCloseModal = () => {
+  // 清空缓存
+  setMessages([]);
+  // 关闭modal
+};
+
+// 发送消息
+const handleSend = () => {
+  // 追加user消息
+  // 请求AI
+  // 追加ai消息
+  // 写入缓存
+};
+
+// Replace/Copy/ReGenerate按钮实现
+```
 
