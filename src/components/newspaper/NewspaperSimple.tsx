@@ -4,6 +4,7 @@ import { adorable, montserrat } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 import Image from "next/image";
 import React from "react";
+import { appConfig } from '@/lib/appConfig';
 
 interface NewspaperSimpleProps {
   mainImg: string;
@@ -40,10 +41,12 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
   content,
   onContentChange,
 }) => {
+  const seqIdPrefix = appConfig.newspaperTemplates.find(t => t.key === "simple")?.key || "simple";
   return (
     <div className={cn("newspaper-bg flex flex-col gap-0", montserrat.className)} style={{ background: "#f5f5e5" }}>
       {/* Top area */}
       <AIEditable
+        seqId={`${seqIdPrefix}_edition`}
         value={content.edition}
         onChange={val => onContentChange("edition", val)}
         className="editable text-center text-base text-neutral-700 mt-2 mb-1 tracking-wide whitespace-nowrap"
@@ -54,6 +57,7 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
       />
       <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%'}}></div>
       <AIEditable
+        seqId={`${seqIdPrefix}_headline`}
         value={content.headline}
         onChange={val => onContentChange("headline", val)}
         className={cn("editable text-center text-[2.8rem] md:text-6xl font-extrabold tracking-[0.14em] text-neutral-900 leading-tight", adorable.className)}
@@ -87,6 +91,7 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
           </div>
           {/* Row 2: Big title */}
           <AIEditable
+            seqId={`${seqIdPrefix}_title`}
             value={content.title}
             onChange={val => onContentChange("title", val)}
             className="editable mb-1 text-xl font-extrabold tracking-wide text-neutral-900"
@@ -96,6 +101,7 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
           />
           {/* Row 3: Main text (AIEditable) */}
           <AIEditable
+            seqId={`${seqIdPrefix}_mainText`}
             value={content.mainText}
             onChange={val => onContentChange("mainText", val)}
             className="editable text-[0.95rem] text-neutral-900 leading-relaxed"
@@ -110,6 +116,7 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
         <div className="w-1/3 pl-6 flex flex-col justify-start">
           {/* Row 1: Small title */}
           <AIEditable
+            seqId={`${seqIdPrefix}_sideTitle`}
             value={content.sideTitle}
             onChange={val => onContentChange("sideTitle", val)}
             className="editable text-xs font-bold tracking-wide leading-tight mb-1 text-neutral-900"
@@ -135,6 +142,7 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
           </div>
           {/* Row 3: Description */}
           <AIEditable
+            seqId={`${seqIdPrefix}_sideDesc`}
             value={content.sideDesc}
             onChange={val => onContentChange("sideDesc", val)}
             className="editable text-[0.95rem] text-neutral-700 leading-snug mb-1"
@@ -145,6 +153,7 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
           <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%', marginTop:'25px', marginBottom:'5px'}}></div>
           {/* Row 5: Small title + horizontal image */}
           <AIEditable
+            seqId={`${seqIdPrefix}_bottomTitle`}
             value={content.bottomTitle}
             onChange={val => onContentChange("bottomTitle", val)}
             className="editable text-xs font-bold tracking-wide leading-tight mb-1 text-neutral-900"
@@ -168,6 +177,7 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
             </div>
           </div>
           <AIEditable
+            seqId={`${seqIdPrefix}_bottomDesc`}
             value={content.bottomDesc}
             onChange={val => onContentChange("bottomDesc", val)}
             className="editable text-[0.95rem] text-neutral-700 leading-snug mb-1"
@@ -179,6 +189,7 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
       </div>
       <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%', marginTop:'25px', marginBottom:'5px'}}></div>
       <AIEditable
+        seqId={`${seqIdPrefix}_footer`}
         value={content.footer}
         onChange={val => onContentChange("footer", val)}
         className="editable text-xs text-neutral-700 text-center tracking-widest uppercase mb-1"

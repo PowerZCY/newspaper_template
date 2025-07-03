@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import Image from "next/image";
 import React from "react";
 import { AIEditable } from "../ai-editable";
+import { appConfig } from "@/lib/appConfig";
 
 interface NewspaperModernProps {
   mainImg: string;
@@ -43,7 +44,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
   content,
   onContentChange,
 }) => {
-
+  const seqIdPrefix = appConfig.newspaperTemplates.find(t => t.key === "modern")?.key || "modern";
   return (
     <div className={cn("newspaper-bg flex flex-col gap-0", montserrat.className)} style={{ background: "#f5f5e5" }}>
       {/* 顶部区：三列flex布局，左右文字底部对齐，图片居中 */}
@@ -58,6 +59,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
         }}
       >
         <AIEditable
+          seqId={`${seqIdPrefix}_leftTop`}
           value={content.leftTop}
           onChange={val => onContentChange("leftTop", val)}
           className="editable text-xs text-neutral-700"
@@ -86,6 +88,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
           />
         </div>
         <AIEditable
+          seqId={`${seqIdPrefix}_rightTop`}
           value={content.rightTop}
           onChange={val => onContentChange("rightTop", val)}
           className="editable text-xs text-neutral-700"
@@ -106,6 +109,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
       </div>
       <div className="newspaper-divider" style={{borderTop: '2px solid #222', width: '100%', marginBottom: '4px'}}></div>
       <AIEditable
+        seqId={`${seqIdPrefix}_headline`}
         value={content.headline}
         onChange={val => onContentChange("headline", val)}
         className={cn(
@@ -119,6 +123,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
       <div className="newspaper-divider" style={{borderTop:'4px solid #222', width:'100%', marginBottom:'2px'}}></div>
       <div className="newspaper-divider" style={{borderTop:'4px solid #222', width:'100%', marginBottom:'4px'}}></div>
       <AIEditable
+        seqId={`${seqIdPrefix}_subTitle`}
         value={content.subTitle}
         onChange={val => onContentChange("subTitle", val)}
         className="editable text-center text-lg tracking-[0.3em] uppercase mb-1 text-neutral-900"
@@ -131,6 +136,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
         {/* 左：About me 30% */}
         <div className="flex flex-col justify-start newspaper-border-right" style={{ width: '35%', borderRight: '2px solid #222', paddingRight: '10px', marginRight: '10px' }}>
           <AIEditable
+            seqId={`${seqIdPrefix}_aboutTitle`}
             value={content.aboutTitle}
             onChange={val => onContentChange("aboutTitle", val)}
             className="editable text-xl font-bold"
@@ -139,6 +145,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
             aiTitleMaxChars={content.aiTitleMaxChars}
           />
           <AIEditable
+            seqId={`${seqIdPrefix}_aboutText`}
             value={content.aboutText}
             onChange={val => onContentChange("aboutText", val)}
             className="editable text-[0.95rem] leading-relaxed flex-1 text-neutral-900"
@@ -187,6 +194,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
         <div className="flex flex-col items-center justify-center px-2">
           <div className="w-full h-[260px] flex flex-col items-center justify-center newspaper-border-all" style={{border:'1.5px solid #222', borderRadius:'12px', padding:'12px'}}>
             <AIEditable
+              seqId={`${seqIdPrefix}_dateDay`}
               value={content.dateDay}
               onChange={val => onContentChange("dateDay", val)}
               className="editable text-3xl font-bold leading-tight mb-1 mt-2 text-center text-neutral-900"
@@ -194,6 +202,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
               aiTitleMaxChars={content.aiTitleMaxChars}
             />
             <AIEditable
+              seqId={`${seqIdPrefix}_dateMonth`}
               value={content.dateMonth}
               onChange={val => onContentChange("dateMonth", val)}
               className="editable text-3xl font-bold leading-tight mb-2 text-center text-neutral-900"
@@ -201,6 +210,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
               aiTitleMaxChars={content.aiTitleMaxChars}
             />
             <AIEditable
+              seqId={`${seqIdPrefix}_addr1`}
               value={content.addr1}
               onChange={val => onContentChange("addr1", val)}
               className="editable text-base mb-2 text-center text-neutral-900"
@@ -208,6 +218,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
               aiTitleMaxChars={content.aiTitleMaxChars}
             />
             <AIEditable
+              seqId={`${seqIdPrefix}_addr2`}
               value={content.addr2}
               onChange={val => onContentChange("addr2", val)}
               className="editable text-base mb-2 text-center text-neutral-900"
@@ -215,6 +226,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
               aiTitleMaxChars={content.aiTitleMaxChars}
             />
             <AIEditable
+              seqId={`${seqIdPrefix}_addr3`}
               value={content.addr3}
               onChange={val => onContentChange("addr3", val)}
               className="editable text-base mb-2 text-center text-neutral-900"
@@ -223,6 +235,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
             />
             <div className="newspaper-divider" style={{borderTop:'1.5px dashed #222', width:'100%', margin:'16px 0 6px 0'}}></div>
             <AIEditable
+              seqId={`${seqIdPrefix}_dateTime`}
               value={content.dateTime}
               onChange={val => onContentChange("dateTime", val)}
               className="editable text-base text-center text-neutral-900"
@@ -234,6 +247,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
         {/* 右：Join us! */}
         <div className="flex flex-col newspaper-border-left" style={{borderLeft:'2px solid #222', paddingLeft:'16px'}}>
           <AIEditable
+            seqId={`${seqIdPrefix}_joinTitle`}
             value={content.joinTitle}
             onChange={val => onContentChange("joinTitle", val)}
             className="editable text-xl font-bold"
@@ -242,6 +256,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
             aiTitleMaxChars={content.aiTitleMaxChars}
           />
           <AIEditable
+            seqId={`${seqIdPrefix}_joinText`}
             value={content.joinText}
             onChange={val => onContentChange("joinText", val)}
             className="editable text-[0.95rem] leading-relaxed flex-1 text-neutral-900"
