@@ -35,7 +35,7 @@ export const EditCache: React.FC<EditCacheProps> = ({ templateType, content, onI
     a.href = url;
     a.download = `newspaper_${templateType}.json`;
     a.click();
-    URL.revokeObjectURL(url);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
 
   // Import JSON
@@ -71,4 +71,52 @@ export const EditCache: React.FC<EditCacheProps> = ({ templateType, content, onI
       {children}
     </div>
   );
-}; 
+};
+
+/**
+ * 独立的JSON导出函数
+ * @param templateType
+ * @param content
+ */
+export function exportNewspaperJSON(templateType: TemplateType, content: Record<string, string>) {
+  const data: NewspaperCache = { templateType, content };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `newspaper_${templateType}.json`;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+/**
+ * 独立的JSON导入函数
+ * @param file 选择的文件
+ * @param onSuccess 成功回调，参数为 NewspaperCache
+ * @param onError 失败回调，参数为错误信息
+ */
+export function importNewspaperJSON(
+  file: File,
+  onSuccess: (data: NewspaperCache) => void,
+  onError: (errMsg: string) => void
+) {
+  if (!file) {
+    onError('No file selected');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try {
+      const data = JSON.parse(ev.target?.result as string);
+      if (data.templateType && data.content && typeof data.content === 'object') {
+        onSuccess(data);
+        localStorage.setItem(`newspaper_template_${data.templateType}`, JSON.stringify(data));
+      } else {
+        onError('JSON structure is incorrect');
+      }
+    } catch {
+      onError('Parse failed');
+    }
+  };
+  reader.readAsText(file);
+} 

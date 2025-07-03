@@ -10,6 +10,7 @@ import Image from "next/image";
 import { usePathname } from 'next/navigation';
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { AIEditableProvider } from "@/components/AIEditableContext";
+import { exportNewspaperJSON, importNewspaperJSON } from "@/components/edit-cache";
 
 export function Hero() {
   const [template, setTemplate] = useState<"simple" | "modern">("simple");
@@ -31,6 +32,8 @@ export function Hero() {
   const exportBtnRef = useRef<HTMLButtonElement>(null);
   const exportMenuRef = useRef<HTMLDivElement>(null);
   const [exportingWEBP, setExportingWEBP] = useState(false);
+  // JSON导入相关ref
+  const jsonInputRef = useRef<HTMLInputElement>(null);
 
   const templates = [...appConfig.newspaperTemplates].sort((a, b) => (b.top ? 1 : 0) - (a.top ? 1 : 0));
   const [selectedKey, setSelectedKey] = useState<string>(template);
@@ -278,20 +281,6 @@ export function Hero() {
     }
   }, [selectedKey, prepareForExport, restoreAfterExport, areaRef]);
   useEffect(() => {
-    const onFocus = () => setPageFocused(true);
-    const onBlur = () => setPageFocused(false);
-    const onVisibilityChange = () => setPageFocused(document.visibilityState === 'visible' && document.hasFocus());
-    window.addEventListener('focus', onFocus);
-    window.addEventListener('blur', onBlur);
-    document.addEventListener('visibilitychange', onVisibilityChange);
-    setPageFocused(document.visibilityState === 'visible' && document.hasFocus());
-    return () => {
-      window.removeEventListener('focus', onFocus);
-      window.removeEventListener('blur', onBlur);
-      document.removeEventListener('visibilitychange', onVisibilityChange);
-    };
-  }, []);
-  useEffect(() => {
     if (!exportMenuOpen) return;
     function handleClickOutside(event: MouseEvent) {
       const btn = exportBtnRef.current;
@@ -305,6 +294,54 @@ export function Hero() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [exportMenuOpen]);
+
+  // JSON导出
+  const handleExportJSON = useCallback(() => {
+    try {
+      // 只导出字符串字段，保留number类型字段
+      const data = template === 'simple'
+        ? Object.fromEntries(Object.entries(simpleContent).filter(([k, v]) => typeof v === 'string')) as Record<string, string>
+        : Object.fromEntries(Object.entries(modernContent).filter(([k, v]) => typeof v === 'string')) as Record<string, string>;
+      exportNewspaperJSON(template, data);
+    } catch (e) {
+      setExportError('Your Downloading maybe failed, please check or try again');
+    }
+  }, [template, simpleContent, modernContent]);
+
+  // JSON导入
+  const handleImportJSON = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    importNewspaperJSON(
+      file!,
+      (data) => {
+        if (data.templateType === 'simple') {
+          setTemplate('simple');
+          setSelectedKey('simple');
+          setSimpleContent(prev => ({
+            ...prev,
+            ...data.content,
+            aiTitleMaxChars: prev.aiTitleMaxChars,
+            aiMaxChars: prev.aiMaxChars
+          }));
+        } else if (data.templateType === 'modern') {
+          setTemplate('modern');
+          setSelectedKey('modern');
+          setModernContent(prev => ({
+            ...prev,
+            ...data.content,
+            aiTitleMaxChars: prev.aiTitleMaxChars,
+            aiMaxChars: prev.aiMaxChars
+          }));
+        } else {
+          setExportError('JSON structure is incorrect');
+        }
+      },
+      (errMsg) => {
+        setExportError(errMsg || 'Your Downloading maybe failed, please check or try again');
+      }
+    );
+    e.target.value = '';
+  }, []);
 
   return (
     <>
@@ -368,7 +405,7 @@ export function Hero() {
         <div className="flex flex-col items-center mt-[-40px] mr-8">
           {/* 操作区：社交图标+导出按钮 */}
           <div className="mb-2 w-full max-w-[700px] px-8 flex flex-row justify-between items-center">
-            {/* 社交图标区 */}
+            {/* 社交图标区 TODO */}
             <div className="flex flex-row">
               {Array.isArray(appConfig.socialIcons) && appConfig.socialIcons.length > 0 && appConfig.socialIcons.map(icon => {
                 const iconKey = icon.key as keyof typeof icons;
@@ -434,6 +471,37 @@ export function Hero() {
                       Beta
                     </span>
                   </button>
+                  {/* 新增JSON导入/导出按钮分区 */}
+                  <div style={{ borderTop: '1px solid #AC62FD' }}>
+                    <button onClick={handleExportJSON} className="flex items-center w-full px-4 py-3 transition hover:bg-neutral-200 dark:hover:bg-neutral-600 text-left relative">
+                      <icons.FileDown className="w-5 h-5 mr-2" />Export JSON
+                      <span
+                        className="absolute right-3 top-1 text-[10px] font-semibold"
+                        style={{ color: '#a855f7', pointerEvents: 'none' }}
+                      >
+                        Beta
+                      </span>
+                    </button>
+                    <button
+                      onClick={() => jsonInputRef.current?.click()}
+                      className="flex items-center w-full px-4 py-3 transition hover:bg-neutral-200 dark:hover:bg-neutral-600 text-left relative"
+                    >
+                      <icons.FileUp className="w-5 h-5 mr-2" />Import JSON
+                      <span
+                        className="absolute right-3 top-1 text-[10px] font-semibold"
+                        style={{ color: '#a855f7', pointerEvents: 'none' }}
+                      >
+                        Beta
+                      </span>
+                    </button>
+                    <input
+                      ref={jsonInputRef}
+                      type="file"
+                      accept="application/json"
+                      style={{ display: 'none' }}
+                      onChange={handleImportJSON}
+                    />
+                  </div>
                 </div>
               )}
             </div>
