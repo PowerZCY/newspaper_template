@@ -13,8 +13,8 @@
     "items": [
       {
         "title": "Quick and Easy to Use",
-        "description": "Edit text directly in the text area and hover over the images to show the upload button in the bottom right corner, then click to upload a new picture.",
-        "iconKey": "Sparkles"
+        "description": "Edit text directly, upload your image if needed, then you can download your newspaper.",
+        "iconKey": "Zap"
       },
       {
         "title": "Totally Free",
@@ -27,18 +27,18 @@
         "iconKey": "BringToFront"
       },
       {
-        "title": "Privacy Assured",
-        "description": "Design worry-free—your data is safely stored in your browser, protecting your privacy with no data shared.",
-        "iconKey": "ShieldUser"
+        "title": "AI-Powered Generation",
+        "description": "Enhance your content with smart AI generation. Ask and get instant results.",
+        "iconKey": "Sparkles"
       },
       {
-        "title": "Download and Share Easily",
-        "description": "Export your newspaper as a high-quality PDF or share it directly online with just a few clicks.",
+        "title": "Easy Download and Share",
+        "description": "Download your newspaper as a image, PDF, or share it online in a few clicks.",
         "iconKey": "Download"
       },
       {
-        "title": "No Design Experience Needed",
-        "description": "Our user-friendly platform makes it easy for anyone to create professional-looking newspapers, regardless of design skills.",
+        "title": "No Design Skills Required",
+        "description": "User-friendly. Anyone can create professional newspapers, no design skills needed.",
         "iconKey": "Palette"
       }
     ]
@@ -55,7 +55,7 @@
       },
       {
         "title": "Customize Your Content",
-        "description": "Edit text directly in the text area and hover over images to upload new ones.",
+        "description": "Edit text directly in the text area and hover over images to upload new ones. You can also use AI to generate text for good editing experience.",
         "iconKey": "Pencil"
       },
       {

@@ -401,78 +401,44 @@ graph TD
   style E fill:#eee,stroke:#333,stroke-width:2;
 ```
 
+### 8.11 对话缓存保留与恢复机制
 
-## 代码修改执行计划
+### 设计思路
+- AI对话消息缓存（localStorage）**只在用户主动点击关闭（X）按钮时清理**。
+- 失焦、切换tab、刷新页面等场景**不会清理缓存**，用户回来后可恢复对话内容。
+- 打开AI对话框时，自动检查本地缓存（key为当前编辑区域id），如有且未过期，则恢复消息流。
+- 每次消息变更都写入缓存，缓存有4小时过期机制。
+- 关闭按钮（X）为唯一清理缓存入口。
 
-### 1. 对话消息流与本地缓存
+### 典型流程
+1. 用户打开AI对话框，检查本地缓存：
+   - 有缓存且未过期：恢复对话消息流。
+   - 无缓存或已过期：初始化空对话。
+2. 用户与AI多轮对话，消息实时写入缓存。
+3. 用户失焦、切换tab、刷新页面，缓存不清理，回来后可继续。
+4. 用户主动点击关闭（X）按钮，清理缓存。
 
-- **新增状态**：在AIEditable组件中为每个对话框维护`messages`（问答消息数组）和`messagesTimestamp`（缓存时间戳）。
-- **缓存机制**：
-  - 打开对话框时，检查并清理过期缓存，初始化空消息数组。
-  - 每次用户或AI消息变更时，自动将`messages`和`messagesTimestamp`写入localStorage，key为`ai_chat_{editableId}`。
-  - 关闭对话框时，清空本地缓存（移除对应key）。
-- **过期策略**：每次读取缓存时，若时间戳超4小时则自动清理。
-
-### 2. 对话框关闭逻辑
-
-- **唯一关闭入口**：只允许通过X按钮关闭AI对话框，其他方式（如点击遮罩、失焦等）全部禁用。
-- **关闭时清理**：关闭时必须清空本地缓存，并重置`messages`状态。
-
-### 3. 问答消息渲染
-
-- **消息区**：在AI对话框中部渲染消息流，用户消息靠右，AI消息靠左，支持滚动。
-- **最小/最大高度**：设置对话框body的最小/最大高度，超出部分出现滚动条。
-
-### 4. 多轮对话流程
-
-- **用户发送**：用户输入提示词，点击发送，立即在右侧追加user消息，进入生成中状态。
-- **AI响应**：AI返回后，左侧追加ai消息，结束生成中状态。
-- **ReGenerate**：点击ReGenerate按钮，自动用最近一次user消息重新发起请求，追加新ai消息。
-
-### 5. 功能按钮区
-
-- **Replace**：将最近一条AI消息内容写入主文本区域（onChange），可选自动关闭对话框。
-- **Copy**：将最近一条AI消息内容复制到剪切板。
-- **ReGenerate**：用最近一条user消息内容重新发起AI请求。
-- **Insert**：本期忽略，不实现。
-
-### 6. 兼容与隔离
-
-- **不影响外部**：AIEditable的主value、onChange、激活管理、AI按钮等逻辑全部保留。
-- **仅对AI对话框内部做增强**，其余区域不做变动。
-
----
-
-## 伪代码结构参考
-
-```tsx
-// 新增状态
-const [messages, setMessages] = useState<AIMessage[]>([]);
-const editableId = useId();
-
-// 打开对话框时
-useEffect(() => {
-  if (showAIModal) {
-    // 检查并清理过期缓存
-    // 初始化messages
-  }
-}, [showAIModal]);
-
-// 关闭对话框时
-const handleCloseModal = () => {
-  // 清空缓存
-  setMessages([]);
-  // 关闭modal
-};
-
-// 发送消息
-const handleSend = () => {
-  // 追加user消息
-  // 请求AI
-  // 追加ai消息
-  // 写入缓存
-};
-
-// Replace/Copy/ReGenerate按钮实现
+### Mermaid流程图
+```mermaid
+graph TD
+  A[用户打开AI对话框] --> B{本地缓存是否存在且未过期}
+  B -- 是 --> C[恢复对话消息流]
+  B -- 否 --> D[初始化空对话]
+  C & D --> E[用户与AI多轮对话]
+  E --> F[每次消息变更写入缓存]
+  F --> G{用户操作}
+  G -- 失焦/切换tab/刷新 --> F
+  G -- 点击关闭X --> H[清理缓存]
+  style B fill:#ffd,stroke:#333,stroke-width:2;
+  style C fill:#bfb,stroke:#333,stroke-width:2;
+  style D fill:#bfb,stroke:#333,stroke-width:2;
+  style E fill:#bbf,stroke:#333,stroke-width:2;
+  style F fill:#f9f,stroke:#333,stroke-width:2;
+  style H fill:#faa,stroke:#333,stroke-width:2;
 ```
+
+### 方案优势
+- 极大提升用户体验，避免因误操作或意外失焦导致对话丢失。
+- 只要不是主动关闭，用户都能恢复对话内容。
+- 缓存过期机制防止本地存储无限增长。
 

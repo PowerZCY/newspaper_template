@@ -30,7 +30,7 @@ export const appConfig = {
       storageKey: 'language-preference-status',
       autoCloseTimeout: 10000,
       expirationDays: 30,
-      storagePrefix: 'REVE-IMAGE'
+      storagePrefix: 'NEWSPAPER_TEMPLATE'
     },
     messageRoot: 'messages',
   },
