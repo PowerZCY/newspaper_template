@@ -92,6 +92,10 @@ export const AIEditable: React.FC<AIEditableProps> = ({
   const [isDragging, setIsDragging] = useState(false);
   // 消息区滚动ref
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  // 复制按钮反馈状态
+  const [copied, setCopied] = useState(false);
+  // 替换按钮反馈状态
+  const [replaced, setReplaced] = useState(false);
   // 触控板/鼠标滚轮支持
   const handleModalBgWheel = (e: React.WheelEvent<HTMLDivElement>) => {
     if (e.target === modalBgRef.current) {
@@ -158,9 +162,10 @@ export const AIEditable: React.FC<AIEditableProps> = ({
   };
 
   // AI generate logic
-  const handleAISubmit = async () => {
-    if (!aiPrompt.trim()) return;
-    const userMsg: AIMessage = { role: 'user', text: aiPrompt, timestamp: Date.now() };
+  const handleAISubmit = async (prompt?: string) => {
+    const realPrompt = (prompt !== undefined ? prompt : aiPrompt).trim();
+    if (!realPrompt) return;
+    const userMsg: AIMessage = { role: 'user', text: realPrompt, timestamp: Date.now() };
     setMessages(prev => [...prev, userMsg]);
     setAILoading(true);
     setAIPrompt("");
@@ -230,11 +235,10 @@ export const AIEditable: React.FC<AIEditableProps> = ({
 
   // ReGenerate
   const handleReGenerate = () => {
+    if (aiLoading) return;
     const lastUser = [...messages].reverse().find(m => m.role === 'user');
     if (lastUser) {
-      setAIPrompt(lastUser.text);
-      // 自动触发handleAISubmit
-      setTimeout(() => handleAISubmit(), 0);
+      handleAISubmit(lastUser.text);
     }
   };
 
@@ -243,6 +247,8 @@ export const AIEditable: React.FC<AIEditableProps> = ({
     const lastAI = [...messages].reverse().find(m => m.role === 'ai');
     if (lastAI) {
       onChange(lastAI.text);
+      setReplaced(true);
+      setTimeout(() => setReplaced(false), 2000);
       // 可选：setShowAIModal(false); setShowAIButton(false);
     }
   };
@@ -252,8 +258,13 @@ export const AIEditable: React.FC<AIEditableProps> = ({
     const lastAI = [...messages].reverse().find(m => m.role === 'ai');
     if (lastAI) {
       navigator.clipboard.writeText(lastAI.text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 3000);
     }
   };
+
+  // 是否存在AI消息
+  const hasAIMessage = messages.some(m => m.role === 'ai');
 
   useEffect(() => {
     if (showAIModal) {
@@ -367,31 +378,35 @@ export const AIEditable: React.FC<AIEditableProps> = ({
                   </div>
                 ))}
               </div>
-              {/* 操作按钮区（移到textarea上方） */}
-              <div className="flex flex-row gap-2 mb-2 select-none">
-                <button
-                  type="button"
-                  className="flex items-center px-3 py-1 rounded border border-neutral-300 bg-white hover:bg-neutral-100 text-sm"
-                  onClick={handleReplace}
-                >
-                  <icons.Replace size={16} className="mr-1" /> Replace
-                </button>
-                <button
-                  type="button"
-                  className="flex items-center px-3 py-1 rounded border border-neutral-300 bg-white hover:bg-neutral-100 text-sm"
-                  onClick={handleCopy}
-                >
-                  <icons.Copy size={16} className="mr-1" /> Copy
-                </button>
-                <button
-                  type="button"
-                  className="flex items-center px-3 py-1 rounded border border-neutral-300 bg-white hover:bg-neutral-100 text-sm"
-                  onClick={handleReGenerate}
-                  disabled={aiLoading || !messages.some(m => m.role === 'user')}
-                >
-                  <icons.RefreshCcw size={16} className="mr-1" /> Retry
-                </button>
-              </div>
+              {/* 操作按钮区（仅有AI消息时显示，否则占位隐藏） */}
+              {hasAIMessage ? (
+                <div className="flex flex-row gap-1 ml-2 mt-[-15px] mb-2 select-none">
+                  <button
+                    type="button"
+                    className="flex items-center justify-center px-2 py-1 rounded hover:bg-white text-sm"
+                    onClick={handleReplace}
+                  >
+                    {replaced ? <icons.ListTodo size={16} className="mr-1 " /> : <icons.Replace size={16} className="mr-1" />} Replace
+                  </button>
+                  <button
+                    type="button"
+                    className="flex items-center justify-center px-1 py-1 rounded hover:bg-white text-sm"
+                    onClick={handleCopy}
+                  >
+                    {copied ? <icons.CheckCheck size={16} className="mr-1" /> : <icons.Copy size={16} className="mr-1" />} Copy
+                  </button>
+                  <button
+                    type="button"
+                    className={`flex items-center justify-center px-1 py-1 rounded hover:bg-white text-sm ${aiLoading ? ' opacity-60 pointer-events-none' : ''}`}
+                    onClick={handleReGenerate}
+                    disabled={aiLoading || !messages.some(m => m.role === 'user')}
+                  >
+                    <icons.RefreshCcw size={16} className="mr-1" /> Retry
+                  </button>
+                </div>
+              ) : (
+                <div className="mb-2" style={{ height: 40 }} />
+              )}
               {/* Modal body: textarea + 发送/停止按钮 */}
               <div className="relative">
                 <textarea
@@ -418,14 +433,14 @@ export const AIEditable: React.FC<AIEditableProps> = ({
                     className="absolute right-1 bottom-2 p-1 w-8 h-8 flex items-center justify-center rounded-full transition bg-transparent hover:bg-neutral-200"
                   >
                     <span className="inline-flex items-center justify-center">
-                      <icons.CircleStop size={20} className="animate-spin" />
+                      <icons.CircleStop size={24} className="animate-spin" />
                     </span>
                   </button>
                 ) : (
                   <button
                     type="button"
                     aria-label="Send"
-                    onClick={handleAISubmit}
+                    onClick={() => handleAISubmit()}
                     disabled={!aiPrompt.trim()}
                     className={`absolute right-1 bottom-2 p-1 w-8 h-8 flex items-center justify-center rounded-full transition bg-transparent hover:bg-neutral-200 ${!aiPrompt.trim() ? 'opacity-60 pointer-events-none' : ''}`}
                   >
@@ -436,22 +451,25 @@ export const AIEditable: React.FC<AIEditableProps> = ({
               {/* 字数/生成中提示 */}
               <div className="flex flex-row justify-between items-center mt-1 select-none text-xs text-purple-500">
                 <span></span>
-                {aiLoading && (
-                  <span
-                    className="ml-auto"
-                    style={{
-                      minWidth: '100px',
-                      textAlign: 'right',
-                      display: 'inline-block',
-                      fontVariantNumeric: 'tabular-nums',
-                      letterSpacing: '0.02em',
-                    }}
-                  >
-                    Generating
-                    <span>{'.'.repeat(dotCount)}</span>
-                    <span style={{ opacity: 0 }}>{'.'.repeat(3 - dotCount)}</span>
-                  </span>
-                )}
+                <span
+                  className="ml-auto"
+                  style={{
+                    minWidth: '100px',
+                    textAlign: 'right',
+                    display: 'inline-block',
+                    fontVariantNumeric: 'tabular-nums',
+                    letterSpacing: '0.02em',
+                    height: '20px',
+                  }}
+                >
+                  {aiLoading ? (
+                    <>
+                      Generating
+                      <span>{'.'.repeat(dotCount)}</span>
+                      <span style={{ opacity: 0 }}>{'.'.repeat(3 - dotCount)}</span>
+                    </>
+                  ) : null}
+                </span>
               </div>
             </div>
           </div>
@@ -459,4 +477,4 @@ export const AIEditable: React.FC<AIEditableProps> = ({
       </div>
     </>
   );
-}; 
+};
