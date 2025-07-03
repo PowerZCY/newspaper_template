@@ -104,7 +104,7 @@
         "titleTags": ["Most Popular"],
         "features": [
           { "description": "All available", "tag": "Premium Version" },
-          { "description": "Unimited for AI-text", "tag": "Beta" },
+          { "description": "Limited 500 credits AI-text", "tooltip": "1 credit = 1 AI conversation" },
           { "description": "Early access to new features" },
           { "description": "Team Support", "tooltip": "You can get our help with priority service support" }
         ],
