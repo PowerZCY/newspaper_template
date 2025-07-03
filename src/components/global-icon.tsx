@@ -45,6 +45,7 @@ const customImageIcons = {
   Yaml: iconFromSVG("/icons/yaml.svg", "Yaml"),
   CSV: iconFromSVG("/icons/csv.svg", "CSV"),
   Txt: iconFromSVG("/icons/txt.svg", "Txt"),
+  FAQ: iconFromSVG("/icons/faq.svg", "FAQ"),
 };
 
 // Helper function to create SVG-based icon components, now accepting LucideProps
