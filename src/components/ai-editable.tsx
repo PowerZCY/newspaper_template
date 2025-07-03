@@ -90,6 +90,8 @@ export const AIEditable: React.FC<AIEditableProps> = ({
   const [shakeX, setShakeX] = useState(false);
   // 遮罩拖动状态
   const [isDragging, setIsDragging] = useState(false);
+  // 消息区滚动ref
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   // 触控板/鼠标滚轮支持
   const handleModalBgWheel = (e: React.WheelEvent<HTMLDivElement>) => {
     if (e.target === modalBgRef.current) {
@@ -134,6 +136,13 @@ export const AIEditable: React.FC<AIEditableProps> = ({
       saveChatToCache(selfId, messages);
     }
   }, [messages, isActive, showAIModal, selfId]);
+
+  // 消息变更后自动滚动到底部
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
+    }
+  }, [messages, showAIModal]);
 
   // Close modal logic
   const handleCloseModal = () => {
@@ -331,7 +340,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
               style={{ minHeight: 320, maxHeight: 600, display: 'flex', flexDirection: 'column' }}
             >
               {/* Modal header: title left, close button right */}
-              <div className="flex items-center justify-between mb-1">
+              <div className="flex items-center justify-between mb-1 border-b border-purple-400 pb-1">
                 <div className="font-bold text-lg text-purple-500">AI Generate</div>
                 <button
                   type="button"
@@ -344,7 +353,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
                 </button>
               </div>
               {/* 消息区 */}
-              <div className="flex-1 overflow-y-auto dialog-body px-2 py-2 mb-2" style={{ minHeight: 200 }}>
+              <div ref={messagesEndRef} className="flex-1 overflow-y-auto dialog-body px-2 py-2 mb-2" style={{ minHeight: 200 }}>
                 {messages.length === 0 && (
                   <div className="text-center text-neutral-400 text-sm">No conversation, start with prompt</div>
                 )}
@@ -357,6 +366,31 @@ export const AIEditable: React.FC<AIEditableProps> = ({
                     </div>
                   </div>
                 ))}
+              </div>
+              {/* 操作按钮区（移到textarea上方） */}
+              <div className="flex flex-row gap-2 mb-2 select-none">
+                <button
+                  type="button"
+                  className="flex items-center px-3 py-1 rounded border border-neutral-300 bg-white hover:bg-neutral-100 text-sm"
+                  onClick={handleReplace}
+                >
+                  <icons.Replace size={16} className="mr-1" /> Replace
+                </button>
+                <button
+                  type="button"
+                  className="flex items-center px-3 py-1 rounded border border-neutral-300 bg-white hover:bg-neutral-100 text-sm"
+                  onClick={handleCopy}
+                >
+                  <icons.Copy size={16} className="mr-1" /> Copy
+                </button>
+                <button
+                  type="button"
+                  className="flex items-center px-3 py-1 rounded border border-neutral-300 bg-white hover:bg-neutral-100 text-sm"
+                  onClick={handleReGenerate}
+                  disabled={aiLoading || !messages.some(m => m.role === 'user')}
+                >
+                  <icons.RefreshCcw size={16} className="mr-1" /> Retry
+                </button>
               </div>
               {/* Modal body: textarea + 发送/停止按钮 */}
               <div className="relative">
@@ -398,31 +432,6 @@ export const AIEditable: React.FC<AIEditableProps> = ({
                     <icons.SendHorizontal size={24} />
                   </button>
                 )}
-              </div>
-              {/* 操作按钮区 */}
-              <div className="flex flex-row gap-2 mt-2 select-none">
-                <button
-                  type="button"
-                  className="flex items-center px-3 py-1 rounded border border-neutral-300 bg-white hover:bg-neutral-100 text-sm"
-                  onClick={handleReplace}
-                >
-                  <icons.Replace size={16} className="mr-1" /> Replace
-                </button>
-                <button
-                  type="button"
-                  className="flex items-center px-3 py-1 rounded border border-neutral-300 bg-white hover:bg-neutral-100 text-sm"
-                  onClick={handleCopy}
-                >
-                  <icons.Copy size={16} className="mr-1" /> Copy
-                </button>
-                <button
-                  type="button"
-                  className="flex items-center px-3 py-1 rounded border border-neutral-300 bg-white hover:bg-neutral-100 text-sm"
-                  onClick={handleReGenerate}
-                  disabled={aiLoading || !messages.some(m => m.role === 'user')}
-                >
-                  <icons.RefreshCcw size={16} className="mr-1" /> Retry
-                </button>
               </div>
               {/* 字数/生成中提示 */}
               <div className="flex flex-row justify-between items-center mt-1 select-none text-xs text-purple-500">
