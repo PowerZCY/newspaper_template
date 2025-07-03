@@ -1,9 +1,9 @@
-import React, { useRef, useState, useId, useEffect } from "react";
 import { useAIEditableContext } from '@/components/AIEditableContext';
 import { AdsAlertDialog } from "@/components/ads-alert-dialog";
 import { globalLucideIcons as icons } from "@/components/global-icon";
-import { handlePastePlainText } from '@/lib/utils';
 import { appConfig } from "@/lib/appConfig";
+import { handlePastePlainText } from '@/lib/utils';
+import React, { useEffect, useRef, useState } from "react";
 
 interface AIEditableProps {
   // HTML div id, for cache key
@@ -75,7 +75,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
   aiMaxChars = 600,
 }) => {
   const { activeId, setActiveId, showAIButton, setShowAIButton, showAIModal, setShowAIModal } = useAIEditableContext();
-  const selfId = seqId || useId();
+  const selfId = seqId;
   const [aiPrompt, setAIPrompt] = useState("");
   const [aiLoading, setAILoading] = useState(false);
   const [abortController, setAbortController] = useState<AbortController | null>(null);

@@ -22,7 +22,7 @@ export function Hero() {
   const [closedAds, setClosedAds] = useState<string[]>([]);
   const [exportingImg, setExportingImg] = useState(false);
   const [exportingPDF, setExportingPDF] = useState(false);
-  const [pageFocused, setPageFocused] = useState(true);
+  const [pageFocused, _setPageFocused] = useState(true);
   const [exportError, setExportError] = useState<string | null>(null);
   const globalImgInputRef = useRef<HTMLInputElement>(null);
   const [pendingImgUpload, setPendingImgUpload] = useState<null | { type: string; key: string; cb: (file: File) => void }>(null);
@@ -34,6 +34,9 @@ export function Hero() {
   const [exportingWEBP, setExportingWEBP] = useState(false);
   // JSON导入相关ref
   const jsonInputRef = useRef<HTMLInputElement>(null);
+
+  const errorMsg1 = "Your download may time out. Please check your connection or try again.";
+  const errorMsg2 = "Your download may have failed. Please check and try again.";
 
   const templates = [...appConfig.newspaperTemplates].sort((a, b) => (b.top ? 1 : 0) - (a.top ? 1 : 0));
   const [selectedKey, setSelectedKey] = useState<string>(template);
@@ -145,7 +148,7 @@ export function Hero() {
     setExportingWEBP(true);
     const timeoutId = setTimeout(() => {
       setExportingWEBP(false);
-      setExportError('Your Downloading maybe timeout, please check or try again!');
+      setExportError(errorMsg1);
     }, 10000);
     try {
       await prepareForExport();
@@ -182,19 +185,19 @@ export function Hero() {
         } catch (e) {
           console.error(e);
           setExportingWEBP(false);
-          setExportError('Your Downloading maybe failed, please check or try again');
+          setExportError(errorMsg2);
           clearTimeout(timeoutId);
         }
       };
       img.onerror = function() {
         setExportingWEBP(false);
-        setExportError('Your Downloading maybe failed, please check or try again');
+        setExportError('errorMsg2');
         clearTimeout(timeoutId);
       };
     } catch (e) {
       console.error(e);
       setExportingWEBP(false);
-      setExportError('Your Downloading maybe failed, please check or try again');
+      setExportError('errorMsg2');
       clearTimeout(timeoutId);
     }
   };
@@ -209,7 +212,7 @@ export function Hero() {
       setExportingJPEG(false);
       setExportingSVG(false);
       setExportingPDF(false);
-      setExportError('Your Downloading maybe timeout, please check or try again!');
+      setExportError(errorMsg1);
       // 10s超时
     }, 10000);
     let finished = false;
@@ -224,7 +227,7 @@ export function Hero() {
       clearTimeout(timeoutId);
       clearTimeout(pdfTimeoutId);
       if (isTimeout) {
-        setExportError('Your Downloading maybe timeout, please check or try again!');
+        setExportError(errorMsg1);
       }
     };
     const pdfTimeoutId = setTimeout(() => {
@@ -277,7 +280,7 @@ export function Hero() {
     } catch (e) {
       console.error(e);
       finish();
-      setExportError('Your Downloading maybe failed, please check or try again');
+      setExportError('errorMsg2');
     }
   }, [selectedKey, prepareForExport, restoreAfterExport, areaRef]);
   useEffect(() => {
@@ -300,11 +303,12 @@ export function Hero() {
     try {
       // 只导出字符串字段，保留number类型字段
       const data = template === 'simple'
-        ? Object.fromEntries(Object.entries(simpleContent).filter(([k, v]) => typeof v === 'string')) as Record<string, string>
-        : Object.fromEntries(Object.entries(modernContent).filter(([k, v]) => typeof v === 'string')) as Record<string, string>;
+        ? Object.fromEntries(Object.entries(simpleContent).filter(([_k, v]) => typeof v === 'string')) as Record<string, string>
+        : Object.fromEntries(Object.entries(modernContent).filter(([_k, v]) => typeof v === 'string')) as Record<string, string>;
       exportNewspaperJSON(template, data);
     } catch (e) {
-      setExportError('Your Downloading maybe failed, please check or try again');
+      console.error(e);
+      setExportError('errorMsg2');
     }
   }, [template, simpleContent, modernContent]);
 
@@ -337,7 +341,7 @@ export function Hero() {
         }
       },
       (errMsg) => {
-        setExportError(errMsg || 'Your Downloading maybe failed, please check or try again');
+        setExportError(errMsg || 'errorMsg2');
       }
     );
     e.target.value = '';
@@ -348,7 +352,7 @@ export function Hero() {
       <AdsAlertDialog
         open={!!exportError}
         onOpenChange={open => { if (!open) setExportError(null); }}
-        title="Download message"
+        title="Downloading"
         description={exportError}
         imgSrc="/ads/Ad-Pollo.webp"
         imgHref="https://pollo.ai/home?ref=mzmzndj&tm_news=news"
