@@ -8,7 +8,7 @@ export async function POST(req: Request) {
   // TODO: DPA
   console.warn('[NewsUI]', { prompt, maxChars });
   const limitMaxChars = Math.min(appConfig.newsAI.limitMaxChars, maxChars);
-  const fullPrompt = `${prompt}\nResult no more than ${limitMaxChars} characters, just in pure plain text without any character count`;
+  const fullPrompt = `${prompt}\nResult no more than ${limitMaxChars} characters, and as short and clear as possible, just in pure plain text without any text style or any character count`;
   
   const modelName = appConfig.newsAI.modelName;
   const enableMock = appConfig.newsAI.enableMock;

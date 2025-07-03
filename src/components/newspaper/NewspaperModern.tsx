@@ -139,7 +139,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
             seqId={`${seqIdPrefix}_aboutTitle`}
             value={content.aboutTitle}
             onChange={val => onContentChange("aboutTitle", val)}
-            className="editable text-xl font-bold"
+            className="editable text-xl font-extrabold"
             style={{borderBottom:'3px solid #222', marginBottom:'8px', paddingBottom:'4px', color:'#222'}}
             type="title"
             aiTitleMaxChars={content.aiTitleMaxChars}
@@ -250,7 +250,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
             seqId={`${seqIdPrefix}_joinTitle`}
             value={content.joinTitle}
             onChange={val => onContentChange("joinTitle", val)}
-            className="editable text-xl font-bold"
+            className="editable text-xl font-extrabold"
             style={{borderBottom:'3px solid #222', marginBottom:'8px', paddingBottom:'4px', color:'#222'}}
             type="title"
             aiTitleMaxChars={content.aiTitleMaxChars}

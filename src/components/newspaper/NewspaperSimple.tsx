@@ -119,7 +119,7 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
             seqId={`${seqIdPrefix}_sideTitle`}
             value={content.sideTitle}
             onChange={val => onContentChange("sideTitle", val)}
-            className="editable text-xs font-bold tracking-wide leading-tight mb-1 text-neutral-900"
+            className="editable text-xs font-extrabold tracking-wide leading-tight mb-1 text-neutral-900"
             aiPromptDefault=""
             type="title"
             aiTitleMaxChars={content.aiTitleMaxChars}
@@ -156,7 +156,7 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
             seqId={`${seqIdPrefix}_bottomTitle`}
             value={content.bottomTitle}
             onChange={val => onContentChange("bottomTitle", val)}
-            className="editable text-xs font-bold tracking-wide leading-tight mb-1 text-neutral-900"
+            className="editable text-xs font-extrabold tracking-wide leading-tight mb-1 text-neutral-900"
             aiPromptDefault=""
             type="title"
             aiTitleMaxChars={content.aiTitleMaxChars}

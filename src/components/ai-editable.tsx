@@ -371,7 +371,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
                 {messages.map((msg, idx) => (
                   <div key={idx} className={`flex mb-2 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                     <div
-                      className={`max-w-[80%] px-3 py-2 rounded-lg shadow text-sm whitespace-pre-line ${msg.role === 'user' ? 'bg-purple-100 text-right' : 'bg-white border'}`}
+                      className={`max-w-[80%] px-3 py-2 rounded-lg shadow text-sm whitespace-pre-line ${msg.role === 'user' ? 'bg-purple-100' : 'bg-white'}`}
                     >
                       {msg.text}
                     </div>
@@ -423,7 +423,6 @@ export const AIEditable: React.FC<AIEditableProps> = ({
                     const maxHeight = 200;
                     ta.style.height = Math.min(ta.scrollHeight, maxHeight) + 'px';
                   }}
-                  maxLength={aiMaxChars}
                 />
                 {aiLoading ? (
                   <button
