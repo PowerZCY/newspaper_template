@@ -18,7 +18,7 @@
       },
       {
         "title": "Totally Free",
-        "description": "Enjoy full access to all features at no cost. No hidden fees, no subscriptions—just free, unlimited creativity. No watermark—free to use for commercial purposes.",
+        "description": "All features are completely free to use. Upgrade to a paid plan only if you need AI-powered text polishing.",
         "iconKey": "Gift"
       },
       {
@@ -70,8 +70,8 @@
     "subtitle": "Get the best of Raphael AI with faster generation and commercial usage",
     "billingSwitch": {
       "options": [
-        { "key": "monthly", "name": "Monthly", "unit": "/month", "discountText": "" },
-        { "key": "yearly", "name": "Yearly", "unit": "/month", "discountText": "Save {percent}%" }
+        { "key": "monthly", "name": "Monthly", "unit": "/month", "discountText": "", "subTitle": "Billed Monthly" },
+        { "key": "yearly", "name": "Yearly", "unit": "/month", "discountText": "Save {percent}%", "subTitle": "Billed Annually" }
       ],
       "defaultKey": "yearly"
     },
@@ -79,8 +79,6 @@
       {
         "key": "free",
         "title": "Free Version",
-        "titleTags": ["ZCY"],
-        "subTitle": "Billed Annually",
         "features": [
           { "description": "Access to all templates" },
           { "description": "Unlimited editing and customization"},
@@ -93,14 +91,10 @@
       {
         "key": "premium",
         "title": "Premium Version",
-        "titleTags": ["Most Popular"],
-        "subTitle": "Billed Annually",
         "features": [
           { "description": "All available", "tag": "Free Version" },
           { "description": "UnLimited for Export/Import" },
-          { "description": "Limited 200 credits for AI-text" },
-          { "description": "Limited 20 credits for AI-image", "tag": "New" },
-          { "description": "Surport share to X, Instagram", "tag": "Beta" }
+          { "description": "Limited 200 credits for AI-text", "tooltip": "1 credit = 1 AI conversation" }
         ],
         "button": { "text": "Upgrade to Premium" }
       },
@@ -108,13 +102,11 @@
         "key": "ultimate",
         "title": "Ultimate Version",
         "titleTags": ["Most Popular"],
-        "subTitle": "Billed Annually",
         "features": [
           { "description": "All available", "tag": "Premium Version" },
           { "description": "Unimited for AI-text", "tag": "Beta" },
-          { "description": "200 credits for AI-image", "tag": "New" },
           { "description": "Early access to new features" },
-          { "description": "Dedicated Service Support" }
+          { "description": "Team Support", "tooltip": "You can get our help with priority service support" }
         ],
         "button": { "text": "Upgrade to Ultimate" }
       }
@@ -130,7 +122,7 @@
       },
       {
         "question": "Is the newspaper template website free to use?",
-        "answer": "Yes, our newspaper template website is completely free! Access all features—templates, editing tools, and watermark-free downloads—without any cost or hidden fees. Perfect for commercial use!"
+        "answer": "Yes, using our newspaper template website is completely free! You can enjoy all features, including templates, editing tools, and watermark-free downloads at no cost. If you’d like to generate text with AI, simply upgrade to a paid plan. "
       },
       {
         "question": "How do I edit the text and images?",

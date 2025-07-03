@@ -35,6 +35,7 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
       name: string
       unit: string
       discountText: string
+      subTitle?: string
     }>
     defaultKey: string
   }
@@ -78,6 +79,8 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
   // 价格渲染逻辑
   function renderPrice(plan: any) {
     const priceValue = prices[plan.key];
+    // 当前计费周期的 subTitle
+    const billingSubTitle = billingSwitch.options.find((opt: any) => opt.key === billingKey)?.subTitle || '';
     // 非数字（如 'Custom'）直接展示
     if (typeof priceValue !== 'number' || isNaN(priceValue)) {
       return (
@@ -86,8 +89,8 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
             <span className="text-4xl font-extrabold text-gray-900 dark:text-gray-100">{priceValue}</span>
           </div>
           <div className="flex items-center gap-2 min-h-[24px] mt-1">
-            <span className={clsx('text-xs text-gray-700 dark:text-gray-300 font-medium', !plan.subTitle && 'opacity-0 select-none')}>
-              {plan.subTitle || ''}
+            <span className={clsx('text-xs text-gray-700 dark:text-gray-300 font-medium', !billingSubTitle && 'opacity-0 select-none')}>
+              {billingSubTitle || ''}
             </span>
           </div>
         </div>
@@ -105,7 +108,7 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
     if (hasDiscount && currentBillingDisplay.discountText) {
       discountText = currentBillingDisplay.discountText.replace('{percent}', String(Math.round(Math.abs(discount) * 100)))
     }
-    const subTitle = plan.subTitle || ''
+    const subTitle = billingSubTitle
     // 价格为负时显示NaN
     const showNaN = saleValue < 0
     return (
@@ -126,7 +129,7 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
               )}
             </>
           )}
-          <span className={clsx('text-xs text-gray-700 dark:text-gray-300 font-medium', !subTitle && 'opacity-0 select-none')}>{subTitle || '占位'}</span>
+          <span className={clsx('text-xs text-gray-700 dark:text-gray-300 font-medium', !subTitle && 'opacity-0 select-none')}>{subTitle || ''}</span>
         </div>
       </div>
     )
@@ -187,7 +190,7 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
           {(() => {
             const opt = billingSwitch.options.find((opt: any) => opt.key === 'monthly');
             const bOpt = billingOptions.find((opt: any) => opt.key === 'monthly');
-            if (!(opt && bOpt && opt.discountText && bOpt.discount !== 0)) return <span className="min-w-[80px] px-2 py-1 text-xs rounded invisible">占位</span>;
+            if (!(opt && bOpt && opt.discountText && bOpt.discount !== 0)) return <span className="min-w-[80px] px-2 py-1 text-xs rounded invisible"></span>;
             return (
               <span className={clsx(
                 "min-w-[80px] px-2 py-1 text-xs rounded bg-yellow-100 text-yellow-800 font-semibold align-middle text-center inline-flex items-center justify-center whitespace-nowrap",
@@ -220,7 +223,7 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
           {(() => {
             const opt = billingSwitch.options.find((opt: any) => opt.key === 'yearly');
             const bOpt = billingOptions.find((opt: any) => opt.key === 'yearly');
-            if (!(opt && bOpt && opt.discountText && bOpt.discount !== 0)) return <span className="min-w-[80px] px-2 py-1 text-xs rounded invisible">占位</span>;
+            if (!(opt && bOpt && opt.discountText && bOpt.discount !== 0)) return <span className="min-w-[80px] px-2 py-1 text-xs rounded invisible"></span>;
             return (
               <span className={clsx(
                 "min-w-[80px] px-2 py-1 text-xs rounded bg-yellow-100 text-yellow-800 font-semibold align-middle text-center inline-flex items-center justify-center whitespace-nowrap",
@@ -262,15 +265,13 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
               {getFeatureRows(plan).map((feature: any, i: number) => (
                 <li key={i} className="flex items-center gap-2 mb-2 min-h-[28px]">
                   {/* icon */}
-                  <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200 mr-1">
-                    {feature && feature.icon ? (
-                      <span>{feature.icon}</span>
-                    ) : feature ? (
-                      <span className="font-bold">✓</span>
-                    ) : (
-                      <span>&nbsp;</span>
-                    )}
-                  </span>
+                  {feature ? (
+                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200 mr-1">
+                      {feature.icon ? <span>{feature.icon}</span> : <span className="font-bold">✓</span>}
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full mr-1">&nbsp;</span>
+                  )}
                   {/* tag */}
                   {feature && feature.tag && (
                     <span className="px-1 py-0.5 text-[6px] rounded bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 font-semibold align-middle">{feature.tag}</span>
