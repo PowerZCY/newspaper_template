@@ -246,7 +246,7 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
               'hover:border-2 hover:border-purple-500',
               'focus-within:border-2 focus-within:border-purple-500'
             )}
-            style={{ minHeight: 520 }}
+            style={{ minHeight: maxFeaturesCount*100 }}
           >
             {/* 主标题和tag */}
             <div className="flex items-center gap-2 mb-2">
@@ -273,11 +273,11 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
                   </span>
                   {/* tag */}
                   {feature && feature.tag && (
-                    <span className="px-1.5 py-0.5 text-[10px] rounded bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 font-semibold align-middle mr-1">{feature.tag}</span>
+                    <span className="px-1 py-0.5 text-[6px] rounded bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 font-semibold align-middle">{feature.tag}</span>
                   )}
                   {/* 描述+tooltip */}
                   {feature ? (
-                    <span className="relative group cursor-pointer text-gray-800 dark:text-gray-200">
+                    <span className="relative group cursor-pointer text-sm text-gray-800 dark:text-gray-200">
                       {feature.description}
                       {feature.tooltip && (
                         <span

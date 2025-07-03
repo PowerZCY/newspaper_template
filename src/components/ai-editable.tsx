@@ -3,7 +3,6 @@ import { useAIEditableContext } from '@/components/AIEditableContext';
 import { AdsAlertDialog } from "@/components/ads-alert-dialog";
 import { globalLucideIcons as icons } from "@/components/global-icon";
 import { handlePastePlainText } from '@/lib/utils';
-import { viewModelName } from '@/lib/appConfig';
 
 interface AIEditableProps {
   value: string;
@@ -200,7 +199,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
             >
               {/* Modal header: title left, close button right */}
               <div className="flex items-center justify-between mb-1">
-                <div className="font-bold text-lg text-purple-500">AI Generate Model ({viewModelName})</div>
+                <div className="font-bold text-lg text-purple-500">AI Generate</div>
                 <button
                   type="button"
                   className="p-2 rounded-full hover:bg-neutral-200 transition"

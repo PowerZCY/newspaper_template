@@ -115,15 +115,15 @@ export const appConfig = {
   ] as SocialIcon[],
   pricePlan: {
     billingOptions: [
-      { key: 'monthly', discount: -0.25 },
-      { key: 'yearly', discount: 0.16 }
+      { key: 'monthly', discount: 0 },
+      { key: 'yearly', discount: 0.20 }
     ],
     prices: {
-      premium: 9,
-      ultimate: 24,
-      enterprise: 'Custom'
+      free: 'Free',
+      premium: 10,
+      ultimate: 20,
     },
-    minPlanFeaturesCount: 3
+    minPlanFeaturesCount: 4
   }
 };
 
