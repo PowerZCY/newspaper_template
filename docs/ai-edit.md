@@ -200,7 +200,7 @@ flowchart TD
 #### 3. AIEditable 组件内部逻辑
 
 - 每个 `AIEditable` 组件内部用 `useId()` 生成唯一的 `selfId`。
-- 当你点击某个AIEditable区域时，调用 `setActiveId(selfId)`，把自己设为“当前激活”。
+- 当你点击某个AIEditable区域时，调用 `setActiveId(selfId)`，把自己设为"当前激活"。
 - 组件内部通过 `activeId === selfId` 判断自己是否是当前激活的，如果是，则显示AI对话框，否则不显示。
 - 这样无论页面有多少个AIEditable，**同一时刻只有一个的对话框会显示**。
 
@@ -235,4 +235,150 @@ graph TD
 - **AIEditableContext** 负责全局唯一激活状态的管理。
 - **AIEditable** 通过 Context 判断自己是否被激活，从而决定是否显示AI对话框。
 - 这样设计可以让任意数量的AIEditable组件在页面上共存，但同一时刻只会有一个AI对话框弹出，用户体验一致且不会混乱。
+
+---
+
+## 8. AI连续对话问答对话框技术实现方案
+
+### 8.1 设计目标
+- 支持用户与AI进行多轮连续对话，形成问答消息流。
+- 每次用户发送提示词后，立即在对话框右侧显示用户消息，AI响应后在左侧显示AI消息。
+- 保留原有标题、关闭按钮、提示词输入区、发送/生成中按钮等设计。
+- 对话消息本地缓存，防止误操作丢失。
+- 对话框底部固定一排操作按钮：替换（Replace）、复制（Copy）、重新生成（ReGenerate）。
+- 对话框有最小/最大高度，内容超出时出现滚动条。
+- 关闭对话框仅允许通过X按钮。
+
+### 8.2 界面结构
+- **顶部**：标题 + 关闭（X）按钮。
+- **中部**：对话消息区（左AI/右用户气泡，支持滚动）。
+- **底部**：
+  - 提示词输入区（textarea，保留原有自适应高度、最大长度等特性）。
+  - 操作按钮区（Replace、Copy、ReGenerate，Insert本期忽略）。
+
+### 8.3 消息存储与本地缓存
+- 每个AIEditable区域维护一组对话消息（数组），结构如下：
+```ts
+// 单条消息结构
+interface AIMessage {
+  role: 'user' | 'ai';
+  text: string;
+  timestamp: number;
+}
+
+// 区域对话缓存结构
+interface AIChatCache {
+  editableId: string; // 唯一id
+  messages: AIMessage[];
+}
+```
+- 本地缓存key建议：`ai_chat_{editableId}`。
+- 每次对话消息变更（发送/响应/重新生成）后，自动序列化存入localStorage。
+- 关闭对话框时不清空缓存，便于下次打开继续。
+
+### 8.4 发送与响应流程
+1. 用户输入提示词，点击发送：
+   - 立即将用户消息（role: 'user'）追加到消息数组，渲染在右侧。
+   - 发送请求到后端，进入生成中状态。
+2. 后端响应成功：
+   - 将AI消息（role: 'ai'）追加到消息数组，渲染在左侧。
+   - 生成中状态结束。
+3. 失败时可弹出错误提示。
+
+#### 伪代码示例：
+```ts
+// 发送消息
+function sendUserPrompt(prompt: string) {
+  addMessage({ role: 'user', text: prompt, timestamp: Date.now() });
+  setLoading(true);
+  fetch('/api/ai-generate', { ... })
+    .then(res => res.json())
+    .then(data => {
+      addMessage({ role: 'ai', text: data.text, timestamp: Date.now() });
+      setLoading(false);
+      saveChatToCache();
+    })
+    .catch(() => setLoading(false));
+}
+
+function addMessage(msg: AIMessage) {
+  setMessages(prev => [...prev, msg]);
+  saveChatToCache();
+}
+
+function saveChatToCache() {
+  localStorage.setItem(`ai_chat_${editableId}`, JSON.stringify(messages));
+}
+
+function loadChatFromCache() {
+  const raw = localStorage.getItem(`ai_chat_${editableId}`);
+  return raw ? JSON.parse(raw) : [];
+}
+```
+
+### 8.5 操作按钮功能
+- **Replace（替换）**：将最近一条AI消息的内容写入主文本区域（调用onChange），并可选自动关闭对话框。
+- **Copy（复制）**：将最近一条AI消息内容复制到剪切板。
+- **ReGenerate（重新生成）**：用最近一条用户消息的内容再次发起AI请求，追加新AI消息。
+- **Insert**：本期忽略。
+
+#### 伪代码示例：
+```ts
+// Replace
+function handleReplace() {
+  const lastAI = messages.filter(m => m.role === 'ai').slice(-1)[0];
+  if (lastAI) onChange(lastAI.text);
+}
+// Copy
+function handleCopy() {
+  const lastAI = messages.filter(m => m.role === 'ai').slice(-1)[0];
+  if (lastAI) navigator.clipboard.writeText(lastAI.text);
+}
+// ReGenerate
+function handleReGenerate() {
+  const lastUser = messages.filter(m => m.role === 'user').slice(-1)[0];
+  if (lastUser) sendUserPrompt(lastUser.text);
+}
+```
+
+### 8.6 高度与滚动
+- 对话框设置最小高度（如320px）、最大高度（如600px），超出部分消息区出现滚动条。
+- 提示词输入区与按钮区固定在底部。
+- 可用CSS实现：
+```css
+.dialog-body {
+  min-height: 320px;
+  max-height: 600px;
+  overflow-y: auto;
+}
+```
+
+### 8.7 关闭逻辑
+- 仅允许通过X按钮关闭。
+- 关闭时不清空对话消息缓存。
+- 重新打开时自动加载上次对话。
+
+### 8.8 与AIEditableContext的结合
+- 每个AIEditable区域的对话框只允许一个激活（见前文2.2节）。
+- 对话消息与区域id绑定，互不干扰。
+
+### 8.9 总体流程图
+```mermaid
+sequenceDiagram
+  participant User
+  participant UI as AIEditable
+  participant API as AI后端
+  User->>UI: 输入提示词/点击发送
+  UI->>UI: 追加user消息
+  UI->>API: 请求AI生成
+  API-->>UI: 返回AI内容
+  UI->>UI: 追加ai消息
+  UI->>UI: 保存消息到localStorage
+  User->>UI: 点击Replace/Copy/ReGenerate
+  UI->>UI: 执行对应操作
+  User->>UI: 点击X关闭
+  UI->>UI: 仅关闭对话框，缓存保留
+```
+
+---
 

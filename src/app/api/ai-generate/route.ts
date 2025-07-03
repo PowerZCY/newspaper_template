@@ -8,19 +8,19 @@ export async function POST(req: Request) {
   // TODO: DPA
   console.warn('[NewsUI]', { prompt, maxChars });
   const limitMaxChars = Math.min(appConfig.newsAI.limitMaxChars, maxChars);
-  const fullPrompt = `${prompt}\nResult no more than ${limitMaxChars} characters`;
+  const fullPrompt = `${prompt}\nResult no more than ${limitMaxChars} characters, just in pure plain text without any character count`;
   
   const modelName = appConfig.newsAI.modelName;
   const enableMock = appConfig.newsAI.enableMock;
 
-  if (enableMock !== 'false') {
+  if (enableMock) {
     console.warn('[AI-Mock-Switch]', enableMock);
     // mock mode, return mock data
     if (process.env.NODE_ENV !== 'production' && appConfig.newsAI.enableMockTimeout) {
       // mock timeout 3s
       const timeout = appConfig.newsAI.mockTimeoutSeconds * 1000;
-      await new Promise(resolve => setTimeout(resolve, timeout));
       console.warn(`[AI-Mock-Timeout]${timeout}ms`);
+      await new Promise(resolve => setTimeout(resolve, timeout));
     }
     if (process.env.NODE_ENV !== 'production' && appConfig.newsAI.enableMockAds) {
         // mock ads dialog

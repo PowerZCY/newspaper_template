@@ -87,7 +87,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
       const res = await fetch("/api/ai-generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: aiPrompt, maxChars: aiMaxChars }),
+        body: JSON.stringify({ prompt: aiPrompt, maxChars: maxChars }),
         signal: controller.signal,
       });
       const data = await res.json();
@@ -254,7 +254,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
               </div>
               {/* Character count below textarea */}
               <div className="flex flex-row justify-between items-center mt-1 select-none text-xs text-purple-500">
-                <span>{aiPrompt.length}/{maxChars}</span>
+                <span></span>
                 {aiLoading && (
                   <span
                     className="ml-auto"
