@@ -296,7 +296,7 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
                           }}
                           onMouseLeave={() => setTooltip(t => ({ ...t, show: false }))}
                         >
-                          <icons.ShieldQuestion className="w-4 h-4" />
+                          <icons.FAQ className="w-4 h-4" />
                         </span>
                       )}
                     </span>
