@@ -16,9 +16,6 @@ export default function Home() {
           <section id="hero" className="scroll-mt-40">
             <Hero />
           </section>
-          <section id="pricing" className="scroll-mt-10">
-            <PricePlan />
-          </section>
           <section id="usage" className="scroll-mt-20">
             <Usage />
           </section>
@@ -27,6 +24,9 @@ export default function Home() {
           </section>
           <section id="seo" className="scroll-mt-20">
             <SeoContent />
+          </section>
+          <section id="pricing" className="scroll-mt-10">
+            <PricePlan />
           </section>
           <section id="faq" className="scroll-mt-20">
             <FAQ />

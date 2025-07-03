@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl'
 import clsx from 'clsx'
 import { appConfig } from '@/lib/appConfig'
 import { globalLucideIcons as icons } from '@/components/global-icon'
+import { useRouter } from 'next/navigation';
 
 // 价格类型定义
 interface PricePlanProps {
@@ -40,6 +41,7 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
     defaultKey: string
   }
   const plans = t.raw('plans') as Array<any>
+  const router = useRouter();
 
   // 资金相关配置
   const pricePlanConfig = appConfig.pricePlan as PricePlanAppConfig
@@ -318,6 +320,11 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
               )}
               disabled={plan.button?.disabled}
               type="button"
+              onClick={() => {
+                if (!plan.button?.disabled) {
+                  router.push('/');
+                }
+              }}
             >
               {plan.button?.text || '--'}
             </button>
