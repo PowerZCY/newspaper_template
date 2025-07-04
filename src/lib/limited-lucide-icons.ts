@@ -60,6 +60,7 @@ export {
     Link,
     ListTodo,
     Loader2,
+    Mail,
     MoreHorizontal,
     MousePointerClick,
     PanelLeft,

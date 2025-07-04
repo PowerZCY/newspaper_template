@@ -183,7 +183,9 @@
     "company": "Newspaper Template",
     "copyright": "Copyright © {year} {name} All rights reserved.",
     "privacy": "Privacy Policy",
-    "terms": "Terms of Service"
+    "terms": "Terms of Service",
+    "email": "support@newspaper-template.org",
+    "contactUs": "Contact Us"
   },
   "clerk": {
     "signIn": "Sign In",
