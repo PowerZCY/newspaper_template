@@ -277,6 +277,8 @@ interface AIChatCache {
 - 每个AIEditable区域有且仅有一个独立的对话消息缓存，互不干扰。
 - 每次打开对话框时，都是新建缓存（如有历史缓存先清理再新建），关闭对话框时要清空缓存，避免本地缓存超载！
 - 缓存过期策略：每次写入时记录时间戳，读取时如超4小时则自动清理。
+- **缓存清理机制更新：** 点击X按钮时会清理所有AIEditable区域的缓存（即所有以统一前缀开头的localStorage项），而不是只清理当前区域。这样可以防止历史缓存残留，确保所有AI对话缓存都被彻底清理。
+- **技术实现说明：** 缓存key有统一前缀（如`xxx_AI_CHAT_`），清理时会遍历localStorage，批量删除所有以该前缀开头的项。
 
 ### 8.4 发送与响应流程
 1. 用户输入提示词，点击发送：
@@ -357,8 +359,8 @@ function handleReGenerate() {
 
 ### 8.7 关闭逻辑
 - 仅允许通过X按钮关闭。
-- 关闭时不清空对话消息缓存。
-- 重新打开时自动加载上次对话。
+- 关闭时会清理所有AIEditable区域的对话消息缓存（即所有以统一前缀开头的localStorage项）。
+- 重新打开时自动加载上次对话（如未被清理）。
 
 ### 8.8 与AIEditableContext的结合
 - 每个AIEditable区域的对话框只允许一个激活（见前文2.2节）。
@@ -379,7 +381,7 @@ sequenceDiagram
   User->>UI: 点击Replace/Copy/ReGenerate
   UI->>Cache: 读取最新AI消息
   User->>UI: 点击X关闭
-  UI->>Cache: 清空缓存
+  UI->>Cache: 清空缓存（所有AIEditable区域缓存）
 ```
 
 ### 8.10 数据交互及流向图
@@ -392,7 +394,7 @@ graph TD
   C -->|渲染| M["消息区"]
   M -->|Replace/Copy/ReGenerate| C
   X["关闭按钮"] -->|点击| C
-  C -->|清空缓存| E["缓存清空"]
+  C -->|清空所有缓存| E["缓存清空"]
   style C fill:#f9f,stroke:#333,stroke-width:2;
   style A fill:#bbf,stroke:#333,stroke-width:2;
   style T fill:#ffd,stroke:#333,stroke-width:2;
@@ -409,6 +411,7 @@ graph TD
 - 打开AI对话框时，自动检查本地缓存（key为当前编辑区域id），如有且未过期，则恢复消息流。
 - 每次消息变更都写入缓存，缓存有4小时过期机制。
 - 关闭按钮（X）为唯一清理缓存入口。
+- **缓存清理机制更新：** 关闭按钮（X）会清理所有AIEditable区域的缓存（即所有以统一前缀开头的localStorage项），而不是只清理当前区域。
 
 ### 典型流程
 1. 用户打开AI对话框，检查本地缓存：
@@ -428,7 +431,7 @@ graph TD
   E --> F[每次消息变更写入缓存]
   F --> G{用户操作}
   G -- 失焦/切换tab/刷新 --> F
-  G -- 点击关闭X --> H[清理缓存]
+  G -- 点击关闭X --> H[清理所有缓存]
   style B fill:#ffd,stroke:#333,stroke-width:2;
   style C fill:#bfb,stroke:#333,stroke-width:2;
   style D fill:#bfb,stroke:#333,stroke-width:2;

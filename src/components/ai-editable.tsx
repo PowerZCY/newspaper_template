@@ -32,8 +32,9 @@ type AIMessage = {
 
 // 缓存相关工具
 const CACHE_EXPIRE_MS = 4 * 60 * 60 * 1000; // 4小时
+const CACHE_KEY_PREFIX = `${appConfig.i18n.detector.storagePrefix}_AI_CHAT_`;
 function getCacheKey(id: string) {
-  return `${appConfig.i18n.detector.storagePrefix}_AI_CHAT_${id}`;
+  return `${CACHE_KEY_PREFIX}${id}`;
 }
 
 function saveChatToCache(id: string, messages: AIMessage[]) {
@@ -56,8 +57,17 @@ function loadChatFromCache(id: string): AIMessage[] {
     return [];
   }
 }
-function clearChatCache(id: string) {
-  localStorage.removeItem(getCacheKey(id));
+
+// 清理所有AIEditable区域的缓存
+function clearAllChatCache() {
+  const keysToRemove: string[] = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key && key.startsWith(CACHE_KEY_PREFIX)) {
+      keysToRemove.push(key);
+    }
+  }
+  keysToRemove.forEach(key => localStorage.removeItem(key));
 }
 
 export const AIEditable: React.FC<AIEditableProps> = ({
@@ -157,7 +167,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
       setShowAIButton(false);
       setAIPrompt("");
       setMessages([]);
-      clearChatCache(selfId);
+      clearAllChatCache(); // 关闭时清理所有AIEditable缓存
     }
   };
 
