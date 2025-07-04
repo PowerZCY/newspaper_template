@@ -32,7 +32,7 @@ export function Hero() {
   const exportBtnRef = useRef<HTMLButtonElement>(null);
   const exportMenuRef = useRef<HTMLDivElement>(null);
   const [exportingWEBP, setExportingWEBP] = useState(false);
-  // JSON导入相关ref
+  // JSON import/export ref
   const jsonInputRef = useRef<HTMLInputElement>(null);
 
   const errorMsg1 = "Your download may time out. Please check your connection or try again.";
@@ -100,9 +100,20 @@ export function Hero() {
     e.target.value = '';
     setPendingImgUpload(null);
   };
-  // 导出相关逻辑
+  // Download related logic
   const exportErrorMsg = 'Please refresh page or switch template and try again!';
+  // Reset all export states
+  const resetExportState = useCallback(() => {
+    setExportingImg(false);
+    setExportingJPEG(false);
+    setExportingSVG(false);
+    setExportingPDF(false);
+    setExportingWEBP(false);
+    setExportError(null);
+    restoreAfterExport();
+  }, [restoreAfterExport]);
   const handleExportJPEG = async () => {
+    resetExportState();
     if (!pageFocused) return;
     if (!areaRef.current) {
       setExportError(exportErrorMsg);
@@ -112,6 +123,7 @@ export function Hero() {
     tryExport('jpeg');
   };
   const handleExportPNG = async () => {
+    resetExportState();
     if (!pageFocused) return;
     if (!areaRef.current) {
       setExportError(exportErrorMsg);
@@ -121,6 +133,7 @@ export function Hero() {
     tryExport('png');
   };
   const handleExportSVG = async () => {
+    resetExportState();
     if (!pageFocused) return;
     if (!areaRef.current) {
       setExportError(exportErrorMsg);
@@ -130,6 +143,7 @@ export function Hero() {
     tryExport('svg');
   };
   const handleExportPDF = async () => {
+    resetExportState();
     if (!pageFocused) return;
     if (!areaRef.current) {
       setExportError(exportErrorMsg);
@@ -139,6 +153,7 @@ export function Hero() {
     tryExport('pdf');
   };
   const handleExportWEBP = async () => {
+    resetExportState();
     if (!pageFocused) return;
     if (!areaRef.current) {
       setExportError(exportErrorMsg);
@@ -147,7 +162,7 @@ export function Hero() {
     setExportMenuOpen(false);
     setExportingWEBP(true);
     const timeoutId = setTimeout(() => {
-      setExportingWEBP(false);
+      finishExport('webp', [timeoutId], true);
       setExportError(errorMsg1);
     }, 10000);
     try {
@@ -155,7 +170,7 @@ export function Hero() {
       if (!areaRef.current) throw new Error('Export area lost');
       const domtoimage = await import('dom-to-image-more');
       const dataUrl = await domtoimage.toPng(areaRef.current as HTMLElement, { scale: appConfig.export?.scale || window.devicePixelRatio || 2 });
-      // PNG转WEBP
+      // PNG to WEBP
       const img = new window.Image();
       img.src = dataUrl;
       img.onload = function() {
@@ -174,65 +189,54 @@ export function Hero() {
                 link.click();
                 setTimeout(() => URL.revokeObjectURL(link.href), 1000);
               }
-              setExportingWEBP(false);
-              clearTimeout(timeoutId);
+              finishExport('webp', [timeoutId]);
             }, 'image/webp', 0.95);
           } else {
-            setExportingWEBP(false);
+            finishExport('webp', [timeoutId], true);
             setExportError('Canvas not supported');
-            clearTimeout(timeoutId);
           }
         } catch (e) {
           console.error(e);
-          setExportingWEBP(false);
-          setExportError(errorMsg2);
-          clearTimeout(timeoutId);
+          finishExport('webp', [timeoutId], true);
         }
       };
       img.onerror = function() {
-        setExportingWEBP(false);
-        setExportError('errorMsg2');
-        clearTimeout(timeoutId);
+        finishExport('webp', [timeoutId], true);
       };
     } catch (e) {
       console.error(e);
-      setExportingWEBP(false);
-      setExportError('errorMsg2');
-      clearTimeout(timeoutId);
+      finishExport('webp', [timeoutId], true);
     }
   };
+  const finishExport = useCallback((type: 'png' | 'jpeg' | 'svg' | 'pdf' | 'webp', timeoutIds: NodeJS.Timeout[] = [], isError = false) => {
+    restoreAfterExport();
+    setExportingImg(false);
+    setExportingJPEG(false);
+    setExportingSVG(false);
+    setExportingPDF(false);
+    setExportingWEBP(false);
+    timeoutIds.forEach(id => clearTimeout(id));
+    if (isError) setExportError(errorMsg2);
+  }, [restoreAfterExport]);
   const tryExport = useCallback(async (type: 'png' | 'jpeg' | 'svg' | 'pdf') => {
     if (type === 'png') setExportingImg(true);
     if (type === 'jpeg') setExportingJPEG(true);
     if (type === 'svg') setExportingSVG(true);
     if (type === 'pdf') setExportingPDF(true);
     const timeoutId = setTimeout(() => {
-      restoreAfterExport();
-      setExportingImg(false);
-      setExportingJPEG(false);
-      setExportingSVG(false);
-      setExportingPDF(false);
+      finishExport(type, [timeoutId, pdfTimeoutId], true);
       setExportError(errorMsg1);
-      // 10s超时
+      // 10s timeout
     }, 10000);
     let finished = false;
-    const finish = (isTimeout = false) => {
-      if (finished) return;
-      finished = true;
-      restoreAfterExport();
-      setExportingImg(false);
-      setExportingJPEG(false);
-      setExportingSVG(false);
-      setExportingPDF(false);
-      clearTimeout(timeoutId);
-      clearTimeout(pdfTimeoutId);
-      if (isTimeout) {
-        setExportError(errorMsg1);
-      }
-    };
     const pdfTimeoutId = setTimeout(() => {
       finish(true);
     }, 5000);
+    const finish = (isTimeout = false) => {
+      if (finished) return;
+      finished = true;
+      finishExport(type, [timeoutId, pdfTimeoutId], isTimeout);
+    };
     await prepareForExport();
     try {
       if (!areaRef.current) throw new Error('Export area lost');
@@ -260,7 +264,7 @@ export function Hero() {
         img.src = dataUrl;
         img.onload = function() {
           try {
-            // 用图片实际宽高创建PDF画布，图片填满整个PDF页面，无边距
+            // Create PDF canvas with image actual width and height, fill the entire PDF page without margin
             const pdf = new jsPDF({
               orientation: img.width > img.height ? 'l' : 'p',
               unit: 'pt',
@@ -279,10 +283,9 @@ export function Hero() {
       }
     } catch (e) {
       console.error(e);
-      finish();
-      setExportError('errorMsg2');
+      finish(true);
     }
-  }, [selectedKey, prepareForExport, restoreAfterExport, areaRef]);
+  }, [selectedKey, prepareForExport, areaRef, finishExport]);
   useEffect(() => {
     if (!exportMenuOpen) return;
     function handleClickOutside(event: MouseEvent) {
@@ -298,10 +301,10 @@ export function Hero() {
     };
   }, [exportMenuOpen]);
 
-  // JSON导出
+  // JSON export
   const handleExportJSON = useCallback(() => {
     try {
-      // 只导出字符串字段，保留number类型字段
+      // Only export string fields, keep number type fields
       const data = template === 'simple'
         ? Object.fromEntries(Object.entries(simpleContent).filter(([_k, v]) => typeof v === 'string')) as Record<string, string>
         : Object.fromEntries(Object.entries(modernContent).filter(([_k, v]) => typeof v === 'string')) as Record<string, string>;
@@ -312,7 +315,7 @@ export function Hero() {
     }
   }, [template, simpleContent, modernContent]);
 
-  // JSON导入
+  // JSON import
   const handleImportJSON = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     importNewspaperJSON(
@@ -351,14 +354,18 @@ export function Hero() {
     <>
       <AdsAlertDialog
         open={!!exportError}
-        onOpenChange={open => { if (!open) setExportError(null); }}
+        onOpenChange={open => {
+          if (!open) {
+            resetExportState();
+          }
+        }}
         title="Downloading"
         description={exportError}
         imgSrc="/ads/Ad-Pollo.webp"
         imgHref="https://pollo.ai/home?ref=mzmzndj&tm_news=news"
       />
       <div className="flex justify-center items-start py-2 gap-2 px-4 md:gap-4 md:px-12">
-        {/* 模板卡片区 */}
+        {/* Template card area */}
         <aside className="grid grid-cols-2 gap-4 ml-8" style={{ width: CARD_WIDTH * 2 + 32 }}>
           {visibleTemplates.map((tpl, _idx) => (
             <div
@@ -373,7 +380,7 @@ export function Hero() {
               onClick={() => handleTemplateCardClick(tpl)}
               title={tpl.name}
             >
-              {/* 顶部名称和广告关闭按钮 */}
+              {/* Top name and ad close button */}
               <div className="w-full flex flex-row items-center justify-between px-1 pt-1 pb-1 select-none">
                 <div className={`font-bold ${tpl.type === 'ads' ? 'text-neutral-700 text-sm' : 'text-sm'}`}>
                   {tpl.type === 'ads'
@@ -405,11 +412,11 @@ export function Hero() {
             </div>
           ))}
         </aside>
-        {/* 报纸内容块+操作按钮整体竖直居中 */}
+        {/* Newspaper content block + operation button vertically centered */}
         <div className="flex flex-col items-center mt-[-40px] mr-8">
-          {/* 操作区：社交图标+导出按钮 */}
+          {/* Operation area: social icons + export button */}
           <div className="mb-2 w-full max-w-[700px] px-8 flex flex-row justify-between items-center">
-            {/* 社交图标区 TODO */}
+            {/* Social icon area TODO */}
             <div className="flex flex-row">
               {Array.isArray(appConfig.socialIcons) && appConfig.socialIcons.length > 0 && appConfig.socialIcons.map(icon => {
                 const iconKey = icon.key as keyof typeof icons;
@@ -421,9 +428,9 @@ export function Hero() {
                 ) : null;
               })}
             </div>
-            {/* 导出按钮区 */}
+            {/* Export button area */}
             <div className="relative flex">
-              {/* 左区：主操作 */}
+              {/* Left area: main operation */}
               <button
                 ref={exportBtnRef}
                 className={`flex-1 flex items-center px-4 py-1 text-neutral-700 dark:text-white text-sm font-semibold transition focus:outline-none rounded-l-full hover:bg-neutral-200 dark:hover:bg-neutral-700 ${exportingJPEG || !pageFocused ? 'opacity-60 cursor-not-allowed' : ''}`}
@@ -433,7 +440,7 @@ export function Hero() {
               >
                 <icons.Download className="w-5 h-5 mr-2" /> Download JPG
               </button>
-              {/* 右区：下拉 */}
+              {/* Right area: dropdown */}
               <span
                 className="flex items-center justify-center w-10 h-8 cursor-pointer transition hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-r-full"
                 onClick={e => { e.stopPropagation(); setExportMenuOpen(v => !v); }}
@@ -441,7 +448,7 @@ export function Hero() {
               >
                 <icons.ChevronDown className="w-6 h-6" />
               </span>
-              {/* 下拉菜单（原有功能不动） */}
+              {/* Dropdown menu (existing functionality remains) */}
               {exportMenuOpen && (
                 <div
                   ref={exportMenuRef}
@@ -475,7 +482,7 @@ export function Hero() {
                       Beta
                     </span>
                   </button>
-                  {/* 新增JSON导入/导出按钮分区 */}
+                  {/* New JSON import/export button area */}
                   <div style={{ borderTop: '1px solid #AC62FD' }}>
                     <button onClick={handleExportJSON} className="flex items-center w-full px-4 py-3 transition hover:bg-neutral-200 dark:hover:bg-neutral-600 text-left relative">
                       <icons.FileDown className="w-5 h-5 mr-2" />Export JSON
@@ -510,15 +517,15 @@ export function Hero() {
               )}
             </div>
           </div>
-          {/* 全局图片上传 input，隐藏 */}
+          {/* Global image upload input, hidden */}
           <input ref={globalImgInputRef} type="file" accept="image/*" className="hidden" onChange={onGlobalImgInputChange} />
-          {/* 报纸模板内容，导出区域，不能包含按钮 */}
+          {/* Newspaper template content, export area, no buttons */}
           <section
             key={theme + '-' + pathname + '-' + template + '-' + pageFocused}
             ref={areaRef}
             className="newspaper-bg shadow-lg rounded-lg px-8 py-6 w-[700px] min-h-[900px] flex flex-col gap-4 transition-colors duration-300 flex-shrink-0 mr-8"
             style={{
-              border: '1px solid rgba(255,255,255,0)', // 透明白色边框，兜底黑线
+              border: '1px solid rgba(255,255,255,0)', // Transparent white border, fallback black line
             }}
           >
             <AIEditableProvider>
