@@ -36,6 +36,7 @@ export {
     Eye,
     Facebook,
     FileDown,
+    FileInput,
     FileLock2,
     Fingerprint,
     FileUp,

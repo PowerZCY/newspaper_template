@@ -484,8 +484,11 @@ export function Hero() {
                   </button>
                   {/* New JSON import/export button area */}
                   <div style={{ borderTop: '1px solid #AC62FD' }}>
-                    <button onClick={handleExportJSON} className="flex items-center w-full px-4 py-3 transition hover:bg-neutral-200 dark:hover:bg-neutral-600 text-left relative">
-                      <icons.FileDown className="w-5 h-5 mr-2" />Export JSON
+                    <button
+                      onClick={() => jsonInputRef.current?.click()}
+                      className="flex items-center w-full px-4 py-3 transition hover:bg-neutral-200 dark:hover:bg-neutral-600 text-left relative"
+                    >
+                      <icons.FileInput className="w-5 h-5 mr-2" />Import JSON
                       <span
                         className="absolute right-3 top-1 text-[10px] font-semibold"
                         style={{ color: '#a855f7', pointerEvents: 'none' }}
@@ -493,11 +496,8 @@ export function Hero() {
                         Beta
                       </span>
                     </button>
-                    <button
-                      onClick={() => jsonInputRef.current?.click()}
-                      className="flex items-center w-full px-4 py-3 transition hover:bg-neutral-200 dark:hover:bg-neutral-600 text-left relative"
-                    >
-                      <icons.FileUp className="w-5 h-5 mr-2" />Import JSON
+                    <button onClick={handleExportJSON} className="flex items-center w-full px-4 py-3 transition hover:bg-neutral-200 dark:hover:bg-neutral-600 text-left relative">
+                      <icons.FileDown className="w-5 h-5 mr-2" />Export JSON
                       <span
                         className="absolute right-3 top-1 text-[10px] font-semibold"
                         style={{ color: '#a855f7', pointerEvents: 'none' }}
