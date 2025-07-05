@@ -8,13 +8,12 @@ import { appConfig } from '@/lib/appConfig'
 import { globalLucideIcons as icons } from '@/components/global-icon'
 import { useRouter } from 'next/navigation';
 
-// 价格类型定义
 interface PricePlanProps {
-  // prices: Record<string, number | string> // 不再需要外部传入价格，全部由翻译文件配置
-  currency?: string // 默认$
+  // default is $
+  currency?: string
 }
 
-// 明确 appConfig.pricePlan 类型
+// billing definition
 interface BillingOption {
   key: string
   discount: number
@@ -43,16 +42,16 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
   const plans = t.raw('plans') as Array<any>
   const router = useRouter();
 
-  // 资金相关配置
+  // price plan config
   const pricePlanConfig = appConfig.pricePlan as PricePlanAppConfig
   const billingOptions = pricePlanConfig.billingOptions
   const prices = pricePlanConfig.prices
   const minPlanFeaturesCount = pricePlanConfig.minPlanFeaturesCount
 
-  // 当前选中的计费周期
+  // current billing key
   const [billingKey, setBillingKey] = useState(billingSwitch.defaultKey)
 
-  // Tooltip 状态
+  // tooltip state
   const [tooltip, setTooltip] = useState<{
     show: boolean
     content: string
@@ -60,17 +59,17 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
     y: number
   }>({ show: false, content: '', x: 0, y: 0 })
 
-  // 获取当前计费周期的资金配置和展示配置
+  // get current billing config and display config
   const currentBilling = billingOptions.find((opt: any) => opt.key === billingKey) || billingOptions[0]
   const currentBillingDisplay = billingSwitch.options.find((opt: any) => opt.key === billingKey) || billingSwitch.options[0]
 
-  // 计算 featuresCount
+  // calculate features count
   const maxFeaturesCount = Math.max(
     ...plans.map((plan: any) => plan.features?.length || 0),
     minPlanFeaturesCount || 0
   )
 
-  // 处理卡片高度对齐
+  // handle card height alignment
   const getFeatureRows = (plan: any) => {
     const features = plan.features || []
     const filled = [...features]
@@ -78,12 +77,12 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
     return filled
   }
 
-  // 价格渲染逻辑
+  // price render logic
   function renderPrice(plan: any) {
     const priceValue = prices[plan.key];
-    // 当前计费周期的 subTitle
+    // current billing subTitle
     const billingSubTitle = billingSwitch.options.find((opt: any) => opt.key === billingKey)?.subTitle || '';
-    // 非数字（如 'Custom'）直接展示
+    // non-numeric (like 'Custom') directly display
     if (typeof priceValue !== 'number' || isNaN(priceValue)) {
       return (
         <div className="flex flex-col items-start w-full">
@@ -92,18 +91,19 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
           </div>
           <div className="flex items-center gap-2 min-h-[24px] mt-1">
             <span className={clsx('text-xs text-gray-700 dark:text-gray-300 font-medium', !billingSubTitle && 'opacity-0 select-none')}>
-              {billingSubTitle || ''}
+              {/* Free version has no billingSubTitle */}
+              { plan.key === 'free' ? '' : billingSubTitle}
             </span>
           </div>
         </div>
       );
     }
-    // 数字价格逻辑
+    // numeric price logic
     const originValue = Number(priceValue)
     const discount = currentBilling.discount
     const hasDiscount = discount !== 0
     const saleValue = originValue * (1 - discount)
-    // 格式化价格，保留2位小数但去除末尾0
+    // format price, keep 2 decimal places but remove trailing 0
     const formatPrice = (v: number) => Number(v.toFixed(2)).toString()
     const unit = currentBillingDisplay.unit || ''
     let discountText = ''
@@ -111,7 +111,7 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
       discountText = currentBillingDisplay.discountText.replace('{percent}', String(Math.round(Math.abs(discount) * 100)))
     }
     const subTitle = billingSubTitle
-    // 价格为负时显示NaN
+    // show NaN when price is negative
     const showNaN = saleValue < 0
     return (
       <div className="flex flex-col items-start w-full">
@@ -121,7 +121,7 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
           </span>
           <span className="text-lg text-gray-700 dark:text-gray-300 font-medium mb-1">{unit}</span>
         </div>
-        {/* 副标题行，始终占位 */}
+        {/* sub title row, always take place */}
         <div className="flex items-center gap-2 min-h-[24px] mt-1">
           {hasDiscount && (
             <>
@@ -137,10 +137,10 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
     )
   }
 
-  // Tooltip 组件
+  // tooltip component
   const Tooltip = ({ show, content, x, y }: typeof tooltip) => {
     if (!show) return null
-    // 简单边界处理，防止超出屏幕
+    // simple boundary handling, prevent overflow
     const style: React.CSSProperties = {
       position: 'fixed',
       left: Math.max(8, x),
@@ -163,7 +163,7 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
 
   return (
     <section id="pricing" className="px-4 py-10 md:px-16 md:py-16 mx-auto max-w-7xl">
-      {/* 大标题和副标题 */}
+      {/* title and subtitle */}
       <h2 className="text-3xl md:text-4xl font-bold text-center mb-3">
         {t('title')}
       </h2>
@@ -171,9 +171,9 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
         {t('subtitle')}
       </p>
 
-      {/* 计费周期切换按钮 */}
+      {/* billing switch button */}
       <div className="flex justify-center items-center gap-8 mb-12">
-        {/* Monthly 区域 */}
+        {/* Monthly area */}
         <div className="flex flex-row-reverse items-center gap-2 w-[180px] justify-end">
           <button
             className={clsx(
@@ -188,7 +188,7 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
           >
             {(billingSwitch.options.find((opt: any) => opt.key === 'monthly')?.name) || 'Monthly'}
           </button>
-          {/* 标签（从右往左），未选中时用 invisible 占位 */}
+          {/* tag (from right to left), invisible when not selected */}
           {(() => {
             const opt = billingSwitch.options.find((opt: any) => opt.key === 'monthly');
             const bOpt = billingOptions.find((opt: any) => opt.key === 'monthly');
@@ -206,7 +206,7 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
             );
           })()}
         </div>
-        {/* Yearly 区域 */}
+        {/* Yearly area */}
         <div className="flex items-center gap-2 w-[180px] justify-start">
           <button
             className={clsx(
@@ -221,7 +221,7 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
           >
             {(billingSwitch.options.find((opt: any) => opt.key === 'yearly')?.name) || 'Yearly'}
           </button>
-          {/* 标签（从左往右），未选中时用 invisible 占位 */}
+          {/* tag (from left to right), invisible when not selected */}
           {(() => {
             const opt = billingSwitch.options.find((opt: any) => opt.key === 'yearly');
             const bOpt = billingOptions.find((opt: any) => opt.key === 'yearly');
@@ -241,7 +241,7 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
         </div>
       </div>
 
-      {/* 价格卡片区域 */}
+      {/* price card area */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {plans.map((plan: any, _idx: number) => (
           <div
@@ -253,16 +253,16 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
             )}
             style={{ minHeight: maxFeaturesCount*100 }}
           >
-            {/* 主标题和tag */}
+            {/* main title and tag */}
             <div className="flex items-center gap-2 mb-2">
               <span className="text-xl font-bold text-gray-900 dark:text-gray-100">{plan.title}</span>
               {plan.titleTags && plan.titleTags.map((tag: string, i: number) => (
                 <span key={i} className="px-2 py-0.5 text-xs rounded bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200 font-semibold align-middle">{tag}</span>
               ))}
             </div>
-            {/* 价格和单位/折扣 */}
+            {/* price and unit/discount */}
             {renderPrice(plan)}
-            {/* 权益列表 */}
+            {/* feature list */}
             <ul className="flex-1 mb-6 mt-4">
               {getFeatureRows(plan).map((feature: any, i: number) => (
                 <li key={i} className="flex items-center gap-2 mb-2 min-h-[28px]">
@@ -278,7 +278,7 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
                   {feature && feature.tag && (
                     <span className="px-1 py-0.5 text-[6px] rounded bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 font-semibold align-middle">{feature.tag}</span>
                   )}
-                  {/* 描述+tooltip */}
+                  {/* description + tooltip */}
                   {feature ? (
                     <span className="relative group cursor-pointer text-sm text-gray-800 dark:text-gray-200">
                       {feature.description}
@@ -308,9 +308,9 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
                 </li>
               ))}
             </ul>
-            {/* 占位，保证卡片高度一致 */}
+            {/* placeholder, ensure card height consistency */}
             <div className="flex-1" />
-            {/* 按钮 */}
+            {/* button */}
             <button
               className={clsx(
                 'w-full py-2 mt-auto text-white text-base font-bold shadow-lg hover:shadow-xl transition-all duration-300 rounded-full',
@@ -331,7 +331,7 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
           </div>
         ))}
       </div>
-      {/* Tooltip 悬浮提示 */}
+      {/* tooltip hover msg */}
       <Tooltip {...tooltip} />
     </section>
   )

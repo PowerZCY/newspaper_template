@@ -78,7 +78,7 @@
     "plans": [
       {
         "key": "free",
-        "title": "Free Version",
+        "title": "Hobby Version",
         "features": [
           { "description": "Access to all templates" },
           { "description": "Unlimited editing and customization"},
@@ -92,7 +92,7 @@
         "key": "premium",
         "title": "Premium Version",
         "features": [
-          { "description": "All available", "tag": "Free Version" },
+          { "description": "All features available", "tag": "Hobby Version" },
           { "description": "UnLimited for Export/Import" },
           { "description": "Limited 200 credits for AI-text", "tooltip": "1 credit = 1 AI conversation" }
         ],
@@ -103,7 +103,7 @@
         "title": "Ultimate Version",
         "titleTags": ["Most Popular"],
         "features": [
-          { "description": "All available", "tag": "Premium Version" },
+          { "description": "All features available", "tag": "Premium Version" },
           { "description": "Limited 500 credits AI-text", "tooltip": "1 credit = 1 AI conversation" },
           { "description": "Early access to new features" },
           { "description": "Team Support", "tooltip": "You can get our help with priority service support" }
