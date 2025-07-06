@@ -438,7 +438,7 @@ export function Hero() {
                 onClick={handleExportJPEG}
                 onMouseDown={e => { if (e.button === 2) e.preventDefault(); }}
               >
-                <icons.Download className="w-5 h-5 mr-2" /> Download JPG
+                <icons.ImageDown className="w-5 h-5 mr-2" /> Download JPG
               </button>
               {/* Right area: dropdown */}
               <span
