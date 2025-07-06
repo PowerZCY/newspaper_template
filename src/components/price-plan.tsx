@@ -90,9 +90,8 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
             <span className="text-4xl font-extrabold text-gray-900 dark:text-gray-100">{priceValue}</span>
           </div>
           <div className="flex items-center gap-2 min-h-[24px] mt-1">
-            <span className={clsx('text-xs text-gray-700 dark:text-gray-300 font-medium', !billingSubTitle && 'opacity-0 select-none')}>
-              {/* Free version has no billingSubTitle */}
-              { plan.key === 'free' ? '' : billingSubTitle}
+            <span className={clsx('text-xs text-gray-700 dark:text-gray-300 font-medium', plan.showBillingSubTitle === false && 'opacity-0 select-none')}>
+              {plan.showBillingSubTitle === false ? '' : billingSubTitle}
             </span>
           </div>
         </div>
@@ -110,7 +109,6 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
     if (hasDiscount && currentBillingDisplay.discountText) {
       discountText = currentBillingDisplay.discountText.replace('{percent}', String(Math.round(Math.abs(discount) * 100)))
     }
-    const subTitle = billingSubTitle
     // show NaN when price is negative
     const showNaN = saleValue < 0
     return (
@@ -131,7 +129,9 @@ export function PricePlan({ currency = '$' }: PricePlanProps) {
               )}
             </>
           )}
-          <span className={clsx('text-xs text-gray-700 dark:text-gray-300 font-medium', !subTitle && 'opacity-0 select-none')}>{subTitle || ''}</span>
+          <span className={clsx('text-xs text-gray-700 dark:text-gray-300 font-medium', plan.showBillingSubTitle === false && 'opacity-0 select-none')}>
+            {plan.showBillingSubTitle === false ? '' : billingSubTitle}
+          </span>
         </div>
       </div>
     )

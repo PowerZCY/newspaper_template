@@ -79,6 +79,7 @@
       {
         "key": "free",
         "title": "Hobby Version",
+        "showBillingSubTitle": false,
         "features": [
           { "description": "Access to all templates" },
           { "description": "Unlimited editing and customization"},
@@ -91,6 +92,7 @@
       {
         "key": "premium",
         "title": "Premium Version",
+        "showBillingSubTitle": true,
         "features": [
           { "description": "All features available", "tag": "Hobby Version" },
           { "description": "UnLimited for Export/Import" },
@@ -101,6 +103,7 @@
       {
         "key": "ultimate",
         "title": "Ultimate Version",
+        "showBillingSubTitle": true,
         "titleTags": ["Most Popular"],
         "features": [
           { "description": "All features available", "tag": "Premium Version" },
