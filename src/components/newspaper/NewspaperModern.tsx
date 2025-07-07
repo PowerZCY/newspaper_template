@@ -1,6 +1,6 @@
-import { globalLucideIcons as icons } from "@/components/global-icon";
+import { globalLucideIcons as icons } from "@windrun-huaiin/base-ui/components/server";
 import { engravers, montserrat } from '@/lib/fonts';
-import { cn } from '@/lib/utils';
+import { cn } from '@windrun-huaiin/lib/utils';
 import Image from "next/image";
 import React from "react";
 import { AIEditable } from "../ai-editable";

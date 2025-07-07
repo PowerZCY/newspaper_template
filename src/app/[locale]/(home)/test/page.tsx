@@ -1,7 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import { notFound } from "next/navigation";
-import { AdsAlertDialog } from "@/components/ads-alert-dialog";
+import { NotFoundPage } from "@windrun-huaiin/base-ui/components";
+import { AdsAlertDialog } from "@windrun-huaiin/third-ui/main";
+import { SiteIcon } from "@/lib/site-config";
 
 // 仅在开发环境中存在
 const DevTestDialogPage = function TestDialogPage() {
@@ -26,9 +27,8 @@ const DevTestDialogPage = function TestDialogPage() {
   );
 };
 
-// 在生产环境中返回404
-const ProductionPage = () => {
-  notFound();
-};
+const ProdNotFoundPage = () => <NotFoundPage siteIcon={<SiteIcon />} />;
 
-export default process.env.NODE_ENV !== "production" ? DevTestDialogPage : ProductionPage;
+export default process.env.NODE_ENV !== "production"
+  ? DevTestDialogPage
+  : ProdNotFoundPage;

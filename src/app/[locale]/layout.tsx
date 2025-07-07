@@ -2,14 +2,13 @@ import { appConfig, generatedLocales } from "@/lib/appConfig";
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import './globals.css';
-import NProgressBar from '@/app/[locale]/nProgressBar';
-import { cn } from '@/lib/fuma-search-util';
+import { NProgressBar } from '@windrun-huaiin/third-ui/main';
+import { fumaI18nCn } from '@windrun-huaiin/third-ui/lib/server';
 import { RootProvider } from "fumadocs-ui/provider";
-import './globals.css';
-import { cn as cnUtils } from '@/lib/utils';
+import { cn as cnUtils } from '@windrun-huaiin/lib/utils';
 import { montserrat } from '@/lib/fonts';
-import { GoogleAnalyticsScript } from "@/components/script/GoogleAnalyticsScript";
-import MicrosoftClarityScript from "@/components/script/MicrosoftClarityScript";
+import { GoogleAnalyticsScript } from "@windrun-huaiin/base-ui/components";
+import { MicrosoftClarityScript } from "@windrun-huaiin/base-ui/components";
 
 export const dynamic = 'force-dynamic'
 
@@ -64,7 +63,7 @@ export default async function RootLayout({
               // available languages
               locales: generatedLocales,
               // translations for UI
-              translations: { cn }[locale],
+              translations: { fumaI18nCn }[locale],
             }}
           >
             {children}

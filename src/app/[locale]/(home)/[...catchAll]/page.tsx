@@ -7,10 +7,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { NotFoundPage } from '@/components/404-page';
+import { NotFoundPage } from '@windrun-huaiin/base-ui/components';
+import { SiteIcon } from '@/lib/site-config';
 
-export default async function NotFound() {
-  return (
-    <NotFoundPage />
+export default function NotFound() {
+  return (  
+    <NotFoundPage siteIcon={<SiteIcon />} />
   );
 } 

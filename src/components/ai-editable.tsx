@@ -1,8 +1,8 @@
 import { useAIEditableContext } from '@/components/AIEditableContext';
-import { AdsAlertDialog } from "@/components/ads-alert-dialog";
-import { globalLucideIcons as icons } from "@/components/global-icon";
+import { AdsAlertDialog } from "@windrun-huaiin/third-ui/main";
+import { globalLucideIcons as icons } from "@windrun-huaiin/base-ui/components/server";
 import { appConfig } from "@/lib/appConfig";
-import { handlePastePlainText } from '@/lib/utils';
+import { handlePastePlainText } from '@windrun-huaiin/lib/utils';
 import React, { useEffect, useRef, useState } from "react";
 
 interface AIEditableProps {

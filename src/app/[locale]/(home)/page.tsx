@@ -1,11 +1,8 @@
 "use client";
 import React from "react";
-import { Usage } from '@/components/usage';
-import { Features } from '@/components/features';
-import { Hero } from '@/components/hero';
-import { FAQ } from '@/components/faq';
-import { SeoContent } from '@/components/seo-content';
-import { PricePlan } from "@/components/price-plan";
+import { Usage, Features, FAQ, SeoContent, PricePlan } from '@windrun-huaiin/third-ui/main';
+import { Hero } from "@/components/hero";
+import { appConfig } from "@/lib/appConfig";
 
 export default function Home() {
   return (
@@ -26,7 +23,7 @@ export default function Home() {
             <SeoContent />
           </section>
           <section id="pricing" className="scroll-mt-10">
-            <PricePlan />
+            <PricePlan pricePlanConfig={appConfig.pricePlan} />
           </section>
           <section id="faq" className="scroll-mt-20">
             <FAQ />

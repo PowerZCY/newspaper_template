@@ -8,12 +8,6 @@ const withMDX = createMDX();
 
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
-  // eslint: {
-  //   ignoreDuringBuilds: true,
-  // },
-  // typescript: {
-  //   ignoreBuildErrors: true,
-  // },
   
   // mdx需要的配置
   reactStrictMode: true,

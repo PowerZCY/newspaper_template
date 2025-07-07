@@ -1,83 +1,26 @@
 import { appConfig } from '@/lib/appConfig';
+import { createCommonDocsSchema, createCommonMetaSchema, remarkInstallOptions } from '@windrun-huaiin/third-ui/lib/server';
 import { rehypeCodeDefaultOptions, remarkSteps } from 'fumadocs-core/mdx-plugins';
 import { fileGenerator, remarkDocGen, remarkInstall } from 'fumadocs-docgen';
 import { remarkTypeScriptToJavaScript } from 'fumadocs-docgen/remark-ts2js';
-import { defineConfig, defineDocs, frontmatterSchema, metaSchema } from 'fumadocs-mdx/config';
+import { defineConfig, defineDocs } from 'fumadocs-mdx/config';
 import { remarkAutoTypeTable } from 'fumadocs-typescript';
 import type { Element } from 'hast';
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
 import type { ShikiTransformerContext as TransformerContext } from 'shiki';
-import { z } from 'zod';
 
 const mdxSourceDir = appConfig.mdxSourceDir
-
-// Reusable schema for title
-const createTitleSchema = () =>
-  z.string({
-    required_error: "Title is required",
-    invalid_type_error: "Title must be a string and cannot be null",
-  })
-  .trim()
-  .min(1, { message: "Title cannot be empty or consist only of whitespace" });
-
-// Reusable schema for description
-const createDescriptionSchema = () =>
-  z.preprocess(
-    (val) => {
-      if (typeof val === 'string') {
-        return val.trim() === "" || val === null ? undefined : val.trim();
-      }
-      return val === null ? undefined : val;
-    },
-    z.string().optional()
-  );
-
-// Reusable schema for icon
-const createIconSchema = () =>
-  z.preprocess(
-    (val) => (val === "" || val === null ? undefined : val),
-    z.string().optional()
-  );
-
-// Reusable schema for date
-const createDateSchema = () =>
-  z.preprocess((arg) => {
-    if (arg instanceof Date) {
-      // Format Date object to YYYY-MM-DD string
-      const year = arg.getFullYear();
-      const month = (arg.getMonth() + 1).toString().padStart(2, '0');
-      const day = arg.getDate().toString().padStart(2, '0');
-      return `${year}-${month}-${day}`;
-    }
-    if (typeof arg === 'string') {
-      return arg.trim();
-    }
-    // For other types or null/undefined, let the subsequent string validation handle it
-    return arg; 
-  },
-  z.string()
-    .regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format or a valid Date object")
-    .refine((val) => !isNaN(new Date(val).getTime()), 'Invalid date!')
-  );
 
 export const blog = defineDocs({
   dir: mdxSourceDir.blog,
   docs: {
     async: false,
     // @ts-ignore - Temporarily suppress deep instantiation error
-    schema: frontmatterSchema.extend({
-      title: createTitleSchema(),
-      description: createDescriptionSchema(),
-      author: z.string().optional(),
-      date: createDateSchema(),
-      keywords: z.array(z.string()).optional(),
-    }),
+    schema: createCommonDocsSchema(),
   },
   meta: {
-    schema: metaSchema.extend({
-      description: z.string().optional(),
-    }),
+    schema: createCommonMetaSchema(),
   },
 });
 
@@ -86,36 +29,18 @@ export const legal = defineDocs({
   docs: {
     async: false,
     // @ts-ignore - Temporarily suppress deep instantiation error
-    schema: frontmatterSchema.extend({
-      title: createTitleSchema(),
-      description: createDescriptionSchema(),
-      icon: createIconSchema(),
-      preview: z.string().optional(),
-      index: z.boolean().default(false),
-      date: createDateSchema(),
-      keywords: z.array(z.string()).optional(),
-      method: z.string().optional(),
-    }),
+    schema: createCommonDocsSchema(),
   },
   meta: {
-    schema: metaSchema.extend({
-      description: z.string().optional(),
-    }),
+    schema: createCommonMetaSchema(),
   },
 });
 
-
-const remarkInstallOptions = {
-  persist: {
-    id: 'package-manager',
-  },
-};
-
 export default defineConfig({
-  lastModifiedTime: 'git',
+  lastModifiedTime: 'none',
   mdxOptions: {
     providerImportSource: '@/components/mdx-components',
-    // 禁用 remark-image 的默认行为, 图片统一使用远程URL
+    // disable remark-image's default behavior, use remote URL for all images
     remarkImageOptions: false,
     rehypeCodeOptions: {
       lazy: true,
@@ -126,11 +51,11 @@ export default defineConfig({
         dark: 'catppuccin-mocha',
       },
       transformers: [
-        // 1. 自定义 Transformer，用于从 this.options.lang 添加 data-language
+        // 1. Custom Transformer, add data-language from this.options.lang
         {
           name: 'transformer:parse-code-language', 
           pre(this: TransformerContext | any, preNode: Element) { 
-            // 为了调试，暂时取消下面这行的注释，以便查看 this.options 的完整结构:
+            // For debugging, uncomment the following line to see the complete structure of this.options:
             // console.log('[Transformer] this.options:', JSON.stringify(this.options, null, 2));
             
             const languageFromOptions = this.options?.lang as string | undefined;
@@ -142,13 +67,13 @@ export default defineConfig({
               const langLower = languageFromOptions.toLowerCase();
               preNode.properties['data-language'] = langLower;
             }
-            return preNode; // 确保返回处理后的节点
+            return preNode; // Ensure the processed node is returned
           }
         },
-        // 2. Fumadocs 的默认 Transformers
-        // /core/src/mdx-plugins/rehype-code.ts, 定义了: 行高亮、单词高亮、Diff高亮、代码聚焦、从元数据上解析代码行编号
+        // 2. Fumadocs's default Transformers
+        // /core/src/mdx-plugins/rehype-code.ts, defines: line highlight, word highlight, Diff highlight, code focus, parse code line number from metadata
         ...(rehypeCodeDefaultOptions.transformers ?? []),
-        // 3. 您现有的 transformer
+        // 3. Your existing transformer
         {
           name: 'transformers:remove-notation-escape',
           code(hast) {
@@ -169,7 +94,7 @@ export default defineConfig({
       ],
     },
     // packages/core/src/server/get-toc.ts, remark().use(remarkPlugins).use(remarkHeading)
-    // 关于目录Heading的处理, FumaDocs底层已经指定了顺序: 用户指定的remarkPlugins先执行, 然后执行remarkHeading, 最后交由渲染Page调用toc-clerk.tsx逻辑
+    // About the processing of the directory heading, FumaDocs has already specified the order: the user-specified remarkPlugins are executed first, then remarkHeading is executed, and finally the logic of toc-clerk.tsx is called by the rendering Page
     remarkPlugins: [
       remarkSteps,
       remarkMath, 

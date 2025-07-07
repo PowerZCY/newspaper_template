@@ -1,6 +1,6 @@
 "use client";
-import { AdsAlertDialog } from "@/components/ads-alert-dialog";
-import { globalLucideIcons as icons } from "@/components/global-icon";
+import { AdsAlertDialog } from "@windrun-huaiin/third-ui/main";
+import { globalLucideIcons as icons } from "@windrun-huaiin/base-ui/components/server";
 import { NEWSPAPER_TEMPLATES } from "@/components/newspaper/BaseConfig";
 import { NewspaperModern } from "@/components/newspaper/NewspaperModern";
 import { NewspaperSimple } from "@/components/newspaper/NewspaperSimple";
@@ -418,7 +418,7 @@ export function Hero() {
           <div className="mb-2 w-full max-w-[700px] px-8 flex flex-row justify-between items-center">
             {/* Social icon area TODO */}
             <div className="flex flex-row">
-              {Array.isArray(appConfig.socialIcons) && appConfig.socialIcons.length > 0 && appConfig.socialIcons.map(icon => {
+              {Array.isArray(appConfig.socialConfig) && appConfig.socialConfig.length > 0 && appConfig.socialConfig.map(icon => {
                 const iconKey = icon.key as keyof typeof icons;
                 const IconComp = icons[iconKey];
                 return IconComp ? (

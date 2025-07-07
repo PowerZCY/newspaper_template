@@ -9,10 +9,11 @@
 
 import { baseOptions } from '@/app/[locale]/layout.config';
 import { HomeLayout, type HomeLayoutProps } from 'fumadocs-ui/layouts/home';
-import { FumaBannerSuit } from '@/components/fuma-banner-suit';
+import { FumaBannerSuit } from '@windrun-huaiin/third-ui/fuma/mdx';
 import { ReactNode } from 'react';
 import { clerkPageBanner } from '@/lib/appConfig';
-import { ClerkProviderClient } from '@/components/ClerkProviderClient';
+import { ClerkProviderClient } from '@windrun-huaiin/third-ui/clerk';
+
 async function homeOptions(locale: string): Promise<HomeLayoutProps>{
   const resolvedBaseOptions = await baseOptions(locale);
   return {

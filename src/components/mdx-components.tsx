@@ -1,24 +1,28 @@
-import defaultMdxComponents from 'fumadocs-ui/mdx';
-import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
-import { Mermaid } from '@/components/mdx/mermaid';
-import { CodeBlock, Pre } from 'fumadocs-ui/components/codeblock';
-import { Callout } from 'fumadocs-ui/components/callout';
-import { File, Folder, Files } from 'fumadocs-ui/components/files';
-import { ImageZoom } from '@/components/mdx/image-zoom';
-import { Accordion, Accordions } from 'fumadocs-ui/components/accordion';
-import { globalLucideIcons } from '@/components/global-icon';
-import type { MDXComponents, MDXProps } from 'mdx/types';
-import { TypeTable } from 'fumadocs-ui/components/type-table';
-import { createGenerator as createTypeTableGenerator } from 'fumadocs-typescript';
-import { AutoTypeTable } from 'fumadocs-typescript/ui';
+import {
+  GradientButton,
+  ImageGrid,
+  ImageZoom,
+  Mermaid,
+  TrophyCard,
+  ZiaCard,
+  ZiaFile,
+  ZiaFolder,
+} from "@windrun-huaiin/third-ui/fuma/mdx";
+import { createGenerator as createTypeTableGenerator } from "fumadocs-typescript";
+import { AutoTypeTable } from "fumadocs-typescript/ui";
+import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
+import { Callout } from "fumadocs-ui/components/callout";
+import { CodeBlock, Pre } from "fumadocs-ui/components/codeblock";
+import { Files } from "fumadocs-ui/components/files";
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import defaultMdxComponents from "fumadocs-ui/mdx";
+import type { MDXComponents, MDXProps } from "mdx/types";
 
-import { globalLucideIcons as icons } from '@/components/global-icon';
-import { TrophyCard } from '@/components/mdx/trophyCard';
-import { ImageGrid } from '@/components/mdx/imageGrid';
-import { ZiaCard } from '@/components/mdx/zia-card';
-import { GradientButton } from '@/components/mdx/gradient-button';
+import { appConfig } from "@/lib/appConfig";
+import { globalLucideIcons as icons } from "@windrun-huaiin/base-ui/components/server";
 
-// 创建一个语言标识符到图标组件的映射
+// create a mapping from language identifier to icon component
 const languageToIconMap: Record<string, React.ReactNode> = {
   css: <icons.CSS />,
   csv: <icons.CSV />,
@@ -41,31 +45,31 @@ const languageToIconMap: Record<string, React.ReactNode> = {
   yml: <icons.Yaml />,
 };
 
-// source.config.ts 中自定义transformer:parse-code-language中调用, 搭配使用
+// source.config.ts custom transformer:parse-code-language, used together
 function tryToMatchIcon(
-  props: Readonly<MDXProps & { 'data-language'?: string; title?: string }>, // 明确 props 的类型
+  props: Readonly<MDXProps & { "data-language"?: string; title?: string }>, // explicitly define props type
   iconMap: Record<string, React.ReactNode>
 ): React.ReactNode | undefined {
   let lang: string | undefined;
 
-  // 1. 优先从 props['data-language'] 获取
-  const dataLanguage = props['data-language'] as string | undefined;
+  // 1. get data-language from props first
+  const dataLanguage = props["data-language"] as string | undefined;
 
-  if (dataLanguage && dataLanguage.trim() !== '') {
+  if (dataLanguage && dataLanguage.trim() !== "") {
     lang = dataLanguage.trim().toLowerCase();
   } else {
-    // 2. 如果 data-language 不可用，则回退到从 title 解析
+    // 2. if data-language is not available, fallback to parse from title
     const title = props.title as string | undefined;
     if (title) {
-      const titleParts = title.split('.');
-      // 确保文件名部分不是空的 (例如 ".css" 这种标题是不合法的)
+      const titleParts = title.split(".");
+      // ensure the file name part is not empty (e.g. ".css" is invalid)
       if (titleParts.length > 1 && titleParts[0] !== "") {
         const extension = titleParts.pop()?.toLowerCase();
         if (extension) {
           lang = extension;
         }
       }
-    } 
+    }
   }
   let customIcon: React.ReactNode | undefined;
   if (lang && iconMap[lang]) {
@@ -78,39 +82,37 @@ function tryToMatchIcon(
 const fumadocsUiComponents = {
   Callout,
   CodeBlock,
-  File,
-  Folder,
   Files,
-  ImageZoom,
   Accordion,
   Accordions,
   Tab,
   Tabs,
   Pre,
-  Mermaid,
   TypeTable,
-  TrophyCard,
-  ImageGrid,
-  ZiaCard,
-  GradientButton
 };
 
 const customUiComponents = {
-  
-}
+  TrophyCard,
+  ZiaCard,
+  GradientButton,
+  ZiaFile,
+  ZiaFolder,
+};
 
 const typeTableGenerator = createTypeTableGenerator();
 
-// 这里只是渲染层处理, 将HAST渲染为React组件, 即HTML代码
-export function getMDXComponents(components?: MDXComponents): MDXComponents {
+// here is only the rendering layer processing, rendering HAST to React components, i.e. HTML code
+export function getMDXComponents(
+  components?: MDXComponents,
+): MDXComponents {
   return {
     ...defaultMdxComponents,
     pre: (props) => {
       const customIcon = tryToMatchIcon(props, languageToIconMap);
       return (
         <CodeBlock
-          {...props} // 扩展原始 props (包含 Shiki 的 props.icon)
-          {...(customIcon && { icon: customIcon })} // 条件性覆盖 icon
+          {...props} // expand original props (contains Shiki's props.icon)
+          {...(customIcon && { icon: customIcon })} // conditionally override icon
         >
           <Pre>{props.children}</Pre>
         </CodeBlock>
@@ -119,16 +121,31 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     AutoTypeTable: (props) => (
       <AutoTypeTable {...props} generator={typeTableGenerator} />
     ),
-    // 全局处理图片放大
+    // global image zoom processing
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     img: (props) => <ImageZoom {...(props as any)} />,
+    // global Mermaid component
+    Mermaid: (props) => (
+      <Mermaid
+        {...props}
+        watermarkEnabled={appConfig.style.watermark.enabled}
+        watermarkText={appConfig.style.watermark.text}
+      />
+    ),
+    // global
+    ImageGrid: (props) => (
+      <ImageGrid {...props} cdnBaseUrl={appConfig.style.cdnBaseUrl} />
+    ),
+    // 全局配置的 ImageZoom 组件
+    ImageZoom: (props) => (
+      <ImageZoom {...props} fallbackSrc={appConfig.style.placeHolder.image} />
+    ),
     ...fumadocsUiComponents,
     ...customUiComponents,
-    // 从项目统一icon库中使用
-    ...globalLucideIcons,
+    // use icons from the unified icon library of the project
+    ...icons,
     ...components,
   };
 }
 
-// export a `useMDXComponents()` that returns MDX components
 export const useMDXComponents = getMDXComponents;
