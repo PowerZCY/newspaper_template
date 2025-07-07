@@ -18,5 +18,14 @@
   "output": {
     "logDir": "logs",
     "verbose": false
+  },
+  "architectureConfig": {
+    ".": "RootProject",
+    "newspaper": "模板配置",
+    "BaseConfig.ts": "文本配置",
+    "AIEditableContext.tsx": "AI编辑器上下文",
+    "ai-editable.tsx": "AI对话框组件",
+    "edit-cache": "AI对话消息缓存组件",
+    "font.ts": "字体配置"
   }
 }
