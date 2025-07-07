@@ -19,5 +19,10 @@ export const blogSource = loader({
   icon: getIconElement,
 });
 
-export type Page = InferPageType<typeof legalSource>;
-export type Meta = InferMetaType<typeof legalSource>;
+export type Page = InferPageType<typeof blogSource>;
+export type Meta = InferMetaType<typeof blogSource>;
+
+export const mdxSourceMap = {
+  blog: blogSource,
+  legal: legalSource
+}

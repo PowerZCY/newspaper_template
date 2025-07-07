@@ -1,19 +1,22 @@
 import { getMDXComponents } from '@/components/mdx-components';
 import { appConfig } from '@/lib/appConfig';
-import { NotFoundPage } from '@windrun-huaiin/base-ui/components';
-import { blogSource } from '@/lib/source';
-import { createFumaPage } from '@windrun-huaiin/third-ui/fuma/server';
 import { SiteIcon } from '@/lib/site-config';
+import { mdxSourceMap } from '@/lib/source';
+import { NotFoundPage } from '@windrun-huaiin/base-ui/components';
+import { LLMCopyButton } from '@windrun-huaiin/third-ui/fuma/mdx';
+import { createFumaPage } from '@windrun-huaiin/third-ui/fuma/server';
 
+const sourceKey = 'blog';
 const { Page, generateStaticParams, generateMetadata } = createFumaPage({
-  mdxContentSource: blogSource,
+  sourceKey: sourceKey,
+  mdxContentSource: mdxSourceMap[sourceKey],
   getMDXComponents,
-  mdxSourceDir: appConfig.mdxSourceDir.blog,
+  mdxSourceDir: appConfig.mdxSourceDir[sourceKey],
   githubBaseUrl: appConfig.githubBaseUrl,
-  showCopy: true,
+  copyButtonComponent: <LLMCopyButton />,
   siteIcon: <SiteIcon />,
   FallbackPage: NotFoundPage,
 });
 
 export default Page;
-export { generateStaticParams, generateMetadata };
+export { generateMetadata, generateStaticParams };
