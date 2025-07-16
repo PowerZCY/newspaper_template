@@ -66,11 +66,6 @@ web_modules/
 # Optional REPL history
 .node_repl_history
 
-# Changeset files (if using changesets for versioning)
-.changeset/
-!.changeset/config.json
-!.changeset/README.md
-
 # Output of 'npm pack'
 *.tgz
 
