@@ -2,7 +2,7 @@
 import React from "react";
 import { Usage, Features, FAQ, SeoContent, PricePlan } from '@windrun-huaiin/third-ui/main';
 import { Hero } from "@/components/hero";
-import { appConfig } from "@/lib/appConfig";
+import { pricePlanConfig } from "@/lib/price-config";
 
 export default function Home() {
   return (
@@ -23,7 +23,7 @@ export default function Home() {
             <SeoContent />
           </section>
           <section id="pricing" className="scroll-mt-10">
-            <PricePlan pricePlanConfig={appConfig.pricePlan} />
+            <PricePlan pricePlanConfig={pricePlanConfig} />
           </section>
           <section id="faq" className="scroll-mt-20">
             <FAQ />

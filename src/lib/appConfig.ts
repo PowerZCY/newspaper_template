@@ -1,5 +1,4 @@
 import { createCommonAppConfig, createI18nHelpers, LOCALE_PRESETS } from "@windrun-huaiin/lib/common-app-config";
-import { PricePlanAppConfig } from "@windrun-huaiin/third-ui/main";
 
 // 创建应用配置
 export const appConfig = {
@@ -53,18 +52,6 @@ export const appConfig = {
     // { key: 'Twitter', name: 'Twitter' },
     // { key: 'Facebook', name: 'Facebook' },
   ] as SocialConfig[],
-  pricePlan: {
-    billingOptions: [
-      { key: 'monthly', discount: 0 },
-      { key: 'yearly', discount: 0.20 }
-    ],
-    prices: {
-      free: 'Free',
-      premium: 10,
-      ultimate: 20,
-    },
-    minPlanFeaturesCount: 4
-  } as PricePlanAppConfig
 };
 
 // 导出国际化辅助函数
