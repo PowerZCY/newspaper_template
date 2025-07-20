@@ -1,5 +1,11 @@
 # newspaper-template
 
+## 2.2.1
+
+### Patch Changes
+
+- feat(mdx): limitation mdx for CODE
+
 ## 2.2.0
 
 ### Minor Changes

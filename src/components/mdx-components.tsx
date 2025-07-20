@@ -8,14 +8,11 @@ import {
   ZiaFile,
   ZiaFolder,
 } from "@windrun-huaiin/third-ui/fuma/mdx";
-import { createGenerator as createTypeTableGenerator } from "fumadocs-typescript";
-import { AutoTypeTable } from "fumadocs-typescript/ui";
 import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
 import { Callout } from "fumadocs-ui/components/callout";
 import { CodeBlock, Pre } from "fumadocs-ui/components/codeblock";
 import { Files } from "fumadocs-ui/components/files";
 import { Tab, Tabs } from "fumadocs-ui/components/tabs";
-import { TypeTable } from "fumadocs-ui/components/type-table";
 import defaultMdxComponents from "fumadocs-ui/mdx";
 import type { MDXComponents, MDXProps } from "mdx/types";
 
@@ -88,7 +85,6 @@ const fumadocsUiComponents = {
   Tab,
   Tabs,
   Pre,
-  TypeTable,
 };
 
 const customUiComponents = {
@@ -98,8 +94,6 @@ const customUiComponents = {
   ZiaFile,
   ZiaFolder,
 };
-
-const typeTableGenerator = createTypeTableGenerator();
 
 // here is only the rendering layer processing, rendering HAST to React components, i.e. HTML code
 export function getMDXComponents(
@@ -118,9 +112,6 @@ export function getMDXComponents(
         </CodeBlock>
       );
     },
-    AutoTypeTable: (props) => (
-      <AutoTypeTable {...props} generator={typeTableGenerator} />
-    ),
     // global image zoom processing
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     img: (props) => <ImageZoom {...(props as any)} />,

@@ -1,6 +1,6 @@
 {
   "name": "newspaper-template",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "private": true,
   "scripts": {
     "postinstall": "fumadocs-mdx",
@@ -36,8 +36,8 @@
     "@tailwindcss/typography": "latest",
     "@types/mdx": "^2.0.13",
     "@windrun-huaiin/base-ui": "^5.3.1",
-    "@windrun-huaiin/lib": "^5.6.6",
-    "@windrun-huaiin/third-ui": "^5.9.2",
+    "@windrun-huaiin/lib": "^5.7.0",
+    "@windrun-huaiin/third-ui": "^5.9.3",
     "ai": "^4.3.16",
     "autoprefixer": "^10.4.21",
     "class-variance-authority": "^0.7.1",
@@ -47,9 +47,7 @@
     "dom-to-image-more": "^3.6.0",
     "embla-carousel-react": "8.5.1",
     "fumadocs-core": "15.3.3",
-    "fumadocs-docgen": "2.0.0",
     "fumadocs-mdx": "11.6.3",
-    "fumadocs-typescript": "4.0.4",
     "fumadocs-ui": "15.3.3",
     "input-otp": "1.4.2",
     "jspdf": "^3.0.1",
@@ -75,7 +73,6 @@
     "sonner": "^1.7.4",
     "tailwind-merge": "^3.3.0",
     "tailwindcss-animate": "^1.0.7",
-    "ts-morph": "25.0.1",
     "vaul": "^0.9.9",
     "zod": "^3.24.4"
   },
@@ -100,6 +97,7 @@
     "remark-frontmatter": "^5.0.0",
     "tailwindcss": "^4.1.7",
     "ts-node": "^10.9.2",
+    "ts-morph": "25.0.1",
     "typescript": "^5.8.3",
     "unist-util-visit": "^5.0.0"
   },

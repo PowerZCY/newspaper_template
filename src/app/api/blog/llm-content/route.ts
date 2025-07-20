@@ -3,7 +3,7 @@
 import { type NextRequest, NextResponse } from 'next/server';
 
 import { appConfig } from '@/lib/appConfig';
-import { LLMCopyHandler } from '@windrun-huaiin/lib';
+import { LLMCopyHandler } from '@windrun-huaiin/third-ui/fuma/server';
 import { blogSource } from '@/lib/source-blog';
 
 export async function GET(request: NextRequest) {

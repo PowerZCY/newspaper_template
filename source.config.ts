@@ -1,10 +1,7 @@
 import { appConfig } from '@/lib/appConfig';
-import { createCommonDocsSchema, createCommonMetaSchema, remarkInstallOptions } from '@windrun-huaiin/third-ui/lib/server';
+import { createCommonDocsSchema, createCommonMetaSchema } from '@windrun-huaiin/third-ui/lib/server';
 import { rehypeCodeDefaultOptions, remarkSteps } from 'fumadocs-core/mdx-plugins';
-import { fileGenerator, remarkDocGen, remarkInstall } from 'fumadocs-docgen';
-import { remarkTypeScriptToJavaScript } from 'fumadocs-docgen/remark-ts2js';
 import { defineConfig, defineDocs } from 'fumadocs-mdx/config';
-import { remarkAutoTypeTable } from 'fumadocs-typescript';
 import type { Element } from 'hast';
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
@@ -98,10 +95,6 @@ export default defineConfig({
     remarkPlugins: [
       remarkSteps,
       remarkMath, 
-      remarkAutoTypeTable,
-      [remarkInstall, remarkInstallOptions],
-      [remarkDocGen, { generators: [fileGenerator()] }],
-      remarkTypeScriptToJavaScript,
     ],
     rehypePlugins: (v) => [rehypeKatex, ...v],
   },
