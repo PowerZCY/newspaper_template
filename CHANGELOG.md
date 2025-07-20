@@ -1,5 +1,11 @@
 # newspaper-template
 
+## 2.2.0
+
+### Minor Changes
+
+- feat(mdx): update CDN
+
 ## 2.1.0
 
 ### Minor Changes

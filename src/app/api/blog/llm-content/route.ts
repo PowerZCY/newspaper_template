@@ -4,19 +4,12 @@ import { type NextRequest, NextResponse } from 'next/server';
 
 import { appConfig } from '@/lib/appConfig';
 import { LLMCopyHandler } from '@windrun-huaiin/lib';
-import { mdxSourceMap } from '@/lib/source';
+import { blogSource } from '@/lib/source-blog';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const locale = searchParams.get('locale') ?? appConfig.i18n.defaultLocale;
   const requestedPath = searchParams.get('path');
-  const sourceKey = searchParams.get('sourceKey');
-  const validSourceKeys = Object.keys(mdxSourceMap) as Array<keyof typeof mdxSourceMap>;
-  type sourceKeyType= keyof typeof mdxSourceMap;
-
-if (!sourceKey || !validSourceKeys.includes(sourceKey as sourceKeyType)) {
-  return new Response(`Invalid sourceKey: ${sourceKey}`, { status: 400 });
-}
 
   if (!requestedPath) {
     console.error('API llm-content: Missing path query parameter');
@@ -24,8 +17,8 @@ if (!sourceKey || !validSourceKeys.includes(sourceKey as sourceKeyType)) {
   }
 
   const result = await LLMCopyHandler({
-    sourceDir: appConfig.mdxSourceDir[sourceKey as sourceKeyType],
-    dataSource: mdxSourceMap[sourceKey as sourceKeyType],
+    sourceDir: appConfig.mdxSourceDir['blog'],
+    dataSource: blogSource,
     requestedPath,
     locale,
   });
