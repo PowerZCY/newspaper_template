@@ -1,5 +1,11 @@
 # newspaper-template
 
+## 2.2.2
+
+### Patch Changes
+
+- feat(dependency): update main component
+
 ## 2.2.1
 
 ### Patch Changes

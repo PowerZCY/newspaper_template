@@ -10,24 +10,12 @@ export default function Home() {
       <div className="min-h-screen flex flex-col bg-neutral-100 dark:bg-neutral-900 transition-colors duration-300">
         {/* 主体内容区 */}
         <main>
-          <section id="hero" className="scroll-mt-40">
-            <Hero />
-          </section>
-          <section id="usage" className="scroll-mt-20">
-            <Usage />
-          </section>
-          <section id="features" className="scroll-mt-18">
-            <Features />
-          </section>
-          <section id="seo" className="scroll-mt-20">
-            <SeoContent />
-          </section>
-          <section id="pricing" className="scroll-mt-10">
-            <PricePlan pricePlanConfig={pricePlanConfig} />
-          </section>
-          <section id="faq" className="scroll-mt-20">
-            <FAQ />
-          </section>
+          <Hero />
+          <Usage />
+          <Features />
+          <SeoContent />
+          <PricePlan pricePlanConfig={pricePlanConfig} />
+          <FAQ />
         </main>
       </div>
     </>
