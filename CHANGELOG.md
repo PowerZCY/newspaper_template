@@ -1,5 +1,11 @@
 # newspaper-template
 
+## 2.3.1
+
+### Patch Changes
+
+- fix(banner): mdx image use R2
+
 ## 2.3.0
 
 ### Minor Changes
