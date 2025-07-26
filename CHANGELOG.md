@@ -1,5 +1,11 @@
 # newspaper-template
 
+## 2.3.0
+
+### Minor Changes
+
+- feat(banner): depend-off fumadocs-banner
+
 ## 2.2.2
 
 ### Patch Changes

@@ -7,17 +7,12 @@ import { pricePlanConfig } from "@/lib/price-config";
 export default function Home() {
   return (
     <>
-      <div className="min-h-screen flex flex-col bg-neutral-100 dark:bg-neutral-900 transition-colors duration-300">
-        {/* 主体内容区 */}
-        <main>
-          <Hero />
-          <Usage />
-          <Features />
-          <SeoContent />
-          <PricePlan pricePlanConfig={pricePlanConfig} />
-          <FAQ />
-        </main>
-      </div>
+      <Hero />
+      <Usage />
+      <Features />
+      <SeoContent />
+      <PricePlan pricePlanConfig={pricePlanConfig} />
+      <FAQ />
     </>
   );
 }
