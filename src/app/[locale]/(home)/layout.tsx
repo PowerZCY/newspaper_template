@@ -42,7 +42,7 @@ export default async function Layout({
           enabled: true,
           mode: 'light-dark-system',
         }}
-        className={`min-h-screen flex flex-col bg-neutral-100 dark:bg-neutral-900 transition-colors duration-300 ${showBanner ? 'pt-30 has-banner' : 'pt-15 no-banner'}`}
+        className={`min-h-screen flex flex-col bg-neutral-100 dark:bg-neutral-900 transition-colors duration-300 ${showBanner ? 'pt-35 has-banner' : 'pt-20 no-banner'}`}
         >
         <FumaBannerSuit showBanner={showBanner}/>
         {children}
