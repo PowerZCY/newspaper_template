@@ -297,7 +297,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
         onOpenChange={setErrorDialogOpen}
         title="AI generate failed"
         description="AI generate timed out, please try again later."
-        imgSrc="/ads/Ad-Pollo.webp"
+        imgSrc="https://r2.d8ger.com/Ad-Pollo.webp"
         imgHref="https://pollo.ai/home?ref=mzmzndj&tm_news=news"
       />
       {/* Cancel AI generating confirm dialog */}

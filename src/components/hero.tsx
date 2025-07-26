@@ -361,7 +361,7 @@ export function Hero() {
         }}
         title="Downloading"
         description={exportError}
-        imgSrc="/ads/Ad-Pollo.webp"
+        imgSrc="https://r2.d8ger.com/Ad-Pollo.webp"
         imgHref="https://pollo.ai/home?ref=mzmzndj&tm_news=news"
       />
       <div className="flex justify-center items-start py-2 gap-2 px-4 md:gap-4 md:px-12">

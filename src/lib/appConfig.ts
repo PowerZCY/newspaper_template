@@ -8,7 +8,7 @@ export const appConfig = {
       name: "Simple Template",
       type: "normal",
       key: "simple",
-      thumb: "/template/simple.webp",
+      thumb: "https://r2.d8ger.com/newspaper-template/simple.webp",
       href: "",
       top: true
     },
@@ -16,14 +16,14 @@ export const appConfig = {
       name: "Modern Template",
       type: "normal",
       key: "modern",
-      thumb: "/template/modern.webp",
+      thumb: "https://r2.d8ger.com/newspaper-template/modern.webp",
       href: "",
       top: false
     },
     {
       name: "Sponsored",
       type: "ads",
-      thumb: "/ads/Ad-Pollo.webp",
+      thumb: "https://r2.d8ger.com/Ad-Pollo.webp",
       href: "https://pollo.ai/home?ref=mzmzndj&tm_news=news",
       key: "ad-1",
       top: false

@@ -21,7 +21,7 @@ const DevTestDialogPage = function TestDialogPage() {
         onOpenChange={setOpen}
         title="Download message"
         description="Please refresh page or switch template and try again!"
-        imgSrc="/default1.webp"
+        imgSrc="https://r2.d8ger.com/Ad-Pollo.webp"
         imgHref="https://pollo.ai/home?ref=mzmzndj&tm_news=news"
       />
     </div>
