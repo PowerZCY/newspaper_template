@@ -1,5 +1,11 @@
 # newspaper-template
 
+## 2.3.2
+
+### Patch Changes
+
+- fix(main): gallery imagedownload hotfix, use R2 worker to solve CORS issue
+
 ## 2.3.1
 
 ### Patch Changes
