@@ -2,7 +2,6 @@
   "pages": [
     "index",
     "...",
-    "!ioc",
-    "!nextjs-architecture"
+    "!ioc" 
   ]
 }
