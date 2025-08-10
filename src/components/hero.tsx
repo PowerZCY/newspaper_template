@@ -1,4 +1,5 @@
 "use client";
+
 import { AdsAlertDialog } from "@windrun-huaiin/third-ui/main";
 import { globalLucideIcons as icons } from "@windrun-huaiin/base-ui/components/server";
 import { NEWSPAPER_TEMPLATES } from "@/components/newspaper/BaseConfig";

@@ -1,18 +1,19 @@
-"use client";
 import React from "react";
-import { Usage, Features, FAQ, SeoContent, PricePlan } from '@windrun-huaiin/third-ui/main';
+import { Usage, Features, FAQ, SeoContent, PricePlan } from '@windrun-huaiin/third-ui/main/server';
 import { Hero } from "@/components/hero";
 import { pricePlanConfig } from "@/lib/price-config";
 
-export default function Home() {
+export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
   return (
     <>
-      <Hero />
-      <Usage />
-      <Features />
-      <SeoContent />
-      <PricePlan pricePlanConfig={pricePlanConfig} />
-      <FAQ />
+      {/* Current Now Hero is a RSC */}
+      <Hero/>
+      <Usage locale={locale} />
+      <Features locale={locale} />
+      <SeoContent locale={locale} />
+      <PricePlan locale={locale} pricePlanConfig={pricePlanConfig} />
+      <FAQ locale={locale} />
     </>
   );
 }

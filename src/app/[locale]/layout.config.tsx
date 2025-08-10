@@ -3,7 +3,7 @@ import { SiteIcon } from '@/lib/site-config';
 import { type LinkItemType } from 'fumadocs-ui/layouts/docs';
 import { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
 import { getTranslations } from 'next-intl/server';
-import { ClerkUser } from '@windrun-huaiin/third-ui/clerk';
+import { ClerkUser } from '@windrun-huaiin/third-ui/clerk/server';
 import { i18n } from '@/i18n';
 import { appConfig } from '@/lib/appConfig';
 
