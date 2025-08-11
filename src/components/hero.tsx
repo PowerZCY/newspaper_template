@@ -1,6 +1,6 @@
 "use client";
 
-import { AdsAlertDialog } from "@windrun-huaiin/third-ui/main";
+import { AdsAlertDialog, XButton } from "@windrun-huaiin/third-ui/main";
 import { globalLucideIcons as icons } from "@windrun-huaiin/base-ui/components/server";
 import { NEWSPAPER_TEMPLATES } from "@/components/newspaper/BaseConfig";
 import { NewspaperModern } from "@/components/newspaper/NewspaperModern";
@@ -23,7 +23,7 @@ export function Hero() {
   const [closedAds, setClosedAds] = useState<string[]>([]);
   const [exportingImg, setExportingImg] = useState(false);
   const [exportingPDF, setExportingPDF] = useState(false);
-  const [pageFocused, _setPageFocused] = useState(true);
+  const [pageFocused, setPageFocused] = useState(true);
   const [exportError, setExportError] = useState<string | null>(null);
   const globalImgInputRef = useRef<HTMLInputElement>(null);
   const [pendingImgUpload, setPendingImgUpload] = useState<null | { type: string; key: string; cb: (file: File) => void }>(null);
@@ -302,6 +302,25 @@ export function Hero() {
     };
   }, [exportMenuOpen]);
 
+  // Page focus management
+  useEffect(() => {
+    const handleFocus = () => setPageFocused(true);
+    const handleBlur = () => setPageFocused(false);
+    const handleVisibilityChange = () => {
+      setPageFocused(!document.hidden);
+    };
+    
+    window.addEventListener('focus', handleFocus);
+    window.addEventListener('blur', handleBlur);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+      window.removeEventListener('blur', handleBlur);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+
   // JSON export
   const handleExportJSON = useCallback(() => {
     try {
@@ -431,91 +450,70 @@ export function Hero() {
             </div>
             {/* Export button area */}
             <div className="relative flex">
-              {/* Left area: main operation */}
-              <button
-                ref={exportBtnRef}
-                className={`flex-1 flex items-center px-4 py-1 text-neutral-700 dark:text-white text-sm font-semibold transition focus:outline-none rounded-l-full hover:bg-neutral-200 dark:hover:bg-neutral-700 ${exportingJPEG || !pageFocused ? 'opacity-60 cursor-not-allowed' : ''}`}
-                disabled={exportingJPEG || !pageFocused}
-                onClick={handleExportJPEG}
-                onMouseDown={e => { if (e.button === 2) e.preventDefault(); }}
-              >
-                <icons.ImageDown className="w-5 h-5 mr-2" /> Download JPG
-              </button>
-              {/* Right area: dropdown */}
-              <span
-                className="flex items-center justify-center w-10 h-8 cursor-pointer transition hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-r-full"
-                onClick={e => { e.stopPropagation(); setExportMenuOpen(v => !v); }}
-                tabIndex={0}
-              >
-                <icons.ChevronDown className="w-6 h-6" />
-              </span>
-              {/* Dropdown menu (existing functionality remains) */}
-              {exportMenuOpen && (
-                <div
-                  ref={exportMenuRef}
-                  className="absolute right-0 top-full w-48 bg-white dark:bg-neutral-800 text-neutral-800 dark:text-white text-sm rounded-xl shadow-lg z-50 border border-neutral-200 dark:border-neutral-700 overflow-hidden animate-fade-in"
-                >
-                  <button onClick={handleExportJPEG} className="flex items-center w-full px-4 py-3 transition hover:bg-neutral-200 dark:hover:bg-neutral-600 text-left disabled:opacity-60" disabled={exportingJPEG || !pageFocused}>
-                    <icons.ImageDown className="w-5 h-5 mr-2" />Download JPG
-                  </button>
-                  <button onClick={handleExportPNG} className="flex items-center w-full px-4 py-3 transition hover:bg-neutral-200 dark:hover:bg-neutral-600 text-left disabled:opacity-60" disabled={exportingImg || !pageFocused}>
-                    <icons.ImageDown className="w-5 h-5 mr-2" />Download PNG
-                  </button>
-                  <button onClick={handleExportWEBP} className="flex items-center w-full px-4 py-3 transition hover:bg-neutral-200 dark:hover:bg-neutral-600 text-left disabled:opacity-60" disabled={exportingWEBP || !pageFocused}>
-                    <icons.ImageDown className="w-5 h-5 mr-2" />Download WEBP
-                  </button>
-                  <button onClick={handleExportPDF} className="flex items-center w-full px-4 py-3 transition hover:bg-neutral-200 dark:hover:bg-neutral-600 text-left disabled:opacity-60" disabled={exportingPDF || !pageFocused}>
-                    <icons.Download className="w-5 h-5 mr-2" />Download PDF
-                  </button>
-                  <button
-                    className="flex items-center w-full px-4 py-3 transition hover:bg-neutral-200 dark:hover:bg-neutral-600 text-left disabled:opacity-60 relative"
-                    disabled={exportingSVG || !pageFocused}
-                    onClick={handleExportSVG}
-                  >
-                    <span className="flex items-center">
-                      <icons.ImageDown className="w-5 h-5 mr-2" />
-                      Download SVG
-                    </span>
-                    <span
-                      className="absolute right-3 top-1 text-[10px] font-semibold"
-                      style={{ color: '#a855f7', pointerEvents: 'none' }}
-                    >
-                      Beta
-                    </span>
-                  </button>
-                  {/* New JSON import/export button area */}
-                  <div style={{ borderTop: '1px solid #AC62FD' }}>
-                    <button
-                      onClick={() => jsonInputRef.current?.click()}
-                      className="flex items-center w-full px-4 py-3 transition hover:bg-neutral-200 dark:hover:bg-neutral-600 text-left relative"
-                    >
-                      <icons.FileInput className="w-5 h-5 mr-2" />Import JSON
-                      <span
-                        className="absolute right-3 top-1 text-[10px] font-semibold"
-                        style={{ color: '#a855f7', pointerEvents: 'none' }}
-                      >
-                        Beta
-                      </span>
-                    </button>
-                    <button onClick={handleExportJSON} className="flex items-center w-full px-4 py-3 transition hover:bg-neutral-200 dark:hover:bg-neutral-600 text-left relative">
-                      <icons.FileDown className="w-5 h-5 mr-2" />Export JSON
-                      <span
-                        className="absolute right-3 top-1 text-[10px] font-semibold"
-                        style={{ color: '#a855f7', pointerEvents: 'none' }}
-                      >
-                        Beta
-                      </span>
-                    </button>
-                    <input
-                      ref={jsonInputRef}
-                      type="file"
-                      accept="application/json"
-                      style={{ display: 'none' }}
-                      onChange={handleImportJSON}
-                    />
-                  </div>
-                </div>
-              )}
+              <XButton
+                type="split"
+                mainButton={{
+                  icon:  <icons.ImageDown className="w-5 h-5 mr-2" />,
+                  text: "Download JPG",
+                  onClick: handleExportJPEG,
+                  disabled: exportingJPEG || !pageFocused
+                }}
+                menuWidth="w-50"
+                menuItems={[
+                  {
+                    icon: <icons.ImageDown className="w-5 h-5 mr-2" />,
+                    text: "Download JPG",
+                    onClick: handleExportJPEG,
+                    disabled: exportingJPEG || !pageFocused
+                  },
+                  {
+                    icon: <icons.ImageDown className="w-5 h-5 mr-2" />,
+                    text: "Download PNG",
+                    onClick: handleExportPNG,
+                    disabled: exportingImg || !pageFocused
+                  },
+                  {
+                    icon: <icons.ImageDown className="w-5 h-5 mr-2" />,
+                    text: "Download WEBP",
+                    onClick: handleExportWEBP,
+                    disabled: exportingWEBP || !pageFocused
+                  },
+                  {
+                    icon: <icons.Download className="w-5 h-5 mr-2" />,
+                    text: "Download PDF",
+                    onClick: handleExportPDF,
+                    disabled: exportingPDF || !pageFocused,
+                    splitTopBorder: true
+                  },
+                  {
+                    icon: <icons.ImageDown className="w-5 h-5 mr-2" />,
+                    text: "Download SVG",
+                    onClick: handleExportSVG,
+                    disabled: exportingSVG || !pageFocused,
+                    tag: { text: "Beta" }
+                  },
+                  {
+                    icon: <icons.FileInput className="w-5 h-5 mr-2" />,
+                    text: "Import JSON",
+                    onClick: () => jsonInputRef.current?.click(),
+                    tag: { text: "Beta", color: '#a855f7' },
+                    splitTopBorder: true
+                  },
+                  {
+                    icon: <icons.FileDown className="w-5 h-5 mr-2" />,
+                    text: "Export JSON",
+                    onClick: handleExportJSON,
+                    tag: { text: "Beta", color: '#a855f7' }
+                  },
+                ]}
+              />
+              <input
+                ref={jsonInputRef}
+                type="file"
+                accept="application/json"
+                style={{ display: 'none' }}
+                onChange={handleImportJSON}
+              />
             </div>
           </div>
           {/* Global image upload input, hidden */}
