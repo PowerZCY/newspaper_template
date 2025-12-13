@@ -187,8 +187,9 @@
     "copyright": "Copyright © {year} {name} All rights reserved.",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
+    "contactUs": "Contact Us",
     "email": "support@newspaper-template.org",
-    "contactUs": "Contact Us"
+    "thanks": "Thanks to"
   },
   "clerk": {
     "signIn": "Sign In",
@@ -199,5 +200,20 @@
     "pricing": "Pricing",
     "legal": "Legal",
     "docs": "Docs"
+  },
+  "fuma": {
+    "search": "Search",
+    "searchNoResult": "No results found",
+    "toc": "On this page",
+    "tocNoHeadings": "No Headings",
+    "lastUpdate": "Last updated on",
+    "emptyLastUpdate": "Ooops, Ages ago!",
+    "chooseLanguage": "Choose a language",
+    "nextPage": "Next Page",
+    "previousPage": "Previous Page",
+    "chooseTheme": "Theme",
+    "copyMarkdown": "Copy page as Markdown",
+    "copyMarkdownDone": "Copied!",
+    "editOnGithub": "Edit this page on GitHub"
   }
 }

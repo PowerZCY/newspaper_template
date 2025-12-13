@@ -15,7 +15,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "incremental": true,
     "plugins": [
       {
@@ -24,16 +24,24 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/*": [ "./src/*" ],
+      "@/*": [
+        "./src/*"
+      ],
       // 配置Fumadocs的source, 强制使用别名路径
-      ".source/*": ["./.source/*"]
+      ".source/*": [
+        "./.source/*"
+      ]
     }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules", "eslint.config.mjs"]
+  "exclude": [
+    "node_modules",
+    "eslint.config.mjs"
+  ]
 }

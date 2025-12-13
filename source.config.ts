@@ -37,24 +37,20 @@ export default defineConfig({
   lastModifiedTime: 'none',
   mdxOptions: {
     providerImportSource: '@/components/mdx-components',
-    // disable remark-image's default behavior, use remote URL for all images
+    // disable remark-image default behavior, use remote URL for all images
     remarkImageOptions: false,
     rehypeCodeOptions: {
       lazy: true,
-      experimentalJSEngine: true,
       inline: 'tailing-curly-colon',
       themes: {
         light: 'catppuccin-latte',
         dark: 'catppuccin-mocha',
       },
       transformers: [
-        // 1. Custom Transformer, add data-language from this.options.lang
+        // 1. custom transformer, add data-language from this.options.lang
         {
           name: 'transformer:parse-code-language', 
           pre(this: TransformerContext | any, preNode: Element) { 
-            // For debugging, uncomment the following line to see the complete structure of this.options:
-            // console.log('[Transformer] this.options:', JSON.stringify(this.options, null, 2));
-            
             const languageFromOptions = this.options?.lang as string | undefined;
 
             if (languageFromOptions && typeof languageFromOptions === 'string' && languageFromOptions.trim() !== '') {
@@ -64,13 +60,12 @@ export default defineConfig({
               const langLower = languageFromOptions.toLowerCase();
               preNode.properties['data-language'] = langLower;
             }
-            return preNode; // Ensure the processed node is returned
+            return preNode;
           }
         },
-        // 2. Fumadocs's default Transformers
-        // /core/src/mdx-plugins/rehype-code.ts, defines: line highlight, word highlight, Diff highlight, code focus, parse code line number from metadata
+        // 2. Fumadocs default transformers
         ...(rehypeCodeDefaultOptions.transformers ?? []),
-        // 3. Your existing transformer
+        // 3. your existing transformer
         {
           name: 'transformers:remove-notation-escape',
           code(hast) {
@@ -90,8 +85,6 @@ export default defineConfig({
         },
       ],
     },
-    // packages/core/src/server/get-toc.ts, remark().use(remarkPlugins).use(remarkHeading)
-    // About the processing of the directory heading, FumaDocs has already specified the order: the user-specified remarkPlugins are executed first, then remarkHeading is executed, and finally the logic of toc-clerk.tsx is called by the rendering Page
     remarkPlugins: [
       remarkSteps,
       remarkMath, 

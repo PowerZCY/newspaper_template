@@ -384,7 +384,7 @@ export function Hero() {
         imgSrc="https://r2.d8ger.com/Ad-Pollo.webp"
         imgHref="https://pollo.ai/home?ref=mzmzndj&tm_news=news"
       />
-      <div className="flex justify-center items-start py-2 gap-2 px-4 md:gap-4 md:px-12">
+      <section className="flex mt-25 justify-center items-start py-2 gap-2 px-4 md:gap-4 md:px-12">
         {/* Template card area */}
         <aside className="grid grid-cols-2 gap-4 ml-8" style={{ width: CARD_WIDTH * 2 + 32 }}>
           {visibleTemplates.map((tpl, _idx) => (
@@ -522,7 +522,7 @@ export function Hero() {
           <section
             key={theme + '-' + pathname + '-' + template + '-' + pageFocused}
             ref={areaRef}
-            className="newspaper-bg shadow-lg rounded-lg px-8 py-6 w-[700px] min-h-[900px] flex flex-col gap-4 transition-colors duration-300 flex-shrink-0 mr-8"
+            className="newspaper-bg shadow-lg rounded-lg px-8 py-6 w-[700px] min-h-[900px] flex flex-col gap-4 transition-colors duration-300 shrink-0 mr-8"
             style={{
               border: '1px solid rgba(255,255,255,0)', // Transparent white border, fallback black line
             }}
@@ -555,7 +555,7 @@ export function Hero() {
             </AIEditableProvider>
           </section>
         </div>
-      </div>
+      </section>
     </>
   );
 } 
