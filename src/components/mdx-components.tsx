@@ -113,7 +113,7 @@ export function getMDXComponents(
       );
     },
     // global image zoom processing
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     img: (props) => <ImageZoom {...(props as any)} />,
     // global Mermaid component
     Mermaid: (props) => (

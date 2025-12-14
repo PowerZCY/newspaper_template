@@ -1,5 +1,11 @@
 # newspaper-template
 
+## 3.0.1
+
+### Patch Changes
+
+- fix(style): eslint upgrade
+
 ## 3.0.0
 
 ### Major Changes

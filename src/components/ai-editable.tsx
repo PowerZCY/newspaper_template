@@ -192,7 +192,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
       const aiMsg: AIMessage = { role: 'ai', text: data.text, timestamp: Date.now() };
       setMessages(prev => [...prev, aiMsg]);
       // don't directly onChange, let Replace button handle it
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       
     } catch (e: any) {
       if (e.name !== "AbortError") {
         setErrorDialogOpen(true);
