@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { AdsAlertDialog, XButton } from "@windrun-huaiin/third-ui/main";
 import { globalLucideIcons as icons } from "@windrun-huaiin/base-ui/components/server";
 import { NewspaperModern } from "@/components/newspaper/NewspaperModern";
@@ -28,6 +29,7 @@ export function Workbench({
   onGlobalImgUpload,
   onSwitchTemplate
 }: WorkbenchProps) {
+  const router = useRouter();
   const areaRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
   
@@ -320,6 +322,75 @@ export function Workbench({
     e.target.value = '';
   }, [template, onContentChange]);
 
+  // --- Exit Confirmation Logic ---
+  const [showExitDialog, setShowExitDialog] = useState(false);
+  const [pendingNavigationUrl, setPendingNavigationUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    // 1. Prevent accidental refresh/close
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = '';
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    // 2. Prevent back button
+    // Push a state so we have something to pop
+    window.history.pushState(null, '', window.location.href);
+
+    const handlePopState = () => {
+        // When back is pressed, prevent navigation by pushing state again and showing dialog
+        window.history.pushState(null, '', window.location.href);
+        setPendingNavigationUrl(null); // Back button generally means "exit/back", handled by default switch
+        setShowExitDialog(true);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    // 3. Intercept global anchor clicks
+    const handleAnchorClick = (e: MouseEvent) => {
+      const target = (e.target as HTMLElement).closest('a');
+      if (target) {
+        const href = target.getAttribute('href');
+        const download = target.getAttribute('download');
+        const targetAttr = target.getAttribute('target');
+
+        // Ignore if it's a download link, external tab, or hash
+        if (download !== null || targetAttr === '_blank' || !href || href.startsWith('#')) {
+          return;
+        }
+
+        // Prevent default navigation
+        e.preventDefault();
+        e.stopPropagation();
+        setPendingNavigationUrl(href);
+        setShowExitDialog(true);
+      }
+    };
+    
+    // Capture phase to ensure we intercept before Next.js Link
+    document.addEventListener('click', handleAnchorClick, true);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('popstate', handlePopState);
+      document.removeEventListener('click', handleAnchorClick, true);
+    };
+  }, []);
+
+  const handleConfirmExit = () => {
+    setShowExitDialog(false);
+    if (pendingNavigationUrl) {
+        router.push(pendingNavigationUrl);
+    } else {
+        onSwitchTemplate();
+    }
+  };
+
+  const handleCancelExit = () => {
+    setShowExitDialog(false);
+    setPendingNavigationUrl(null);
+  };
 
   return (
     <div className="min-h-screen w-full flex flex-col items-center pt-30 bg-neutral-100 dark:bg-neutral-950 overflow-y-auto">
@@ -330,6 +401,12 @@ export function Workbench({
         description={exportError || "Preparing your newspaper..."}
         imgSrc="https://r2.d8ger.com/Ad-Pollo.webp"
         imgHref="https://pollo.ai/home?ref=mzmzndj&tm_news=news"
+      />
+
+      <ExitDialog 
+        open={showExitDialog} 
+        onCancel={handleCancelExit} 
+        onConfirm={handleConfirmExit} 
       />
 
       {/* --- Main Vertical Stack --- */}
@@ -343,7 +420,7 @@ export function Workbench({
                     button={{
                         text: "Change Template",
                         icon: <icons.LayoutTemplate className="w-5 h-5" />,
-                        onClick: onSwitchTemplate
+                        onClick: () => setShowExitDialog(true)
                     }}
                     className="text-xs sm:text-sm px-2 sm:px-4 w-auto flex-1"
                 />
@@ -469,6 +546,34 @@ export function Workbench({
              </section>
         </div>
         
+      </div>
+    </div>
+  );
+}
+
+function ExitDialog({ open, onCancel, onConfirm }: { open: boolean; onCancel: () => void; onConfirm: () => void }) {
+  if (!open) return null;
+  return (
+    <div className="fixed inset-0 z-10000 flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="bg-white dark:bg-neutral-900 p-6 rounded-2xl shadow-2xl max-w-sm w-full mx-4 border border-neutral-200 dark:border-neutral-800 scale-100 animate-in zoom-in-95 duration-200">
+        <h3 className="text-lg font-bold mb-2 text-neutral-900 dark:text-neutral-100">Leave Editor?</h3>
+        <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-6">
+          Your changes will not be saved. Are you sure you want to exit?
+        </p>
+        <div className="flex gap-3 justify-end">
+          <button 
+            onClick={onCancel}
+            className="px-4 py-2 rounded-full text-sm font-medium text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+          >
+            Cancel
+          </button>
+          <button 
+            onClick={onConfirm}
+            className="px-4 py-2 rounded-full text-sm font-medium bg-red-600 text-white hover:bg-red-700 transition-colors shadow-sm"
+          >
+            Exit without Saving
+          </button>
+        </div>
       </div>
     </div>
   );

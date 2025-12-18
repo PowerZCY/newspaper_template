@@ -1,15 +1,21 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, Suspense } from "react";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { TemplateGallery } from "./TemplateGallery";
 import { Workbench } from "./Workbench";
 import { NEWSPAPER_TEMPLATES } from "@/components/newspaper/BaseConfig";
 
-type HeroMode = 'gallery' | 'editor';
+function HeroContent() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-export function Hero() {
-  const [mode, setMode] = useState<HeroMode>('gallery');
-  const [selectedTemplateKey, setSelectedTemplateKey] = useState<"simple" | "modern">("simple");
+  const mode = searchParams.get('mode') === 'editor' ? 'editor' : 'gallery';
+  const templateParam = searchParams.get('template');
+  const selectedTemplateKey = (templateParam === 'simple' || templateParam === 'modern') 
+    ? templateParam 
+    : 'simple';
 
   // --- Content State ---
   const [simpleContent, setSimpleContent] = useState({ ...NEWSPAPER_TEMPLATES.simple.defaultContent });
@@ -25,11 +31,11 @@ export function Hero() {
 
   const handleSelectTemplate = (key: string) => {
     // Determine if key is valid (simple/modern). 
-    // If we add more templates later, this needs to be dynamic. 
-    // For now, strict typing.
     if (key === 'simple' || key === 'modern') {
-        setSelectedTemplateKey(key as "simple" | "modern");
-        setMode('editor');
+        const params = new URLSearchParams(searchParams.toString());
+        params.set('mode', 'editor');
+        params.set('template', key);
+        router.push(`${pathname}?${params.toString()}`);
         // Scroll to top
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -97,10 +103,18 @@ export function Hero() {
                 onContentChange={(k, v) => handleContentChange(selectedTemplateKey, k, v)}
                 onImgChange={(k, f) => handleImgChange(selectedTemplateKey, k, f)}
                 onGlobalImgUpload={(k, cb) => handleGlobalImgUpload(selectedTemplateKey, k, cb)}
-                onSwitchTemplate={() => setMode('gallery')} // Reuse Gallery as Switcher
+                onSwitchTemplate={() => router.push(pathname)} // Reuse Gallery as Switcher
             />
         </div>
       )}
     </section>
   );
+}
+
+export function Hero() {
+  return (
+    <Suspense>
+      <HeroContent />
+    </Suspense>
+  )
 }
