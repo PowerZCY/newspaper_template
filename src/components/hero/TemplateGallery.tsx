@@ -24,20 +24,19 @@ export function TemplateGallery({ onSelect }: TemplateGalleryProps) {
 
   return (
     <div className="w-full min-h-[60vh] flex flex-col items-center mt-20 pb-5 md:pb-10 px-4 md:px-8 bg-neutral-100 dark:bg-neutral-900 transition-colors duration-300">
-      <div className="text-center max-w-2xl mb-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-2 text-neutral-900 dark:text-neutral-50 tracking-tight">
-          Create Your Newspaper <br className="hidden md:block" />
+      <div className="text-center max-w-6xl mb-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-2 sm:mb-3 text-neutral-900 dark:text-neutral-50 tracking-tight">
+          Create Your Newspaper <br className="block md:hidden" />
           <span className="text-transparent bg-clip-text bg-linear-to-r from-purple-600 to-pink-600">
-            in Seconds
+             in Seconds
           </span>
         </h1>
-        <p className="text-xs sm:text-base md:text-lg py-2 text-neutral-600 dark:text-neutral-400">
-        Pick a template, edit immersively, upload images.<br/>
-        With AI-generate text, you&apos;ll get high-res prints.
+        <p className="text-base sm:text-lg text-neutral-600 dark:text-neutral-400">
+        Pick a template, edit immersively, upload images. With AI-generate text, you&apos;ll get high-res prints.
         </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 sm:gap-8 max-w-6xl min-w-[calc(40vw)] ">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8 max-w-6xl min-w-[calc(80vw)] sm:min-w-[calc(50vw)] ">
         {visibleTemplates.map((tpl, idx) => (
           <div
             key={tpl.key}
@@ -84,11 +83,12 @@ export function TemplateGallery({ onSelect }: TemplateGalleryProps) {
                   unoptimized // Based on existing code usage
                 />
                 
-                {/* Overlay Button */}
+                {/* Persistent Action Button (All Devices) */}
                 {!tpl.href && (
-                    <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <span className="backdrop-blur-md bg-white/90 text-neutral-900 px-6 py-2 rounded-full font-medium transform scale-90 group-hover:scale-100 transition-transform duration-300 shadow-lg">
+                    <div className="absolute bottom-3 right-3 z-10">
+                        <span className="flex items-center gap-1.5 backdrop-blur-md bg-white/80 dark:bg-neutral-900/80 text-purple-600 dark:text-purple-400 text-xs font-bold px-3 py-1.5 rounded-full shadow-sm border border-purple-200/50 dark:border-purple-700/50 transition-all duration-300 group-hover:scale-110 group-active:scale-95 hover:bg-white dark:hover:bg-neutral-800 hover:border-purple-500 dark:hover:border-purple-400 hover:text-purple-700 dark:hover:text-purple-300 hover:shadow-lg hover:shadow-purple-500/20">
                             Use Template
+                            <icons.ArrowRight className="w-3 h-3" />
                         </span>
                     </div>
                 )}
