@@ -193,7 +193,9 @@
   },
   "clerk": {
     "signIn": "Sign In",
-    "signUp": "Sign Up"
+    "signUp": "Sign Up",
+    "signUpBonus": "",
+    "signUpBonusTooltip": ""
   },
   "linkPreview": {
     "blog": "Blog",
