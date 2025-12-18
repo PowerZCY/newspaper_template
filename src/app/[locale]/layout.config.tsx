@@ -17,11 +17,6 @@ export async function homeNavLinks(locale: string): Promise<LinkItemType[]> {
       url: `/${locale}/blog`,
     },
     {
-      icon: <icons.BTC />,
-      text: t1('pricing'),
-      url: `/${locale}#pricing`,
-    },
-    {
       type: 'custom',
       // false就先排左边的菜单, true就先排右边的按钮
       secondary: true,

@@ -19,15 +19,7 @@ export const appConfig = {
       thumb: "https://r2.d8ger.com/newspaper-template/modern.webp",
       href: "",
       top: false
-    },
-    // {
-    //   name: "Sponsored",
-    //   type: "ads",
-    //   thumb: "https://r2.d8ger.com/Ad-Pollo.webp",
-    //   href: "https://pollo.ai/home?ref=mzmzndj&tm_news=news",
-    //   key: "ad-1",
-    //   top: false
-    // }
+    }
   ],
   newspaperCard: {
     cardWidth: 200,
