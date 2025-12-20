@@ -113,7 +113,9 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
         value={content.headline}
         onChange={val => onContentChange("headline", val)}
         className={cn(
-          "editable text-center text-[3.5rem] md:text-7xl font-black tracking-wide text-neutral-900 leading-tight mb-2.5 w-full flex items-center justify-center",
+          "editable w-full flex items-center justify-center text-center font-black tracking-wide text-neutral-900 leading-tight mb-2.5",
+          content.headline.length < 14 ? "text-[3.5rem] md:text-7xl" :
+          content.headline.length < 19 ? "text-[2.5rem] md:text-6xl" : "text-[2rem] md:text-5xl",
           engravers.className
         )}
         style={{ fontWeight: 600, letterSpacing: '0.05em' }}
@@ -126,7 +128,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
         seqId={`${seqIdPrefix}_subTitle`}
         value={content.subTitle}
         onChange={val => onContentChange("subTitle", val)}
-        className="editable text-center text-lg tracking-[0.3em] uppercase mb-1 text-neutral-900"
+        className="editable w-full block text-center text-lg tracking-[0.3em] uppercase mb-1 text-neutral-900"
         type="title"
         aiTitleMaxChars={content.aiTitleMaxChars}
       />
@@ -205,7 +207,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
               seqId={`${seqIdPrefix}_dateDay`}
               value={content.dateDay}
               onChange={val => onContentChange("dateDay", val)}
-              className="editable text-3xl font-bold leading-tight mb-1 mt-2 text-center text-neutral-900"
+              className="editable w-full block text-3xl font-bold leading-tight mb-1 mt-2 text-center text-neutral-900"
               type="title"
               aiTitleMaxChars={content.aiTitleMaxChars}
             />
@@ -213,7 +215,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
               seqId={`${seqIdPrefix}_dateMonth`}
               value={content.dateMonth}
               onChange={val => onContentChange("dateMonth", val)}
-              className="editable text-3xl font-bold leading-tight mb-2 text-center text-neutral-900"
+              className="editable w-full block text-3xl font-bold leading-tight mb-2 text-center text-neutral-900"
               type="title"
               aiTitleMaxChars={content.aiTitleMaxChars}
             />
@@ -221,7 +223,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
               seqId={`${seqIdPrefix}_addr1`}
               value={content.addr1}
               onChange={val => onContentChange("addr1", val)}
-              className="editable text-base mb-2 text-center text-neutral-900"
+              className="editable w-full block text-base mb-2 text-center text-neutral-900"
               type="title"
               aiTitleMaxChars={content.aiTitleMaxChars}
             />
@@ -229,7 +231,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
               seqId={`${seqIdPrefix}_addr2`}
               value={content.addr2}
               onChange={val => onContentChange("addr2", val)}
-              className="editable text-base mb-2 text-center text-neutral-900"
+              className="editable w-full block text-base mb-2 text-center text-neutral-900"
               type="title"
               aiTitleMaxChars={content.aiTitleMaxChars}
             />
@@ -237,7 +239,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
               seqId={`${seqIdPrefix}_addr3`}
               value={content.addr3}
               onChange={val => onContentChange("addr3", val)}
-              className="editable text-base mb-2 text-center text-neutral-900"
+              className="editable w-full block text-base mb-2 text-center text-neutral-900"
               type="title"
               aiTitleMaxChars={content.aiTitleMaxChars}
             />
@@ -246,7 +248,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
               seqId={`${seqIdPrefix}_dateTime`}
               value={content.dateTime}
               onChange={val => onContentChange("dateTime", val)}
-              className="editable text-base text-center text-neutral-900"
+              className="editable w-full block text-base text-center text-neutral-900"
               type="title"
               aiTitleMaxChars={content.aiTitleMaxChars}
             />

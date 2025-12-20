@@ -513,7 +513,7 @@ export function Workbench({
              {/* The Newspaper Card (Legacy Style) */}
              <section
                  ref={areaRef}
-                 className="newspaper-bg shadow-2xl rounded-xl px-8 py-6 w-[700px] min-h-[900px] flex flex-col gap-4 bg-white"
+                 className="newspaper-bg shadow-2xl rounded-xl mt-4 sm:mt-0 px-8 py-6 w-[700px] min-h-[900px] flex flex-col gap-4 bg-white"
                  style={{
                     // Optional: texture or border fallback
                  }}
@@ -581,7 +581,7 @@ function ExitDialog({ open, onCancel, onConfirm }: { open: boolean; onCancel: ()
             onClick={onConfirm}
             className="px-5 py-2.5 rounded-full text-sm font-bold text-white bg-linear-to-r from-purple-600 to-pink-600 hover:shadow-lg hover:shadow-purple-500/30 hover:scale-105 active:scale-95 transition-all duration-200"
           >
-            Leave Anyway
+            Leave
           </button>
         </div>
       </div>

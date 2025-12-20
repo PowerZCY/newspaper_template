@@ -333,7 +333,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
           contentEditable={!disabled}
           suppressContentEditableWarning
           className={className}
-          style={{ minWidth: 20, minHeight: '1.5em', ...style, position: 'relative', zIndex: 1 }}
+          style={{ minWidth: 20, minHeight: '1em', ...style, position: 'relative', zIndex: 1 }}
           onPaste={handlePastePlainText}
           onBlur={handleBlur}
           onFocus={handleFocus}
@@ -346,12 +346,11 @@ export const AIEditable: React.FC<AIEditableProps> = ({
             ? aiButtonRender({ onClick: () => setShowAIModal(true), loading: aiLoading })
             : (
               <div
-                className="absolute z-50 bg-[#f5f5e5] text-neutral-700 border border-purple-500 rounded-lg shadow-lg px-3 py-1 flex items-center cursor-pointer hover:bg-accent transition"
-                style={{ top: '-6px', right: '-66px' }}
+                className="absolute z-50 -top-12 right-0 md:-top-2 md:-right-20 bg-[#f5f5e5] text-neutral-700 border border-purple-500 rounded-full shadow-md px-5 py-2.5 md:px-4 md:py-1.5 flex items-center cursor-pointer hover:bg-purple-50 hover:scale-105 transition-all duration-200"
                 onMouseDown={e => { e.preventDefault(); e.stopPropagation(); setShowAIModal(true); }}
               >
-                <icons.Sparkles size={16} /> 
-                <span className="ml-1"> AI</span>
+                <icons.Sparkles size={20} className="text-purple-600" /> 
+                <span className="ml-1.5 font-bold text-sm">AI</span>
               </div>
             )
         )}

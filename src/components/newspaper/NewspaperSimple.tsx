@@ -49,7 +49,7 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
         seqId={`${seqIdPrefix}_edition`}
         value={content.edition}
         onChange={val => onContentChange("edition", val)}
-        className="editable text-center text-base text-neutral-700 mt-2 mb-1 tracking-wide whitespace-nowrap"
+        className="editable w-full block text-center text-base text-neutral-700 mt-2 mb-1 tracking-wide whitespace-nowrap"
         style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 640, margin: '0 auto' }}
         aiPromptDefault=""
         type="title"
@@ -60,7 +60,12 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
         seqId={`${seqIdPrefix}_headline`}
         value={content.headline}
         onChange={val => onContentChange("headline", val)}
-        className={cn("editable text-center text-[2.8rem] md:text-6xl font-extrabold tracking-[0.14em] text-neutral-900 leading-tight", adorable.className)}
+        className={cn(
+          "editable w-full block text-center font-extrabold tracking-[0.14em] text-neutral-900 leading-tight",
+          content.headline.length < 13 ? "text-[2.8rem] md:text-7xl" :
+          content.headline.length < 17 ? "text-[2.2rem] md:text-6xl" : "text-[1.8rem] md:text-5xl",
+          adorable.className
+        )}
         style={{ fontWeight: 600 }}
         aiPromptDefault=""
         type="title"
