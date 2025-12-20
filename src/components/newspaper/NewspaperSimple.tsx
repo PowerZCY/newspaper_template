@@ -74,7 +74,10 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
         <div className="w-2/3 pr-6 flex flex-col justify-start">
           {/* Row 1: Big image */}
           <div className="mb-2">
-            <div className="relative group w-full">
+            <div 
+              className="relative group w-full cursor-pointer"
+              onClick={() => onTriggerImgUpload('mainImg', onMainImgChange)}
+            >
               <Image
                 src={mainImg}
                 alt="Main image"
@@ -84,9 +87,10 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
                 className="img-shadow w-full h-[400px] object-cover select-none"
                 unoptimized={mainImg.startsWith('data:')}
               />
-              <button type="button" className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onClick={e => { e.stopPropagation(); onTriggerImgUpload('mainImg', onMainImgChange); }}>
-                <icons.Replace className="w-6 h-6 text-black" />
-              </button>
+              <div className="absolute bottom-2 right-2 bg-white/90 px-3 py-1.5 rounded-full shadow hover:bg-purple-100 transition flex items-center justify-center opacity-90 hover:opacity-100 z-10 pointer-events-none">
+                <icons.Pencil className="w-4 h-4 text-black mr-1" />
+                <span className="text-xs font-medium text-black">Edit</span>
+              </div>
             </div>
           </div>
           {/* Row 2: Big title */}
@@ -126,7 +130,10 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
           />
           {/* Row 2: Vertical image */}
           <div className="mb-1">
-            <div className="relative group w-full">
+            <div 
+              className="relative group w-full cursor-pointer"
+              onClick={() => onTriggerImgUpload('sideImg', onSideImgChange)}
+            >
               <Image
                 src={sideImg}
                 alt="Side image"
@@ -135,9 +142,10 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
                 className="img-shadow w-full h-[200px] object-cover select-none"
                 unoptimized={sideImg.startsWith('data:')}
               />
-              <button type="button" className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onClick={e => { e.stopPropagation(); onTriggerImgUpload('sideImg', onSideImgChange); }}>
-                <icons.Replace className="w-6 h-6 text-black" />
-              </button>
+              <div className="absolute bottom-2 right-2 bg-white/90 px-3 py-1.5 rounded-full shadow hover:bg-purple-100 transition flex items-center justify-center opacity-90 hover:opacity-100 z-10 pointer-events-none">
+                <icons.Pencil className="w-4 h-4 text-black mr-1" />
+                <span className="text-xs font-medium text-black">Edit</span>
+              </div>
             </div>
           </div>
           {/* Row 3: Description */}
@@ -162,7 +170,10 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
             aiTitleMaxChars={content.aiTitleMaxChars}
           />
           <div>
-            <div className="relative group w-full">
+            <div 
+              className="relative group w-full cursor-pointer"
+              onClick={() => onTriggerImgUpload('bottomImg', onBottomImgChange)}
+            >
               <Image
                 src={bottomImg}
                 alt="Bottom image"
@@ -171,9 +182,10 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
                 className="img-shadow w-full h-[200px] object-cover select-none"
                 unoptimized={bottomImg.startsWith('data:')}
               />
-              <button type="button" className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onClick={e => { e.stopPropagation(); onTriggerImgUpload('bottomImg', onBottomImgChange); }}>
-                <icons.Replace className="w-6 h-6 text-black" />
-              </button>
+              <div className="absolute bottom-2 right-2 bg-white/90 px-3 py-1.5 rounded-full shadow hover:bg-purple-100 transition flex items-center justify-center opacity-90 hover:opacity-100 z-10 pointer-events-none">
+                <icons.Pencil className="w-4 h-4 text-black mr-1" />
+                <span className="text-xs font-medium text-black">Edit</span>
+              </div>
             </div>
           </div>
           <AIEditable

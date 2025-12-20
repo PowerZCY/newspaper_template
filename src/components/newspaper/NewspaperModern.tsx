@@ -155,7 +155,10 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
         </div>
         {/* 右：大竖图 70% */}
         <div className="flex flex-col items-center" style={{ width: '65%' }}>
-          <div className="relative group w-full">
+          <div 
+            className="relative group w-full cursor-pointer"
+            onClick={() => onTriggerImgUpload('mainImg', onMainImgChange)}
+          >
             <Image
               src={mainImg}
               alt="Main image"
@@ -164,9 +167,10 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
               className="img-shadow w-full h-[350px] object-cover select-none"
               unoptimized={mainImg.startsWith('data:')}
             />
-            <button type="button" className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onClick={e => { e.stopPropagation(); onTriggerImgUpload('mainImg', onMainImgChange); }}>
-              <icons.Replace className="w-6 h-6 text-black" />
-            </button>
+            <div className="absolute bottom-2 right-2 bg-white/90 px-3 py-1.5 rounded-full shadow hover:bg-purple-100 transition flex items-center justify-center opacity-90 hover:opacity-100 z-10 pointer-events-none">
+              <icons.Pencil className="w-4 h-4 text-black mr-1" />
+              <span className="text-xs font-medium text-black">Edit</span>
+            </div>
           </div>
         </div>
       </div>
@@ -176,7 +180,10 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
       <div className="grid grid-cols-3 gap-0 w-full" style={{marginBottom: '10px'}}>
         {/* 左：竖图 */}
         <div className="flex flex-col items-center justify-center pr-4">
-          <div className="relative group w-full">
+          <div 
+            className="relative group w-full cursor-pointer"
+            onClick={() => onTriggerImgUpload('subImg', onSubImgChange)}
+          >
             <Image
               src={subImg}
               alt="Sub image"
@@ -185,9 +192,10 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
               className="img-shadow w-full h-[250px] object-cover select-none"
               unoptimized={subImg.startsWith('data:')}
             />
-            <button type="button" className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded shadow hover:bg-purple-100 transition flex items-center justify-center opacity-0 group-hover:opacity-100 z-10" onClick={e => { e.stopPropagation(); onTriggerImgUpload('subImg', onSubImgChange); }}>
-              <icons.Replace className="w-6 h-6 text-black" />
-            </button>
+            <div className="absolute bottom-2 right-2 bg-white/90 px-3 py-1.5 rounded-full shadow hover:bg-purple-100 transition flex items-center justify-center opacity-90 hover:opacity-100 z-10 pointer-events-none">
+              <icons.Pencil className="w-4 h-4 text-black mr-1" />
+              <span className="text-xs font-medium text-black">Edit</span>
+            </div>
           </div>
         </div>
         {/* 中：票据风格日期 */}
