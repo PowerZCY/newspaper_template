@@ -333,7 +333,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
           contentEditable={!disabled}
           suppressContentEditableWarning
           className={className}
-          style={{ ...style, position: 'relative', zIndex: 1 }}
+          style={{ minWidth: 20, minHeight: '1.5em', ...style, position: 'relative', zIndex: 1 }}
           onPaste={handlePastePlainText}
           onBlur={handleBlur}
           onFocus={handleFocus}
