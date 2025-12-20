@@ -72,14 +72,14 @@ export function TemplateGallery({ onSelect }: TemplateGalleryProps) {
                )}
             </div>
 
-            {/* Image Area */}
-            <div className="relative aspect-[0.7] mx-3 mb-3 bg-neutral-100 dark:bg-neutral-900 overflow-hidden shadow-inner">
+            {/* Image Area, template webp need fixed px: width/highth ~0.77 */}
+            <div className="relative aspect-[0.77] mx-3 mb-3 overflow-hidden">
                 <Image
                   src={tpl.thumb}
                   alt={tpl.name}
                   fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                  className="object-contain transition-transform duration-500 group-hover:scale-105"
+                  sizes="(max-width: 800px) 50vw, (max-width: 1200px) 33vw, 25vw"
                   unoptimized // Based on existing code usage
                 />
                 
