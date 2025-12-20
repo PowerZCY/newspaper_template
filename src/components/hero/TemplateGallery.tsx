@@ -57,14 +57,15 @@ export function TemplateGallery({ onSelect }: TemplateGalleryProps) {
             }}
           >
             {/* Header / Tags */}
-            <div className="px-4 py-3 flex justify-between items-center">
-               <h3 className={`font-semibold text-sm truncate ${tpl.type === 'ads' ? 'text-amber-700 dark:text-amber-500' : 'text-neutral-700 dark:text-neutral-200'}`}>
+            <div className="px-4 py-2 flex justify-center items-center relative">
+               <h3 className="font-extrabold text-lg truncate text-transparent bg-clip-text bg-linear-to-r from-purple-600 to-pink-600 text-center">
                  {tpl.name.replace(/(ad|ads)$/i, '').trim()}
-                 {tpl.type === 'ads' && <span className="ml-2 text-[10px] px-1.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900 text-amber-600 dark:text-amber-400 font-bold uppercase">Ad</span>}
                </h3>
+               {tpl.type === 'ads' && <span className="absolute right-12 text-[10px] px-1.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900 text-amber-600 dark:text-amber-400 font-bold uppercase">Ad</span>}
+               
                {tpl.type === 'ads' && (
                   <button
-                    className="text-neutral-400 hover:text-red-500 transition-colors p-1 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                    className="absolute right-4 text-neutral-400 hover:text-red-500 transition-colors p-1 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800"
                     onClick={(e) => handleCloseAd(e, tpl.key)}
                   >
                     <icons.X className="w-4 h-4" />
