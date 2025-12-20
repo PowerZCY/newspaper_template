@@ -22,6 +22,7 @@ interface AIEditableProps {
   type?: 'title' | 'text';
   aiTitleMaxChars?: number;
   aiMaxChars?: number;
+  label?: string; // New: Field name for display
 }
 
 // 新增AI消息类型
@@ -84,6 +85,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
   type = 'text',
   aiTitleMaxChars = 30,
   aiMaxChars = 600,
+  label,
 }) => {
   const { activeId, setActiveId, showAIButton, setShowAIButton, showAIModal, setShowAIModal } = useAIEditableContext();
   const selfId = seqId;
@@ -361,10 +363,10 @@ export const AIEditable: React.FC<AIEditableProps> = ({
             onMouseUp={handleModalBgMouseUp}
             onMouseMove={handleModalBgMouseMove}
             onWheel={handleModalBgWheel}
-            className="fixed inset-0 z-9999 flex items-center justify-center bg-black/30"
+            className="fixed inset-0 z-9999 flex items-end justify-center bg-black/30 pb-0 md:pb-0"
           >
             <div
-              className="relative w-[80vw] max-w-[700px] max-h-[85vh] bg-[#f5f5e5] text-neutral-700 border border-purple-500 rounded-lg shadow-xl p-4 pt-3 flex flex-col"
+              className="relative w-[80vw] max-w-[600px] max-h-[70vh] mb-10 sm:mb-4 bg-[#f5f5e5] text-neutral-700 border border-purple-500 rounded-lg shadow-xl p-4 pt-3 flex flex-col transition-all duration-300"
               onClick={e => e.stopPropagation()}
               style={{ minHeight: 320 }}
             >
@@ -381,8 +383,23 @@ export const AIEditable: React.FC<AIEditableProps> = ({
                   <icons.X size={24} />
                 </button>
               </div>
+
+              {/* Context Reference Card */}
+              <div className="shrink-0 bg-white/60 border border-purple-100 p-2 rounded-md mb-2 text-xs border-l-4 border-l-purple-400 select-none shadow-sm">
+                <div className="font-bold text-purple-700 mb-0.5">
+                   Editing: {label || (seqId.includes('_') ? seqId.split('_').pop()?.replace(/^[a-z]/, (c: string) => c.toUpperCase()) : seqId)}
+                </div>
+                <div className="text-neutral-600 line-clamp-2 italic font-serif wrap-break-word">
+                   &quot;{value || 'Empty content'}&quot;
+                </div>
+              </div>
+
               {/* 消息区 */}
-              <div ref={messagesEndRef} className="flex-1 overflow-y-auto dialog-body px-2 py-2 mb-2" style={{ minHeight: 200 }}>
+              <div 
+                ref={messagesEndRef} 
+                className="flex-1 overflow-y-auto dialog-body px-2 py-2 mb-2 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-purple-300/80 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-purple-400/80" 
+                style={{ minHeight: 150 }}
+              >
                 {messages.length === 0 && (
                   <div className="text-center text-neutral-400 text-sm">No conversation, start with prompt</div>
                 )}
