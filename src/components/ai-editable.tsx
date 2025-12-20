@@ -4,6 +4,7 @@ import { globalLucideIcons as icons } from "@windrun-huaiin/base-ui/components/s
 import { appConfig } from "@/lib/appConfig";
 import { handlePastePlainText } from '@windrun-huaiin/lib/utils';
 import React, { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 interface AIEditableProps {
   // HTML div id, for cache key
@@ -106,6 +107,13 @@ export const AIEditable: React.FC<AIEditableProps> = ({
   const [copied, setCopied] = useState(false);
   // 替换按钮反馈状态
   const [replaced, setReplaced] = useState(false);
+  // Mount state for Portal
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // 触控板/鼠标滚轮支持
   const handleModalBgWheel = (e: React.WheelEvent<HTMLDivElement>) => {
     if (e.target === modalBgRef.current) {
@@ -346,19 +354,19 @@ export const AIEditable: React.FC<AIEditableProps> = ({
             )
         )}
         {/* AI modal: Only show when current active area and showAIModal is true */}
-        {isActive && showAIModal && (
+        {isActive && showAIModal && mounted && createPortal(
           <div
             ref={modalBgRef}
             onMouseDown={handleModalBgMouseDown}
             onMouseUp={handleModalBgMouseUp}
             onMouseMove={handleModalBgMouseMove}
             onWheel={handleModalBgWheel}
-            className="fixed inset-0 z-50 flex items-end justify-center bg-black/30"
+            className="fixed inset-0 z-9999 flex items-center justify-center bg-black/30"
           >
             <div
-              className="fixed left-[615px] z-50 w-[700px] bg-[#f5f5e5] text-neutral-700 border border-purple-500 rounded-lg shadow-xl p-4 pt-3 mb-12"
+              className="relative w-[80vw] max-w-[700px] max-h-[85vh] bg-[#f5f5e5] text-neutral-700 border border-purple-500 rounded-lg shadow-xl p-4 pt-3 flex flex-col"
               onClick={e => e.stopPropagation()}
-              style={{ minHeight: 320, maxHeight: 600, display: 'flex', flexDirection: 'column' }}
+              style={{ minHeight: 320 }}
             >
               {/* Modal header: title left, close button right */}
               <div className="flex items-center justify-between mb-1 border-b border-purple-400 pb-1">
@@ -481,7 +489,8 @@ export const AIEditable: React.FC<AIEditableProps> = ({
                 </span>
               </div>
             </div>
-          </div>
+          </div>,
+          document.body
         )}
       </div>
     </>
