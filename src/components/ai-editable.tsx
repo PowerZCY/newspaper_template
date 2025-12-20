@@ -363,10 +363,16 @@ export const AIEditable: React.FC<AIEditableProps> = ({
             onMouseUp={handleModalBgMouseUp}
             onMouseMove={handleModalBgMouseMove}
             onWheel={handleModalBgWheel}
-            className="fixed inset-0 z-9999 flex items-end justify-center bg-black/30 pb-0 md:pb-0"
+            onTouchMove={(e) => {
+              // Prevent background scrolling on mobile when touching the overlay
+              if (e.target === modalBgRef.current) {
+                e.preventDefault();
+              }
+            }}
+            className="fixed inset-0 z-9999 flex items-center justify-center bg-black/30"
           >
             <div
-              className="relative w-[80vw] max-w-[600px] max-h-[70vh] mb-10 sm:mb-4 bg-[#f5f5e5] text-neutral-700 border border-purple-500 rounded-lg shadow-xl p-4 pt-3 flex flex-col transition-all duration-300"
+              className="relative w-[80vw] max-w-[600px] max-h-[70vh] sm:max-h-[80vh] mt-12 md:mt-24 bg-[#f5f5e5] text-neutral-700 border border-purple-500 rounded-lg shadow-xl p-4 pt-3 flex flex-col transition-all duration-300"
               onClick={e => e.stopPropagation()}
               style={{ minHeight: 320 }}
             >
