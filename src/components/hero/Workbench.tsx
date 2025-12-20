@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { createPortal } from "react-dom";
 import { AdsAlertDialog, XButton } from "@windrun-huaiin/third-ui/main";
 import { globalLucideIcons as icons } from "@windrun-huaiin/base-ui/components/server";
 import { NewspaperModern } from "@/components/newspaper/NewspaperModern";
@@ -552,29 +553,39 @@ export function Workbench({
 }
 
 function ExitDialog({ open, onCancel, onConfirm }: { open: boolean; onCancel: () => void; onConfirm: () => void }) {
-  if (!open) return null;
-  return (
-    <div className="fixed inset-0 z-10000 flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-white dark:bg-neutral-900 p-6 rounded-2xl shadow-2xl max-w-sm w-full mx-4 border border-neutral-200 dark:border-neutral-800 scale-100 animate-in zoom-in-95 duration-200">
-        <h3 className="text-lg font-bold mb-2 text-neutral-900 dark:text-neutral-100">Leave Editor?</h3>
-        <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-6">
-          Your changes will not be saved. Are you sure you want to exit?
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setTimeout(() => setMounted(true), 0);
+  }, []);
+
+  if (!open || !mounted) return null;
+
+  return createPortal(
+    <div className="fixed inset-0 z-10000 flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
+      <div className="bg-white/95 dark:bg-neutral-900/95 backdrop-blur-md p-6 rounded-2xl shadow-2xl max-w-sm w-full mx-4 border border-purple-200/50 dark:border-purple-700/50 ring-4 ring-purple-500/10 scale-100 animate-in zoom-in-95 duration-300">
+        <h3 className="text-xl font-extrabold mb-2 text-transparent bg-clip-text bg-linear-to-r from-purple-600 to-pink-600">
+          Leave the Editor?
+        </h3>
+        <p className="text-sm font-medium text-neutral-600 dark:text-neutral-300 mb-6 leading-relaxed">
+          You have unsaved changes. <br/>
+          If you leave now, your progress will be lost.
         </p>
         <div className="flex gap-3 justify-end">
           <button 
             onClick={onCancel}
-            className="px-4 py-2 rounded-full text-sm font-medium text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+            className="px-5 py-2.5 rounded-full text-sm font-bold text-neutral-600 dark:text-neutral-400 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all duration-200"
           >
-            Cancel
+            Stay
           </button>
           <button 
             onClick={onConfirm}
-            className="px-4 py-2 rounded-full text-sm font-medium bg-red-600 text-white hover:bg-red-700 transition-colors shadow-sm"
+            className="px-5 py-2.5 rounded-full text-sm font-bold text-white bg-linear-to-r from-purple-600 to-pink-600 hover:shadow-lg hover:shadow-purple-500/30 hover:scale-105 active:scale-95 transition-all duration-200"
           >
-            Exit without Saving
+            Leave Anyway
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
