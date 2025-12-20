@@ -25,13 +25,13 @@ export function TemplateGallery({ onSelect }: TemplateGalleryProps) {
   return (
     <div className="w-full min-h-[60vh] flex flex-col items-center mt-20 pb-5 md:pb-10 px-4 md:px-8 bg-neutral-100 dark:bg-neutral-900 transition-colors duration-300">
       <div className="text-center max-w-6xl mb-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-2 sm:mb-3 text-neutral-900 dark:text-neutral-50 tracking-tight">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-2 sm:mb-8 text-neutral-900 dark:text-neutral-50 tracking-tight">
           Create Your Newspaper <br className="block md:hidden" />
           <span className="text-transparent bg-clip-text bg-linear-to-r from-purple-600 to-pink-600">
              in Seconds
           </span>
         </h1>
-        <p className="text-base sm:text-lg text-neutral-600 dark:text-neutral-400">
+        <p className="text-base sm:text-lg text-neutral-600 dark:text-neutral-400 sm:mb-8">
         Pick a template, edit immersively, upload images. With AI-generate text, you&apos;ll get high-res prints.
         </p>
       </div>
