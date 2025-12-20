@@ -61,9 +61,11 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
         value={content.headline}
         onChange={val => onContentChange("headline", val)}
         className={cn(
-          "editable w-full block text-center font-extrabold tracking-[0.14em] text-neutral-900 leading-tight",
+          "editable w-full block text-center font-extrabold tracking-[0.14em] text-neutral-900 leading-tight word-break-word whitespace-normal",
           content.headline.length < 13 ? "text-[2.8rem] md:text-7xl" :
-          content.headline.length < 17 ? "text-[2.2rem] md:text-6xl" : "text-[1.8rem] md:text-5xl",
+          content.headline.length < 17 ? "text-[2.2rem] md:text-6xl" :
+          content.headline.length < 19 ? "text-[1.8rem] md:text-5xl" :
+          content.headline.length < 27 ? "text-[1.5rem] md:text-4xl" : "text-[1.2rem] md:text-3xl",
           adorable.className
         )}
         style={{ fontWeight: 600 }}

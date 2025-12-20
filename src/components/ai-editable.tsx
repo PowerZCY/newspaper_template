@@ -7,22 +7,73 @@ import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 interface AIEditableProps {
-  // HTML div id, for cache key
+  /**
+   * Unique sequence ID for cache key and identification.
+   * Format suggestion: `templateName_fieldName` (e.g. `modern_headline`).
+   */
   seqId: string;
+  /**
+   * Current text content (HTML string). Usually bound to parent state.
+   */
   value: string;
+  /**
+   * Callback when content changes. `val` is the new HTML string.
+   */
   onChange: (val: string) => void;
+  /**
+   * Placeholder text when empty. Note: requires CSS `:empty::before` to show.
+   */
   placeholder?: string;
+  /**
+   * Default prompt text pre-filled in the AI dialog input.
+   */
   aiPromptDefault?: string;
+  /**
+   * CSS class name for the editable container div.
+   * **Note**: Use `block` layout and `text-center` etc. Avoid `flex` on this container to prevent wrapping issues.
+   */
   className?: string;
+  /**
+   * Inline styles for the container.
+   * Component enforces `minHeight: '1em'` internally to prevent collapse.
+   */
   style?: React.CSSProperties;
+  /**
+   * Extra HTML attributes passed to the internal contentEditable div (e.g. `spellCheck`, `tabIndex`).
+   */
   editableProps?: React.HTMLAttributes<HTMLDivElement>;
+  /**
+   * Custom render function for the AI trigger button.
+   * If not provided, uses the default purple Sparkles button.
+   */
   aiButtonRender?: (props: { onClick: () => void; loading: boolean }) => React.ReactNode;
+  /**
+   * Custom title for the AI dialog modal. Default: "AI Generate".
+   */
   modalTitle?: string;
+  /**
+   * Whether editing is disabled. If true, AI button is hidden and text is read-only.
+   */
   disabled?: boolean;
+  /**
+   * Field type. Determines AI context strategy.
+   * - `title`: Short text generation.
+   * - `text`: Long text generation.
+   */
   type?: 'title' | 'text';
+  /**
+   * Max characters for AI generation when type is `title`. Default: 30.
+   */
   aiTitleMaxChars?: number;
+  /**
+   * Max characters for AI generation when type is `text`. Default: 600.
+   */
   aiMaxChars?: number;
-  label?: string; // New: Field name for display
+  /**
+   * Field display name shown in the AI dialog's "Context Card".
+   * If undefined, it's parsed from `seqId`.
+   */
+  label?: string; 
 }
 
 // 新增AI消息类型

@@ -49,6 +49,14 @@ function HeroContent() {
     }
   };
 
+  const handleResetContent = (type: "simple" | "modern") => {
+    if (type === "simple") {
+      setSimpleContent({ ...NEWSPAPER_TEMPLATES.simple.defaultContent });
+    } else {
+      setModernContent({ ...NEWSPAPER_TEMPLATES.modern.defaultContent });
+    }
+  };
+
   const handleImgChange = (type: "simple" | "modern", key: string, file: File) => {
     const reader = new FileReader();
     reader.onload = e => {
@@ -104,6 +112,7 @@ function HeroContent() {
                 onImgChange={(k, f) => handleImgChange(selectedTemplateKey, k, f)}
                 onGlobalImgUpload={(k, cb) => handleGlobalImgUpload(selectedTemplateKey, k, cb)}
                 onSwitchTemplate={() => router.push(pathname)} // Reuse Gallery as Switcher
+                onReset={() => handleResetContent(selectedTemplateKey)}
             />
         </div>
       )}

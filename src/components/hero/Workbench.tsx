@@ -9,7 +9,7 @@ import { NewspaperModern } from "@/components/newspaper/NewspaperModern";
 import { NewspaperSimple } from "@/components/newspaper/NewspaperSimple";
 import { appConfig } from "@/lib/appConfig";
 import { AIEditableProvider } from "@/components/AIEditableContext";
-import { exportNewspaperJSON, importNewspaperJSON } from "@/components/edit-cache";
+import { exportNewspaperJSON, importNewspaperJSON, clearNewspaperCache } from "@/components/edit-cache";
 
 interface WorkbenchProps {
   template: "simple" | "modern";
@@ -19,6 +19,7 @@ interface WorkbenchProps {
   onImgChange: (key: string, file: File) => void;
   onGlobalImgUpload: (key: string, cb: (file: File) => void) => void;
   onSwitchTemplate: () => void; // Handler to open template drawer
+  onReset: () => void;
 }
 
 export function Workbench({
@@ -28,7 +29,8 @@ export function Workbench({
   imgs,
   onImgChange,
   onGlobalImgUpload,
-  onSwitchTemplate
+  onSwitchTemplate,
+  onReset,
 }: WorkbenchProps) {
   const router = useRouter();
   const areaRef = useRef<HTMLDivElement>(null);
@@ -380,6 +382,11 @@ export function Workbench({
   }, []);
 
   const handleConfirmExit = () => {
+    // Clear cache to prevent state pollution on re-entry
+    clearNewspaperCache(template);
+    // Reset parent state
+    onReset();
+    
     setShowExitDialog(false);
     if (pendingNavigationUrl) {
         router.push(pendingNavigationUrl);

@@ -250,8 +250,8 @@ graph TD
 - 关闭对话框仅允许通过X按钮。
 
 ### 8.2 界面结构
-- **顶部**：标题 + 关闭（X）按钮。
-- **中部**：对话消息区（左AI/右用户气泡，支持滚动）。
+- **顶部**：标题 + 关闭（X）按钮 + **Context Card** (当前编辑字段摘要)。
+- **中部**：对话消息区（左AI/右用户气泡，支持滚动，**自定义滚动条**）。
 - **底部**：
   - 提示词输入区（textarea，保留原有自适应高度、最大长度等特性）。
   - 操作按钮区（Replace、Copy、ReGenerate，Insert本期忽略）。
@@ -445,3 +445,31 @@ graph TD
 - 只要不是主动关闭，用户都能恢复对话内容。
 - 缓存过期机制防止本地存储无限增长。
 
+---
+
+## 9. AIEditable 组件参数说明 (AIEditableProps)
+
+为了确保开发的一致性和可维护性，`AIEditable` 组件的所有 Props 定义如下：
+
+| 属性名 | 类型 | 必填 | 默认值 | 描述 |
+| :--- | :--- | :--- | :--- | :--- |
+| **seqId** | `string` | **Yes** | - | 唯一序列号 ID，用于生成缓存 Key 和识别编辑区域。格式建议：`templateName_fieldName`。 |
+| **value** | `string` | **Yes** | - | 当前文本内容（HTML string）。通常绑定到父组件的状态。 |
+| **onChange** | `(val: string) => void` | **Yes** | - | 内容变更回调函数。`val` 为变更后的 HTML 字符串。 |
+| **placeholder** | `string` | No | `"Please enter..."` | 文本框为空时的占位提示（注：在 contentEditable 中需配合 CSS 实现）。 |
+| **label** | `string` | No | `undefined` | **字段显示名称**。在 AI 弹窗顶部的 "Context Card" 中显示（例如 "Headline"）。若不传，则自动从 `seqId` 解析。 |
+| **aiPromptDefault** | `string` | No | - | 打开 AI 弹窗时，输入框中预填的默认提示词。 |
+| **className** | `string` | No | - | 应用于编辑区域容器 `div` 的 CSS 类名。**注意**：请使用 `block` 布局和 `text-center` 等原子类，避免使用 `flex` 导致换行异常。 |
+| **style** | `CSSProperties` | No | - | 应用于编辑区域容器 `div` 的内联样式。组件内部默认合并了 `minHeight: '1em'` 以防止空内容塌陷。 |
+| **editableProps** | `HTMLAttributes` | No | - | 透传给内部 `div` 的其他 HTML 属性（如 `spellCheck`, `tabIndex` 等）。 |
+| **aiButtonRender** | `function` | No | - | 自定义渲染 AI 触发按钮的函数。若不传，则使用默认的紫色 Sparkles 悬浮按钮。 |
+| **modalTitle** | `string` | No | - | 自定义 AI 弹窗的标题。默认为 "AI Generate"。 |
+| **disabled** | `boolean` | No | `false` | 是否禁用编辑功能。禁用后不可点击，不显示 AI 按钮。 |
+| **type** | `'title' \| 'text'` | No | `'text'` | 字段类型。决定了 AI 生成时的上下文提示策略。 |
+| **aiTitleMaxChars** | `number` | No | `30` | 当 `type='title'` 时，限制 AI 生成内容的最大字符数。 |
+| **aiMaxChars** | `number` | No | `600` | 当 `type='text'` 时，限制 AI 生成内容的最大字符数。 |
+
+**重要样式约束：**
+1.  **AI 触发按钮**：默认在移动端使用 `absolute -top-12 right-0` (上方悬浮)，桌面端使用 `absolute -top-2 -right-20` (侧边悬浮)，且尺寸在移动端自动加大 (`px-5 py-2.5`) 以适应触控。
+2.  **空状态保护**：组件强制应用 `min-height: 1em` 和 `min-width: 20px`，确保即使用户删光内容，编辑区也不会塌陷消失。
+3.  **Portal 渲染**：AI 弹窗强制使用 `createPortal` 渲染至 `document.body`，以规避父级容器的 `transform: scale` 缩放影响。

@@ -106,16 +106,19 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
           type="title"
           aiTitleMaxChars={content.aiTitleMaxChars}
         />
-      </div>
+      </div>Purple Bamboo Dreams
       <div className="newspaper-divider" style={{borderTop: '2px solid #222', width: '100%', marginBottom: '4px'}}></div>
       <AIEditable
         seqId={`${seqIdPrefix}_headline`}
         value={content.headline}
         onChange={val => onContentChange("headline", val)}
         className={cn(
-          "editable w-full flex items-center justify-center text-center font-black tracking-wide text-neutral-900 leading-tight mb-2.5",
-          content.headline.length < 14 ? "text-[3.5rem] md:text-7xl" :
-          content.headline.length < 19 ? "text-[2.5rem] md:text-6xl" : "text-[2rem] md:text-5xl",
+          "editable w-full block text-center font-black tracking-wide text-neutral-900 leading-tight mb-2.5",
+          content.headline.length < 16 ? "text-[3.5rem] md:text-7xl" :
+          content.headline.length < 19 ? "text-[3.0rem] md:text-6xl" :
+          content.headline.length < 24 ? "text-[2.5rem] md:text-5xl" :
+          content.headline.length < 32 ? "text-[2rem] md:text-4xl" :
+          content.headline.length < 38 ? "text-[1.5rem] md:text-3xl" : "text-[1.2rem] md:text-2xl",
           engravers.className
         )}
         style={{ fontWeight: 600, letterSpacing: '0.05em' }}

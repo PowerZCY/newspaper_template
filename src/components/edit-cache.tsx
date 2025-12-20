@@ -119,4 +119,12 @@ export function importNewspaperJSON(
     }
   };
   reader.readAsText(file);
+}
+
+/**
+ * 清理指定模板的本地缓存
+ * @param templateType
+ */
+export function clearNewspaperCache(templateType: string) {
+  localStorage.removeItem(`newspaper_template_${templateType}`);
 } 
