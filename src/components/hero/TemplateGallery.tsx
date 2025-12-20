@@ -32,7 +32,7 @@ export function TemplateGallery({ onSelect }: TemplateGalleryProps) {
           </span>
         </h1>
         <p className="text-base sm:text-lg text-neutral-600 dark:text-neutral-400 sm:mb-8">
-        Pick a template, edit immersively, upload images. With AI-generate text, you&apos;ll get high-res prints.
+        Pick a template, add images, boost with AI text—export in high resolution.
         </p>
       </div>
 

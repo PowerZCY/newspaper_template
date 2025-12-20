@@ -13,18 +13,18 @@
     "items": [
       {
         "title": "Quick and Easy to Use",
-        "description": "Edit text directly, upload your image if needed, then you can download your newspaper.",
+        "description": "Edit text directly, add your images if needed, then you can download your newspaper.",
         "iconKey": "Zap"
       },
       {
         "title": "Totally Free",
-        "description": "All features are completely free to use. Upgrade to a paid plan only if you need AI-powered text polishing.",
+        "description": "Enjoy full access to all features at no cost. No watermark—free to use for commercial purposes.",
         "iconKey": "Gift"
       },
       {
-        "title": "Customizable Templates",
-        "description": "Choose from a variety of professionally designed templates to match your style.",
-        "iconKey": "BringToFront"
+        "title": "Privacy Assured",
+        "description": "Design worry-free—your data is stored locally in your browser, safely protecting your privacy with no data shared.",
+        "iconKey": "ShieldUser"
       },
       {
         "title": "AI-Powered Generation",
@@ -55,7 +55,7 @@
       },
       {
         "title": "Customize Your Content",
-        "description": "Edit text directly in the text area and hover over images to upload new ones. You can also use AI to generate text for good editing experience.",
+        "description": "Edit text directly in the text area, click bottom-right button to add images, or use AI to generate content.",
         "iconKey": "Pencil"
       },
       {
@@ -71,39 +71,51 @@
     "items":[
       {
         "question": "What is this newspaper template website?",
-        "answer": "This newspaper template website allows you to create and customize professional-looking newspapers using easy-to-use templates. You can edit text, upload images, and download or share your creations."
+        "answer": "This newspaper template website allows you to create and customize professional-looking newspapers using easy-to-use templates. You can edit text, add images, and download or share your creations."
       },
       {
         "question": "Is the newspaper template website free to use?",
-        "answer": "Yes, using our newspaper template website is completely free! You can enjoy all features, including templates, editing tools, and watermark-free downloads at no cost. If you’d like to generate text with AI, simply upgrade to a paid plan. "
+        "answer": "Yes, our newspaper template website is completely free! Every newspaper template includes full access to all features—editing tools, AI-powered text generation, and watermark-free downloads—without any cost or hidden fees. Perfect for commercial use!"
       },
       {
         "question": "How do I edit the text and images?",
-        "answer": "To edit text, simply click into the text field and start typing your content. To change images, hover over the image placeholder and select the option to upload a new image from your device."
+        "answer": "To edit text in your newspaper template, simply click into the text field and start typing your content. You can also use AI to generate text for better content. To change images, click the bottom-right button on the image to select a new one from your device."
+      },
+      {
+        "question": "Can I use AI to generate newspaper content?",
+        "answer": "Yes! Our newspaper template features AI-powered text generation. Simply click the AI button when editing your newspaper template, describe what you need, and get instant AI-generated content tailored to your newspaper. It's completely free and helps you create professional content quickly without any writing hassle."
       },
       {
         "question": "Do I need design experience to use the newspaper template website?",
-        "answer": "No design experience is required! Our intuitive interface and pre-designed templates make it easy for anyone to create a polished newspaper."
+        "answer": "No design experience is required! Our intuitive newspaper template interface and pre-designed templates make it easy for anyone to create a polished newspaper with professional results."
       },
       {
         "question": "Can I preview my newspaper before downloading?",
-        "answer": "Yes, you can see real-time updates as you edit. The preview feature lets you review your newspaper to ensure it looks perfect before saving or sharing."
+        "answer": "Yes, you can see real-time updates as you edit your newspaper template. The preview feature lets you review your newspaper to ensure it looks perfect before saving or sharing."
       },
       {
         "question": "What file formats can I download my newspaper in?",
-        "answer": "You can download your newspaper as a high-quality PDF, PNG, JPG, WEBP, or SVG, suitable for printing or digital sharing."
+        "answer": "You can download your newspaper template creation as a high-quality PDF, PNG, JPG, WEBP, or SVG, suitable for printing or digital sharing."
       },
       {
         "question": "Can I save my work and come back to it later?",
-        "answer": "Currently, you can complete your newspaper in one session. Future updates may include a save feature."
+        "answer": "Your newspaper template work is stored locally in your browser for privacy protection. This means if you refresh or close the page, your work will be lost. However, you can download your newspaper template project as a JSON file to save your text content (images are not included in the JSON). Later, you can import this JSON file back into the platform to continue editing. We recommend downloading your newspaper as an image or PDF once you're done, and downloading the JSON if you plan to make future edits. We don't store any of your data on our servers to ensure complete privacy."
+      },
+      {
+        "question": "How do I export and import my project as JSON?",
+        "answer": "To save your newspaper template work for future editing, click the export button to download a JSON file containing all your text content. When you want to continue editing your newspaper template, simply click the import button and select your previously saved JSON file. Note that JSON files only contain text data—images are not included, so you'll need to re-add any images when you continue editing."
+      },
+      {
+        "question": "Is my data safe and private?",
+        "answer": "Absolutely! All your newspaper template content and edits are stored locally in your browser only—we never upload or store your data on our servers. This ensures complete privacy and security. Your newspaper content stays entirely under your control."
       },
       {
         "question": "Are there limits to how many newspapers I can create?",
-        "answer": "No limits! You can create as many newspapers as you like, all for free."
+        "answer": "No limits! You can create as many newspapers as you like using our newspaper template platform, all for free."
       },
       {
         "question": "Can I use my own fonts or colors?",
-        "answer": "You can use pre-set fonts and color schemes in our free online newspaper templates for a professional look. Custom font uploads may be available in future updates."
+        "answer": "You can use pre-set fonts and color schemes in our free online newspaper templates for a professional look. Adding custom fonts may be available in future updates."
       },
       {
         "question": "How can I share my finished newspaper?",
@@ -115,11 +127,11 @@
     "title": "What is",
     "eyesOn": "Newspaper Template",
     "description": "Online & Free & Editable & Professional",
-    "intro": "In the digital age, creating visually compelling content is crucial for capturing attention. A newspaper template is a pre-designed, reusable layout that provides a professional framework for creating your own newspaper. It serves as a foundational blueprint, complete with structured placeholders for headlines, articles, images, and columns. This allows creators to focus purely on crafting compelling content without getting bogged down by the complexities of graphic design. Using a newspaper template is the smartest way to produce a polished, organized, and authentic-looking publication, whether for print or digital distribution. It's an indispensable tool for modern storytellers.",
+    "intro": "In the digital age, creating visually compelling content is crucial for capturing attention. A newspaper template is a pre-designed, reusable layout that provides a professional framework for creating your own newspaper. It serves as a foundational blueprint, complete with structured placeholders for headlines, articles, images, and columns. This allows creators to focus purely on crafting compelling content without getting bogged down by the complexities of graphic design. Using a newspaper template is the smartest way to produce a polished, organized, and authentic-looking publication, whether for print or digital distribution. Every newspaper template on our platform is an indispensable tool for modern storytellers.",
     "sections": [
         {
             "title": "The Core Benefits: Why Use a Newspaper Template?",
-            "content": "The most significant advantage of using a newspaper template is the immense time and effort it saves. Graphic design is a specialized skill, and starting from a blank page can be daunting and time-consuming. A newspaper template bypasses this hurdle, offering a professionally crafted structure right from the start. This ensures a high level of quality and readability, giving your publication instant credibility. Consistency is another key benefit. A good newspaper template maintains a uniform style—fonts, colors, spacing—across every page, creating a cohesive and professional reader experience. This is vital for establishing a recognizable brand for your publication. Moreover, it empowers individuals without any design background to create materials that look like they were made by a professional, democratizing the world of publishing."
+            "content": "The most significant advantage of using a newspaper template is the immense time and effort it saves. Graphic design is a specialized skill, and starting from a blank page can be daunting and time-consuming. A newspaper template bypasses this hurdle, offering a professionally crafted structure right from the start. This ensures a high level of quality and readability, giving your publication instant credibility. Consistency is another key benefit. A good newspaper template maintains a uniform style—fonts, colors, spacing—across every page, creating a cohesive and professional reader experience. This is vital for establishing a recognizable brand for your publication. Moreover, a newspaper template empowers individuals without any design background to create materials that look like they were made by a professional, democratizing the world of publishing."
         },
         {
             "title": "Endless Possibilities: The Versatile Uses of a Newspaper Template",
@@ -127,7 +139,7 @@
         },
         {
             "title": "Choosing the Perfect Free Online Newspaper Template",
-            "content": "With our free online platform, accessing a high-quality newspaper template has never been easier. When selecting your template, consider the tone and purpose of your content. Are you reporting serious news or creating something more lighthearted? Choose a layout that reflects that. Look for a newspaper template with a flexible structure that allows you to easily adjust columns, image sizes, and text boxes. Our tools are designed for maximum customizability, allowing you to edit text directly and upload your own images with a simple click. The best newspaper template is one that not only looks good but also feels intuitive to use. Our platform ensures this by being completely free, browser-based, and requiring no prior experience, putting professional design within everyone's reach."
+            "content": "With our free online platform, accessing a high-quality newspaper template has never been easier. When selecting your newspaper template, consider the tone and purpose of your content. Are you reporting serious news or creating something more lighthearted? Choose a layout that reflects that. Look for a newspaper template with a flexible structure that allows you to easily adjust columns, image sizes, and text boxes. Our tools are designed for maximum customizability, allowing you to edit text directly and upload your own images with a simple click. The best newspaper template is one that not only looks good but also feels intuitive to use. Our platform ensures this by being completely free, browser-based, and requiring no prior experience, putting professional design within everyone's reach."
         }
     ],
     "conclusion": "In summary, the newspaper template is a powerful and versatile tool that simplifies the creation of stunning publications. It provides the structure and professional polish, freeing you to concentrate on crafting impactful stories. By removing design barriers, a newspaper template empowers everyone to become a publisher. Dive in and start creating with a professional newspaper template today to see your vision come to life."

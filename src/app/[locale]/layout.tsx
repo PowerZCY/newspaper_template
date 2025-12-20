@@ -10,6 +10,7 @@ import { cn as cnUtils } from '@windrun-huaiin/lib/utils';
 import { montserrat } from '@/lib/fonts';
 import { GoogleAnalyticsScript } from "@windrun-huaiin/base-ui/components";
 import { MicrosoftClarityScript } from "@windrun-huaiin/base-ui/components";
+import { GoogleAdSenseScript } from "@/components/GoogleAdSenseScript";
 
 export const dynamic = 'force-dynamic'
 
@@ -75,7 +76,8 @@ export default async function RootLayout({
         </body>
         <GoogleAnalyticsScript />
         <MicrosoftClarityScript />
-      </NextIntlClientProvider>
+        <GoogleAdSenseScript />
+        </NextIntlClientProvider>
     </html>
   )
 }
