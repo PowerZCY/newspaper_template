@@ -151,6 +151,8 @@
     "terms": "Terms of Service",
     "contactUs": "Contact Us",
     "email": "support@newspaper-template.org",
+    "clickToCopyText": "Click to copy",
+    "copiedText": "Copied!",
     "thanks": "Thanks to"
   },
   "clerk": {
