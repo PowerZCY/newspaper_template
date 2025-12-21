@@ -1,14 +1,14 @@
 import { globalLucideIcons as icons } from '@windrun-huaiin/base-ui/components/server';
 import { SiteIcon } from '@/lib/site-config';
-import { type LinkItemType } from 'fumadocs-ui/layouts/docs';
 import { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
 import { getTranslations } from 'next-intl/server';
 import { ClerkUser } from '@windrun-huaiin/third-ui/clerk/server';
 import { i18n } from '@/i18n';
 import { appConfig } from '@/lib/appConfig';
+import { ExtendedLinkItem, HomeTitle } from '@windrun-huaiin/third-ui/fuma/base';
 
 // 首页普通菜单
-export async function homeNavLinks(locale: string): Promise<LinkItemType[]> {
+export async function homeNavLinks(locale: string): Promise<ExtendedLinkItem[]> {
   const t1 = await getTranslations({ locale: locale, namespace: 'linkPreview' });
   return [
     {
@@ -20,14 +20,15 @@ export async function homeNavLinks(locale: string): Promise<LinkItemType[]> {
       type: 'custom',
       // false就先排左边的菜单, true就先排右边的按钮
       secondary: true,
-      // NicknameFilter 假设在其内部也使用了 useNickname
+      // true代表在移动端也会出现在主菜单栏上，不会被折叠
+      mobilePinned: true,
       children: <ClerkUser locale={locale} clerkAuthInModal={appConfig.style.clerkAuthInModal}/>
     }
   ];
 }
 
 // 层级特殊菜单
-export async function levelNavLinks(locale: string): Promise<LinkItemType[]> {
+export async function levelNavLinks(locale: string): Promise<ExtendedLinkItem[]> {
   console.log('levelNavLinks', locale);
   return [
     
@@ -43,9 +44,9 @@ export async function baseOptions(locale: string): Promise<BaseLayoutProps> {
       title: (
         <>
           <SiteIcon />
-          <span className="font-medium in-[.uwu]:hidden in-[header]:text-[15px]">
+          <HomeTitle>
             {t('title')}
-          </span>
+          </HomeTitle>
         </>
       ),
       // 导航Header, 透明模式选项: none | top | always
