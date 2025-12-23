@@ -1,5 +1,11 @@
 # newspaper-template
 
+## 3.2.0
+
+### Minor Changes
+
+- fix(update): localePrefixAsNeeded
+
 ## 3.1.0
 
 ### Minor Changes

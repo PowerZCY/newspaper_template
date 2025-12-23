@@ -3,9 +3,9 @@ import { SiteIcon } from '@/lib/site-config';
 import { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
 import { getTranslations } from 'next-intl/server';
 import { ClerkUser } from '@windrun-huaiin/third-ui/clerk/server';
-import { i18n } from '@/i18n';
 import { appConfig } from '@/lib/appConfig';
 import { ExtendedLinkItem, HomeTitle } from '@windrun-huaiin/third-ui/fuma/base';
+import { getAsNeededLocalizedUrl } from '@windrun-huaiin/lib';
 
 // 首页普通菜单
 export async function homeNavLinks(locale: string): Promise<ExtendedLinkItem[]> {
@@ -14,7 +14,7 @@ export async function homeNavLinks(locale: string): Promise<ExtendedLinkItem[]> 
     {
       icon: <icons.AlbumIcon />,
       text: t1('blog'),
-      url: `/${locale}/blog`,
+      url: getAsNeededLocalizedUrl(locale, '/blog'),
     },
     {
       type: 'custom',
@@ -40,7 +40,7 @@ export async function baseOptions(locale: string): Promise<BaseLayoutProps> {
   return {
     // 导航Header配置
     nav: {
-      url: `/${locale}`,
+      url: getAsNeededLocalizedUrl(locale, '/'),
       title: (
         <>
           <SiteIcon />
@@ -52,8 +52,6 @@ export async function baseOptions(locale: string): Promise<BaseLayoutProps> {
       // 导航Header, 透明模式选项: none | top | always
       // https://fumadocs.dev/docs/ui/layouts/docs#transparent-mode
       transparentMode: 'none',
-    },
-    // 导航Header, 语言切换
-    i18n
+    }
   };
 }
