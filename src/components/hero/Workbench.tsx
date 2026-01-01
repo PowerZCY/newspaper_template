@@ -2,7 +2,6 @@
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { createPortal } from "react-dom";
 import { AdsAlertDialog, XButton } from "@windrun-huaiin/third-ui/main";
 import { globalLucideIcons as icons } from "@windrun-huaiin/base-ui/components/server";
 import { NewspaperModern } from "@/components/newspaper/NewspaperModern";
@@ -10,6 +9,7 @@ import { NewspaperSimple } from "@/components/newspaper/NewspaperSimple";
 import { appConfig } from "@/lib/appConfig";
 import { AIEditableProvider } from "@/components/AIEditableContext";
 import { exportNewspaperJSON, importNewspaperJSON, clearNewspaperCache } from "@/components/edit-cache";
+import { HighPriorityConfirmDialog } from "@/components/HighPriorityConfirmDialog";
 
 interface WorkbenchProps {
   template: "simple" | "modern";
@@ -411,10 +411,19 @@ export function Workbench({
         imgHref="https://pollo.ai/home?ref=mzmzndj&tm_news=news"
       />
 
-      <ExitDialog 
-        open={showExitDialog} 
-        onCancel={handleCancelExit} 
-        onConfirm={handleConfirmExit} 
+      <HighPriorityConfirmDialog
+        open={showExitDialog}
+        onCancel={handleCancelExit}
+        onConfirm={handleConfirmExit}
+        title="Leave the Editor?"
+        description={
+          <>
+            You have unsaved changes. <br />
+            If you leave now, your progress will be lost.
+          </>
+        }
+        confirmText="Leave"
+        cancelText="Stay"
       />
 
       {/* --- Main Vertical Stack --- */}
@@ -559,40 +568,4 @@ export function Workbench({
   );
 }
 
-function ExitDialog({ open, onCancel, onConfirm }: { open: boolean; onCancel: () => void; onConfirm: () => void }) {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setTimeout(() => setMounted(true), 0);
-  }, []);
 
-  if (!open || !mounted) return null;
-
-  return createPortal(
-    <div className="fixed inset-0 z-10000 flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
-      <div className="bg-white/95 dark:bg-neutral-900/95 backdrop-blur-md p-6 rounded-2xl shadow-2xl max-w-sm w-full mx-4 border border-purple-200/50 dark:border-purple-700/50 ring-4 ring-purple-500/10 scale-100 animate-in zoom-in-95 duration-300">
-        <h3 className="text-xl font-extrabold mb-2 text-transparent bg-clip-text bg-linear-to-r from-purple-600 to-pink-600">
-          Leave the Editor?
-        </h3>
-        <p className="text-sm font-medium text-neutral-600 dark:text-neutral-300 mb-6 leading-relaxed">
-          You have unsaved changes. <br/>
-          If you leave now, your progress will be lost.
-        </p>
-        <div className="flex gap-3 justify-end">
-          <button 
-            onClick={onCancel}
-            className="px-5 py-2.5 rounded-full text-sm font-bold text-neutral-600 dark:text-neutral-400 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all duration-200"
-          >
-            Stay
-          </button>
-          <button 
-            onClick={onConfirm}
-            className="px-5 py-2.5 rounded-full text-sm font-bold text-white bg-linear-to-r from-purple-600 to-pink-600 hover:shadow-lg hover:shadow-purple-500/30 hover:scale-105 active:scale-95 transition-all duration-200"
-          >
-            Leave
-          </button>
-        </div>
-      </div>
-    </div>,
-    document.body
-  );
-}

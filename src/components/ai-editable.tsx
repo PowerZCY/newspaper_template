@@ -1,5 +1,6 @@
 import { useAIEditableContext } from '@/components/AIEditableContext';
 import { AdsAlertDialog } from "@windrun-huaiin/third-ui/main";
+import { HighPriorityConfirmDialog } from "@/components/HighPriorityConfirmDialog";
 import { globalLucideIcons as icons } from "@windrun-huaiin/base-ui/components/server";
 import { appConfig } from "@/lib/appConfig";
 import { handlePastePlainText } from '@windrun-huaiin/lib/utils';
@@ -164,7 +165,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    setTimeout(() => setMounted(true), 0);
   }, []);
 
   // 触控板/鼠标滚轮支持
@@ -362,21 +363,21 @@ export const AIEditable: React.FC<AIEditableProps> = ({
         imgHref="https://pollo.ai/home?ref=mzmzndj&tm_news=news"
       />
       {/* Cancel AI generating confirm dialog */}
-      <AdsAlertDialog
+      <HighPriorityConfirmDialog
         open={showCancelConfirm}
-        onOpenChange={setShowCancelConfirm}
-        title="Cancel AI Generating?"
-        description="AI buddy is working on the task. Please wait a moment. Are you sure you want to cancel?"
-        confirmText="Confirm"
-        cancelText="Cancel"
+        onCancel={() => setShowCancelConfirm(false)}
         onConfirm={() => {
           handleAIStop();
           setShowAIModal(false);
           setShowAIButton(false);
           setAIPrompt("");
           setShowCancelConfirm(false);
+          clearAllChatCache(); // 确认离开时清理所有缓存
         }}
-        onCancel={() => setShowCancelConfirm(false)}
+        title="Cancel AI Generating?"
+        description="AI buddy is working on the task. Please wait a moment. Are you sure you want to cancel?"
+        confirmText="Confirm"
+        cancelText="Cancel"
       />
       <div className="relative">
         <div
