@@ -75,6 +75,10 @@ interface AIEditableProps {
    * If undefined, it's parsed from `seqId`.
    */
   label?: string; 
+  /**
+   * If true, editing is allowed but the AI button/modal is completely hidden.
+   */
+  disableAI?: boolean;
 }
 
 // 新增AI消息类型
@@ -138,6 +142,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
   aiTitleMaxChars = 30,
   aiMaxChars = 600,
   label,
+  disableAI = false,
 }) => {
   const { activeId, setActiveId, showAIButton, setShowAIButton, showAIModal, setShowAIModal } = useAIEditableContext();
   const selfId = seqId;
@@ -178,7 +183,7 @@ export const AIEditable: React.FC<AIEditableProps> = ({
 
   // Only show Try AI button when current active area and edit state
   const isActive = activeId === selfId;
-  const showButton = isActive && showAIButton && !showAIModal;
+  const showButton = !disableAI && isActive && showAIButton && !showAIModal;
   const maxChars = type === 'title' ? aiTitleMaxChars : aiMaxChars;
 
   // Auto adjust textarea height

@@ -19,6 +19,22 @@ export const appConfig = {
       thumb: "https://r2.d8ger.com/newspaper-template/modern.webp",
       href: "",
       top: false
+    },
+    {
+      name: "Chinese Song Poster",
+      type: "song",
+      key: "song_cn",
+      thumb: "https://r2.d8ger.com/newspaper-template/modern.webp",
+      href: "",
+      top: false
+    },
+    {
+      name: "English Song Poster",
+      type: "song",
+      key: "song_en",
+      thumb: "https://r2.d8ger.com/newspaper-template/modern.webp",
+      href: "",
+      top: false
     }
   ],
   newspaperCard: {

@@ -6,13 +6,15 @@ import { AdsAlertDialog, XButton } from "@windrun-huaiin/third-ui/main";
 import { globalLucideIcons as icons } from "@windrun-huaiin/base-ui/components/server";
 import { NewspaperModern } from "@/components/newspaper/NewspaperModern";
 import { NewspaperSimple } from "@/components/newspaper/NewspaperSimple";
+import { NewspaperSongChinese } from "@/components/newspaper/NewspaperSongChinese";
+import { NewspaperSongEnglish } from "@/components/newspaper/NewspaperSongEnglish";
 import { appConfig } from "@/lib/appConfig";
 import { AIEditableProvider } from "@/components/AIEditableContext";
 import { exportNewspaperJSON, importNewspaperJSON, clearNewspaperCache } from "@/components/edit-cache";
 import { HighPriorityConfirmDialog } from "@/components/HighPriorityConfirmDialog";
 
 interface WorkbenchProps {
-  template: "simple" | "modern";
+  template: "simple" | "modern" | "song_cn" | "song_en";
   content: any;
   onContentChange: (key: string, value: string) => void;
   imgs: any;
@@ -535,7 +537,7 @@ export function Workbench({
                  }}
              >
                  <AIEditableProvider>
-                     {template === 'simple' ? (
+                    {template === 'simple' && (
                         <NewspaperSimple 
                             mainImg={imgs.mainImg}
                             sideImg={imgs.sideImg}
@@ -547,7 +549,8 @@ export function Workbench({
                             content={content}
                             onContentChange={onContentChange}
                         />
-                     ) : (
+                    )}
+                    {template === 'modern' && (
                         <NewspaperModern 
                             mainImg={imgs.mainImg}
                             subImg={imgs.subImg}
@@ -558,7 +561,26 @@ export function Workbench({
                             content={content}
                             onContentChange={onContentChange}
                         />
-                     )}
+                    )}
+                    {template === 'song_cn' && (
+                        <NewspaperSongChinese 
+                            mainImg={imgs.mainImg}
+                            flowers={imgs.flowers}
+                            onMainImgChange={(f) => onImgChange('mainImg', f)}
+                            onTriggerImgUpload={onGlobalImgUpload}
+                            content={content}
+                            onContentChange={onContentChange}
+                        />
+                    )}
+                    {template === 'song_en' && (
+                        <NewspaperSongEnglish 
+                            mainImg={imgs.mainImg}
+                            onMainImgChange={(f) => onImgChange('mainImg', f)}
+                            onTriggerImgUpload={onGlobalImgUpload}
+                            content={content}
+                            onContentChange={onContentChange}
+                        />
+                    )}
                  </AIEditableProvider>
              </section>
         </div>
