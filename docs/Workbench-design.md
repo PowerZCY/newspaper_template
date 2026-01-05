@@ -85,13 +85,19 @@
 
 ## 5. 安全退出与缓存管理 (Exit & Cache Strategy)
 
-### 5.1 退出确认 (Exit Dialog)
-*   **触发场景**：点击 "Change Template"、浏览器后退、刷新页面。
+### 5.1 退出确认 (Exit Dialog)与错误处理 (Error Handling)
+*   **退出确认场景**：点击 "Change Template"、浏览器后退、刷新页面。
+*   **导出错误场景**：导出图片/PDF时发生超时或失败。
 *   **UI 风格**：
     *   **主题**：紫色渐变风格，磨砂玻璃背景 (`backdrop-blur-md`)。
-    *   **文案**：通用化提示 "Leave the Editor? You have unsaved changes."
-    *   **按钮**："Stay" (取消) vs "Leave Anyway" (确认离开)。
+    *   **文案**：
+        *   退出：通用化提示 "Leave the Editor? You have unsaved changes."
+        *   错误：明确的错误提示 (e.g., "Download timed out")。
+    *   **按钮**："Stay" (取消) vs "Leave Anyway" (确认离开)；错误弹窗为 "OK" (确认) vs "Close" (关闭)。
     *   **层级**：使用 **Portal** 渲染，确保 `z-index` 最高，覆盖 Header。
+*   **关键交互逻辑**：
+    *   **状态解耦**：系统内存在多个独立的弹窗状态（如下载错误弹窗 `exportError` 与 退出确认弹窗 `showExitDialog`），它们互不干扰。
+    *   **锁定状态释放**：对于下载/导出错误弹窗，用户点击 "OK" 或 "Close" 关闭弹窗时，**必须**显式重置导出状态（如 `setExporting(false)`），以释放下载按钮的锁定状态（Loading/Disabled），确保用户无需刷新页面即可重新尝试下载。
 
 ### 5.2 缓存污染治理
 *   **问题**：用户"不保存退出"后，下次进入仍显示旧数据。

@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { AdsAlertDialog, XButton } from "@windrun-huaiin/third-ui/main";
+import { XButton } from "@windrun-huaiin/third-ui/main";
 import { globalLucideIcons as icons } from "@windrun-huaiin/base-ui/components/server";
 import { NewspaperModern } from "@/components/newspaper/NewspaperModern";
 import { NewspaperSimple } from "@/components/newspaper/NewspaperSimple";
@@ -16,7 +16,7 @@ import { HighPriorityConfirmDialog } from "@/components/HighPriorityConfirmDialo
 interface WorkbenchProps {
   template: "simple" | "modern" | "song_cn" | "song_en";
   content: any;
-  onContentChange: (key: string, value: string) => void;
+  onContentChange: (key: string, value: string | number) => void;
   imgs: any;
   onImgChange: (key: string, file: File) => void;
   onGlobalImgUpload: (key: string, cb: (file: File) => void) => void;
@@ -298,7 +298,7 @@ export function Workbench({
 
   const handleExportJSON = useCallback(() => {
     try {
-      const data = Object.fromEntries(Object.entries(content).filter(([_k, v]) => typeof v === 'string')) as Record<string, string>;
+      const data = Object.fromEntries(Object.entries(content).filter(([_k, v]) => typeof v === 'string' || typeof v === 'number')) as Record<string, string | number>;
       exportNewspaperJSON(template, data);
     } catch (e) {
       console.error(e);
@@ -314,7 +314,7 @@ export function Workbench({
       (data) => {
         if (data.templateType === template) {
              Object.entries(data.content).forEach(([k, v]) => {
-                 if (typeof v === 'string') onContentChange(k, v);
+                 if (typeof v === 'string' || typeof v === 'number') onContentChange(k, v);
              });
         } else {
           setExportError('JSON structure is incorrect or template mismatch');
@@ -404,13 +404,14 @@ export function Workbench({
 
   return (
     <div className="min-h-screen w-full flex flex-col items-center pt-30 bg-neutral-100 dark:bg-neutral-950 overflow-y-auto">
-      <AdsAlertDialog
+      <HighPriorityConfirmDialog
         open={!!exportError}
-        onOpenChange={open => !open && setExportError(null)}
-        title="Downloading..."
-        description={exportError || "Preparing your newspaper..."}
-        imgSrc="https://r2.d8ger.com/Ad-Pollo.webp"
-        imgHref="https://pollo.ai/home?ref=mzmzndj&tm_news=news"
+        onCancel={resetExportState}
+        onConfirm={resetExportState}
+        title="Notice"
+        description={exportError || "Processing..."}
+        confirmText="OK"
+        cancelText="Close"
       />
 
       <HighPriorityConfirmDialog

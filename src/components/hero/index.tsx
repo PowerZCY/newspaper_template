@@ -46,11 +46,11 @@ function HeroContent() {
     }
   };
 
-  const handleContentChange = (type: string, key: string, value: string) => {
-    if (type === "simple") setSimpleContent(c => ({ ...c, [key]: value }));
-    else if (type === "modern") setModernContent(c => ({ ...c, [key]: value }));
-    else if (type === "song_cn") setSongCnContent(c => ({ ...c, [key]: value }));
-    else if (type === "song_en") setSongEnContent(c => ({ ...c, [key]: value }));
+  const handleContentChange = (type: string, key: string, value: string | number) => {
+    if (type === "simple") setSimpleContent(c => ({ ...c, [key]: value } as any));
+    else if (type === "modern") setModernContent(c => ({ ...c, [key]: value } as any));
+    else if (type === "song_cn") setSongCnContent(c => ({ ...c, [key]: value } as any));
+    else if (type === "song_en") setSongEnContent(c => ({ ...c, [key]: value } as any));
   };
 
   const handleResetContent = (type: string) => {

@@ -44,7 +44,7 @@ export const FontToolbar: React.FC<FontToolbarProps> = ({
       )}>
         {fontName && (
           <span className={cn(
-            "text-[10px] font-extrabold tracking-tight truncate max-w-[40px]",
+            "text-[10px] font-extrabold tracking-tight truncate w-[30px] inline-block",
             isDark ? "text-neutral-200" : "text-neutral-800"
           )} title={fontName}>
             {fontName.length > 4 ? fontName.slice(0, 4) : fontName}
