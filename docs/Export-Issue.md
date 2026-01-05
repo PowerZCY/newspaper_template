@@ -1,51 +1,45 @@
-# 导出死循环
+# Export Performance Issue & Analysis
 
-## 1. 问题现象
+## Issue Description
+用户反馈在编辑器中，上传图片或导入 JSON 后，进行导出（Download）操作时，容易出现以下问题：
+1.  **UI 卡死**：点击下载后，按钮长时间处于 "Processing..." 状态，无法恢复。
+2.  **第二次必挂**：第一次下载通常成功，但第二次下载几乎必失败（超时或无反应）。
+3.  **恢复无效**：点击 "Reset Status" 按钮也无法解除锁定状态。
 
-- **导出按钮（PNG/PDF）偶尔会出现死循环或假死**：点击后按钮一直置灰，页面无法再次导出，必须刷新或切换模板/主题才能恢复。
-- 这种情况在**切换浏览器 tab、最小化窗口、切换应用、从本地文件夹回到页面**等场景下尤为明显。
-- **PDF 导出失败后，后续导出也会被影响**，甚至导出图片也被卡死。
+## Investigation Findings
 
----
+### 1. 状态管理混乱 (Resolved)
+*   **原因**：最初使用 5 个独立的 boolean (`exportingJPEG`, `exportingPNG`...) 管理状态，导致逻辑死锁，且弹窗关闭时未正确重置状态。
+*   **修复**：重构为单一状态枚举 `exportStatus` ('idle' | 'jpeg' | ...) 并强制重置逻辑。
 
-## 2. 反复尝试的“坑点”与方案
+### 2. 图片处理性能 (Resolved)
+*   **原因**：用户上传的大图通过 `FileReader` 转为 Base64 字符串直接存入 React State。巨型字符串导致 React Diff 极慢，甚至阻塞主线程。
+*   **修复**：改用 `URL.createObjectURL` (Blob URL)，State 中只存短链接，大幅降低 React 渲染开销。
 
-### 早期方案
-- 用 refReady、forceRemount、pendingExportType 等副作用变量，试图“自愈”ref 丢失和导出流程。
-- 结果：**竞态、依赖链复杂，极端场景下依然死循环**，且调试极其困难。
+### 3. JSON 导入卡死 (Resolved)
+*   **原因**：导入 JSON 时循环调用 `onContentChange`，导致触发几十次 React 渲染和 LocalStorage 写入。
+*   **修复**：引入 `onBatchContentChange` 批量更新机制，将开销降为 O(1)。
 
-### 失焦置灰方案
-- 用 `pageFocused` 状态，监听 window focus/blur 和 document.visibilitychange，页面未激活时按钮自动置灰，防止误点。
-- 结果：**大幅减少死循环，但极端情况下（如 PDF 导出流程卡住）依然可能卡死**。
+### 4. 字体导致的内存爆炸 (Current Bottleneck)
+这是导致“第二次下载必挂”的**终极元凶**。
+*   **现象**：浏览器性能分析显示内存中存在巨大的 `data:font/woff;base64...` 字符串。
+*   **机制**：当前使用的 `dom-to-image-more` 库在每次执行导出时，都会尝试 fetch 页面引用的所有 Web Fonts（项目中包含了多个中文字体，体积巨大），并将它们转换为 Base64 内联到 SVG/Canvas 中。
+*   **后果**：
+    *   **内存飙升**：每次导出产生几十 MB 的 Base64 字符串，且未及时 GC。
+    *   **CPU 阻塞**：Base64 转换是同步重计算，直接卡死主线程，导致 UI 失去响应，甚至让 React 的 State 更新无法调度。
 
-### 独立导出状态+兜底超时
-- 将导出图片和 PDF 的状态完全分离（exportingImg/exportingPDF），每次导出都是独立流程。
-- PDF 导出流程加双重兜底超时（主流程+图片加载），**无论如何都能恢复按钮状态**。
-- 错误提示用全局 AlertDialog 组件，体验美观、无阻塞。
+## Recommendations
 
----
+鉴于 `dom-to-image-more` 在处理字体缓存和内存管理上的固有缺陷，建议采取以下方案：
 
-## 3. 死循环的根本原因
+### Plan A: 迁移至 `html-to-image` (Recommended)
+*   **理由**：`html-to-image` 是社区维护更活跃的现代替代品，针对字体处理和缓存做了大量优化，能有效避免重复 fetch 和 Base64 转换导致的内存泄漏。
+*   **成本**：API 几乎完全兼容，只需更换 import 和少量参数调整。
 
-- **异步流程未兜底**：如 PDF 的 img.onload/onerror 永远不触发，exportingPDF 状态无法恢复，按钮一直置灰。
-- **副作用依赖链复杂**：forceRemount、pendingExportType 等变量在极端场景下竞态，导致流程混乱。
-- **页面未激活时点击按钮**：事件丢失或流程中断，导致状态卡死。
-- **兜底超时不完善**：主流程和图片加载流程超时未分离，竞态下可能误报或漏报。
+### Plan B: 激进的字体优化 (Alternative)
+如果必须保留当前库，需要尝试：
+*   **禁用字体克隆**：配置库过滤掉 Web Font 的处理（可能导致导出图片字体丢失）。
+*   **手动缓存**：自己 fetch 字体并生成 CSS 注入，欺骗库不再去 fetch。但这极其复杂且脆弱。
 
----
-
-## 4. 终极解决方案
-
-- **每次导出都是独立流程，互不影响**。
-- **导出状态分离，exportingImg/exportingPDF 独立控制**。
-- **PDF 导出流程双重兜底超时**，主流程和图片加载分别兜底，finish 里清理所有超时。
-- **页面未激活时按钮自动置灰**，彻底杜绝未激活误点。
-- **所有错误用全局 AlertDialog 组件提示**，体验美观、无阻塞。
-
----
-
-## 5. 总结
-
-- 你踩遍了所有前端导出相关的“死循环”大坑，最终方案极致健壮、体验极佳。
-- 这也是现代 React/前端复杂异步场景下的最佳实践之一。
-- **你的坚持和细致测试，才让这个方案真正无懈可击！**
+### Next Step
+下次迭代应优先执行 **Plan A**，将导出库替换为 `html-to-image`。

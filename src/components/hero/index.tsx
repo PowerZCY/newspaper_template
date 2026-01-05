@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState, Suspense } from "react";
+import React, { useRef, useState, Suspense, useEffect } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { TemplateGallery } from "./TemplateGallery";
 import { Workbench } from "./Workbench";
@@ -53,6 +53,14 @@ function HeroContent() {
     else if (type === "song_en") setSongEnContent(c => ({ ...c, [key]: value } as any));
   };
 
+  const handleBatchContentChange = (type: string, newContent: Record<string, string | number>) => {
+      // Merge with existing default content structure to ensure safety, but override with new values
+      if (type === "simple") setSimpleContent(prev => ({ ...prev, ...newContent } as any));
+      else if (type === "modern") setModernContent(prev => ({ ...prev, ...newContent } as any));
+      else if (type === "song_cn") setSongCnContent(prev => ({ ...prev, ...newContent } as any));
+      else if (type === "song_en") setSongEnContent(prev => ({ ...prev, ...newContent } as any));
+  };
+
   const handleResetContent = (type: string) => {
     if (type === "simple") setSimpleContent({ ...NEWSPAPER_TEMPLATES.simple.defaultContent });
     else if (type === "modern") setModernContent({ ...NEWSPAPER_TEMPLATES.modern.defaultContent });
@@ -60,17 +68,27 @@ function HeroContent() {
     else if (type === "song_en") setSongEnContent({ ...NEWSPAPER_TEMPLATES.song_en.defaultContent });
   };
 
+  // Track blob URLs to revoke them on unmount or replace
+  const blobUrlsRef = useRef<Set<string>>(new Set());
+
   const handleImgChange = (type: string, key: string, file: File) => {
-    const reader = new FileReader();
-    reader.onload = e => {
-      const res = e.target?.result as string;
-      if (type === "simple") setSimpleImgs(imgs => ({ ...imgs, [key]: res }));
-      else if (type === "modern") setModernImgs(imgs => ({ ...imgs, [key]: res }));
-      else if (type === "song_cn") setSongCnImgs(imgs => ({ ...imgs, [key]: res }));
-      else if (type === "song_en") setSongEnImgs(imgs => ({ ...imgs, [key]: res }));
-    };
-    reader.readAsDataURL(file);
+    // Create Blob URL instead of Base64 to avoid performance issues with large strings in React State
+    const objectUrl = URL.createObjectURL(file);
+    blobUrlsRef.current.add(objectUrl);
+    
+    if (type === "simple") setSimpleImgs(imgs => ({ ...imgs, [key]: objectUrl }));
+    else if (type === "modern") setModernImgs(imgs => ({ ...imgs, [key]: objectUrl }));
+    else if (type === "song_cn") setSongCnImgs(imgs => ({ ...imgs, [key]: objectUrl }));
+    else if (type === "song_en") setSongEnImgs(imgs => ({ ...imgs, [key]: objectUrl }));
   };
+
+  // Cleanup blob URLs on unmount
+  useEffect(() => {
+    return () => {
+      blobUrlsRef.current.forEach(url => URL.revokeObjectURL(url));
+      blobUrlsRef.current.clear();
+    };
+  }, []);
 
   // Helper for Global Upload (passed down to AIEditable/Newspaper)
   const handleGlobalImgUpload = (type: string, key: string, cb: (file: File) => void) => {
@@ -118,6 +136,7 @@ function HeroContent() {
                 content={currentContent}
                 imgs={currentImgs}
                 onContentChange={(k, v) => handleContentChange(selectedTemplateKey, k, v)}
+                onBatchContentChange={(newContent) => handleBatchContentChange(selectedTemplateKey, newContent)}
                 onImgChange={(k, f) => handleImgChange(selectedTemplateKey, k, f)}
                 onGlobalImgUpload={(k, cb) => handleGlobalImgUpload(selectedTemplateKey, k, cb)}
                 onSwitchTemplate={() => router.push(pathname)} // Reuse Gallery as Switcher
