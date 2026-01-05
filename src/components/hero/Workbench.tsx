@@ -17,6 +17,7 @@ interface WorkbenchProps {
   template: "simple" | "modern" | "song_cn" | "song_en";
   content: any;
   onContentChange: (key: string, value: string | number) => void;
+  onBatchContentChange?: (content: Record<string, string | number>) => void;
   imgs: any;
   onImgChange: (key: string, file: File) => void;
   onGlobalImgUpload: (key: string, cb: (file: File) => void) => void;
@@ -28,6 +29,7 @@ export function Workbench({
   template,
   content,
   onContentChange,
+  onBatchContentChange,
   imgs,
   onImgChange,
   onGlobalImgUpload,
@@ -38,14 +40,14 @@ export function Workbench({
   const areaRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
   
-  // Export State
-  const [exportingImg, setExportingImg] = useState(false);
-  const [exportingPDF, setExportingPDF] = useState(false);
-  const [pageFocused, setPageFocused] = useState(true);
+  // Export State - Unified
+  type ExportStatus = 'idle' | 'png' | 'jpeg' | 'svg' | 'pdf' | 'webp';
+  const [exportStatus, setExportStatus] = useState<ExportStatus>('idle');
+  
+  const [_pageFocused, setPageFocused] = useState(true);
   const [exportError, setExportError] = useState<string | null>(null);
-  const [exportingJPEG, setExportingJPEG] = useState(false);
-  const [exportingSVG, setExportingSVG] = useState(false);
-  const [exportingWEBP, setExportingWEBP] = useState(false);
+  
+  const isGlobalExporting = exportStatus !== 'idle';
   
   const jsonInputRef = useRef<HTMLInputElement>(null);
 
@@ -106,31 +108,24 @@ export function Workbench({
   }, []);
 
   const resetExportState = useCallback(() => {
-    setExportingImg(false);
-    setExportingJPEG(false);
-    setExportingSVG(false);
-    setExportingPDF(false);
-    setExportingWEBP(false);
-    setExportError(null);
-    restoreAfterExport();
+    console.log('[Workbench] Force resetting export state...');
+    // Wrap in setTimeout to ensure it runs in next tick, helpful if main thread is heavy
+    setTimeout(() => {
+        setExportStatus('idle');
+        setExportError(null);
+        restoreAfterExport();
+    }, 0);
   }, [restoreAfterExport]);
 
   const finishExport = useCallback((type: 'png' | 'jpeg' | 'svg' | 'pdf' | 'webp', timeoutIds: NodeJS.Timeout[] = [], isError = false) => {
     restoreAfterExport();
-    setExportingImg(false);
-    setExportingJPEG(false);
-    setExportingSVG(false);
-    setExportingPDF(false);
-    setExportingWEBP(false);
+    setExportStatus('idle');
     timeoutIds.forEach(id => clearTimeout(id));
     if (isError) setExportError(errorMsg2);
   }, [restoreAfterExport]);
 
   const tryExport = useCallback(async (type: 'png' | 'jpeg' | 'svg' | 'pdf') => {
-    if (type === 'png') setExportingImg(true);
-    if (type === 'jpeg') setExportingJPEG(true);
-    if (type === 'svg') setExportingSVG(true);
-    if (type === 'pdf') setExportingPDF(true);
+    setExportStatus(type);
 
     const timeoutId = setTimeout(() => {
       finishExport(type, [timeoutId, pdfTimeoutId], true);
@@ -202,7 +197,6 @@ export function Workbench({
 
   const handleExportJPEG = async () => {
     resetExportState();
-    if (!pageFocused) return;
     if (!areaRef.current) {
       setExportError(exportErrorMsg);
       return;
@@ -212,7 +206,6 @@ export function Workbench({
 
   const handleExportPNG = async () => {
     resetExportState();
-    if (!pageFocused) return;
     if (!areaRef.current) {
       setExportError(exportErrorMsg);
       return;
@@ -222,7 +215,6 @@ export function Workbench({
 
   const handleExportSVG = async () => {
     resetExportState();
-    if (!pageFocused) return;
     if (!areaRef.current) {
       setExportError(exportErrorMsg);
       return;
@@ -232,7 +224,6 @@ export function Workbench({
 
   const handleExportPDF = async () => {
     resetExportState();
-    if (!pageFocused) return;
     if (!areaRef.current) {
       setExportError(exportErrorMsg);
       return;
@@ -242,12 +233,11 @@ export function Workbench({
 
   const handleExportWEBP = async () => {
     resetExportState();
-    if (!pageFocused) return;
     if (!areaRef.current) {
       setExportError(exportErrorMsg);
       return;
     }
-    setExportingWEBP(true);
+    setExportStatus('webp');
     const timeoutId = setTimeout(() => {
       finishExport('webp', [timeoutId], true);
       setExportError(errorMsg1);
@@ -313,9 +303,14 @@ export function Workbench({
       file,
       (data) => {
         if (data.templateType === template) {
-             Object.entries(data.content).forEach(([k, v]) => {
-                 if (typeof v === 'string' || typeof v === 'number') onContentChange(k, v);
-             });
+            if (onBatchContentChange) {
+                onBatchContentChange(data.content);
+            } else {
+                // Fallback for individual updates (should not happen if batch implemented)
+                Object.entries(data.content).forEach(([k, v]) => {
+                    if (typeof v === 'string' || typeof v === 'number') onContentChange(k, v);
+                });
+            }
         } else {
           setExportError('JSON structure is incorrect or template mismatch');
         }
@@ -325,7 +320,7 @@ export function Workbench({
       }
     );
     e.target.value = '';
-  }, [template, onContentChange]);
+  }, [template, onContentChange, onBatchContentChange]);
 
   // --- Exit Confirmation Logic ---
   const [showExitDialog, setShowExitDialog] = useState(false);
@@ -448,67 +443,75 @@ export function Workbench({
 
             {/* Right: Download */}
             <div className="flex items-center gap-2">
-                 <XButton
-                    type="split"
-                    className="flex-row sm:flex-row"
-                    mainButton={{
-                      icon:  <icons.ImageDown className="w-5 h-5 sm:mr-2" />,
-                      text: "Download",
-                      onClick: handleExportJPEG,
-                      disabled: exportingJPEG || !pageFocused
-                    }}
-                    menuWidth="w-40 sm:w-56"
-                    mainButtonClassName="text-xs sm:text-sm px-2 sm:px-4"
-                    dropdownButtonClassName=""
-                    menuItems={[
-                      { 
-                          icon: <icons.ImageDown className="w-5 h-5 sm:mr-2" />, 
-                          text: "JPG Image", 
-                          onClick: handleExportJPEG,
-                          disabled: exportingJPEG || !pageFocused
-                      },
-                      { 
-                          icon: <icons.ImageDown className="w-5 h-5 sm:mr-2" />, 
-                          text: "PNG Image", 
-                          onClick: handleExportPNG,
-                          disabled: exportingImg || !pageFocused
-                      },
-                      {
-                        icon: <icons.ImageDown className="w-5 h-5 sm:mr-2" />,
-                        text: "WEBP Image",
-                        onClick: handleExportWEBP,
-                        disabled: exportingWEBP || !pageFocused
-                      },
-                      { 
-                          icon: <icons.FileDown className="w-5 h-5 sm:mr-2" />, 
-                          text: "PDF File", 
-                          onClick: handleExportPDF, 
-                          disabled: exportingPDF || !pageFocused,
-                          splitTopBorder: true 
-                      },
-                      {
-                        icon: <icons.ImageDown className="w-5 h-5 sm:mr-2" />,
-                        text: "SVG Image",
-                        onClick: handleExportSVG,
-                        disabled: exportingSVG || !pageFocused,
-                        tag: { text: "Beta" }
-                      },
-                      {
-                        icon: <icons.FileInput className="w-5 h-5 sm:mr-2" />,
-                        text: "Import JSON",
-                        onClick: () => jsonInputRef.current?.click(),
-                        tag: { text: "Beta", color: '#a855f7' },
-                        splitTopBorder: true
-                      },
-                      { 
-                          icon: <icons.FileDown className="w-5 h-5 sm:mr-2" />, 
-                          text: "Export JSON", 
-                          onClick: handleExportJSON, 
-                          tag: {text: 'Beta', color: '#a855f7'} 
-                      },
-                    ]}
-                  />
-                  <input
+                                  <XButton
+                                     type="split"
+                                     className="flex-row sm:flex-row"
+                                     mainButton={{
+                                       icon: isGlobalExporting ? <icons.Loader2 className="w-5 h-5 sm:mr-2 animate-spin" /> : <icons.ImageDown className="w-5 h-5 sm:mr-2" />,
+                                       text: isGlobalExporting ? "Processing..." : "Download",
+                                       onClick: handleExportJPEG,
+                                       disabled: isGlobalExporting
+                                     }}
+                                     menuWidth="w-40 sm:w-56"
+                                     mainButtonClassName="text-xs sm:text-sm px-2 sm:px-4"
+                                     dropdownButtonClassName=""
+                                     menuItems={[
+                                       { 
+                                           icon: <icons.ImageDown className="w-5 h-5 sm:mr-2" />, 
+                                           text: "JPG Image", 
+                                           onClick: handleExportJPEG,
+                                           disabled: isGlobalExporting
+                                       },
+                                       { 
+                                           icon: <icons.ImageDown className="w-5 h-5 sm:mr-2" />, 
+                                           text: "PNG Image", 
+                                           onClick: handleExportPNG,
+                                           disabled: isGlobalExporting
+                                       },
+                                       { 
+                                         icon: <icons.ImageDown className="w-5 h-5 sm:mr-2" />,
+                                         text: "WEBP Image",
+                                         onClick: handleExportWEBP,
+                                         disabled: isGlobalExporting
+                                       },
+                                       { 
+                                           icon: <icons.FileDown className="w-5 h-5 sm:mr-2" />, 
+                                           text: "PDF File", 
+                                           onClick: handleExportPDF, 
+                                           disabled: isGlobalExporting,
+                                           splitTopBorder: true 
+                                       },
+                                       { 
+                                         icon: <icons.ImageDown className="w-5 h-5 sm:mr-2" />,
+                                         text: "SVG Image",
+                                         onClick: handleExportSVG,
+                                         disabled: isGlobalExporting,
+                                         tag: { text: "Beta" } 
+                                       },
+                                       { 
+                                         icon: <icons.FileInput className="w-5 h-5 sm:mr-2" />,
+                                         text: "Import JSON",
+                                         onClick: () => jsonInputRef.current?.click(),
+                                         disabled: isGlobalExporting,
+                                         tag: { text: "Beta", color: '#a855f7' },
+                                         splitTopBorder: true
+                                       },
+                                       { 
+                                           icon: <icons.FileDown className="w-5 h-5 sm:mr-2" />, 
+                                           text: "Export JSON", 
+                                           onClick: handleExportJSON, 
+                                           disabled: isGlobalExporting,
+                                           tag: {text: 'Beta', color: '#a855f7'} 
+                                       },
+                                       { 
+                                           icon: <icons.RefreshCcw className="w-5 h-5 sm:mr-2" />, 
+                                           text: "Reset Status", 
+                                           onClick: resetExportState, 
+                                           splitTopBorder: true,
+                                           tag: {text: 'Fix', color: '#ef4444'} 
+                                       },
+                                     ]}
+                                   />                  <input
                     ref={jsonInputRef}
                     type="file"
                     accept="application/json"
