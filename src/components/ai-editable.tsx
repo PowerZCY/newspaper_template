@@ -1,5 +1,4 @@
 import { useAIEditableContext } from '@/components/AIEditableContext';
-import { AdsAlertDialog } from "@windrun-huaiin/third-ui/main";
 import { HighPriorityConfirmDialog } from "@/components/HighPriorityConfirmDialog";
 import { globalLucideIcons as icons } from "@windrun-huaiin/base-ui/components/server";
 import { appConfig } from "@/lib/appConfig";
@@ -359,13 +358,14 @@ export const AIEditable: React.FC<AIEditableProps> = ({
 
   return (
     <>
-      <AdsAlertDialog
+      <HighPriorityConfirmDialog
         open={errorDialogOpen}
-        onOpenChange={setErrorDialogOpen}
+        onCancel={() => setErrorDialogOpen(false)}
+        onConfirm={() => setErrorDialogOpen(false)}
         title="AI generate failed"
         description="AI generate timed out, please try again later."
-        imgSrc="https://r2.d8ger.com/Ad-Pollo.webp"
-        imgHref="https://pollo.ai/home?ref=mzmzndj&tm_news=news"
+        confirmText="OK"
+        cancelText="Close"
       />
       {/* Cancel AI generating confirm dialog */}
       <HighPriorityConfirmDialog

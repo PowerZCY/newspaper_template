@@ -1,14 +1,14 @@
 import React from 'react';
 
-export type TemplateType = 'simple' | 'modern';
+export type TemplateType = 'simple' | 'modern' | 'song_cn' | 'song_en';
 export interface NewspaperCache {
   templateType: TemplateType;
-  content: Record<string, string>;
+  content: Record<string, string | number>;
 }
 
 interface EditCacheProps {
   templateType: TemplateType;
-  content: Record<string, string>;
+  content: Record<string, string | number>;
   onImport: (data: NewspaperCache) => void;
   children?: React.ReactNode;
 }
@@ -78,7 +78,7 @@ export const EditCache: React.FC<EditCacheProps> = ({ templateType, content, onI
  * @param templateType
  * @param content
  */
-export function exportNewspaperJSON(templateType: TemplateType, content: Record<string, string>) {
+export function exportNewspaperJSON(templateType: TemplateType, content: Record<string, string | number>) {
   const data: NewspaperCache = { templateType, content };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
