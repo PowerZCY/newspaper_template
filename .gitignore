@@ -1,3 +1,7 @@
+*.ttf
+*.otf
+*.TTF
+*.OTF
 .gemini*
 next-env.d.ts
 # Logs
