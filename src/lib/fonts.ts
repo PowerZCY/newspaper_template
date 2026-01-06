@@ -33,6 +33,24 @@ export const adorable = localFont({
 // Usage is controlled by environment variables in getLoadedFonts()
 // and by conditional rendering in components.
 
+export const xingkai = localFont({
+  src: '../../public/fonts/STXingkai.ttf',
+  display: 'swap',
+  variable: '--font-xingkai',
+});
+
+export const nokia = localFont({
+  src: '../../public/fonts/NokiaFont-GuYin.ttf',
+  display: 'swap',
+  variable: '--font-nokia',
+});
+
+export const fzxz = localFont({
+  src: '../../public/fonts/FZXZTFW.ttf',
+  display: 'swap',
+  variable: '--font-fzxz',
+});
+
 export const hanyi = localFont({
   src: '../../public/fonts/Hanyi-Youran.ttf',
   display: 'swap',
@@ -75,6 +93,9 @@ export const getLoadedFonts = () => {
     liuJian: isEnabled('2') ? liuJian : montserrat,
     alexBrush: isEnabled('3') ? alexBrush : montserrat,
     quicksand: isEnabled('4') ? quicksand : montserrat,
+    xingkai: isEnabled('5') ? xingkai : montserrat,
+    nokia: isEnabled('6') ? nokia : montserrat,
+    fzxz: isEnabled('7') ? fzxz : montserrat,
   };
 };
 

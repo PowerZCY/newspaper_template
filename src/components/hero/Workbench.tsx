@@ -147,18 +147,18 @@ export function Workbench({
 
     try {
       if (!areaRef.current) throw new Error('Export area lost');
-      const domtoimage = await import('dom-to-image-more');
+      const htmlToImage = await import('html-to-image');
       let dataUrl;
       const scaleOpts = { scale: appConfig.export?.scale || window.devicePixelRatio || 2 };
 
       if (type === 'png') {
-        dataUrl = await domtoimage.toPng(areaRef.current as HTMLElement, scaleOpts);
+        dataUrl = await htmlToImage.toPng(areaRef.current as HTMLElement, scaleOpts);
       } else if (type === 'jpeg') {
-        dataUrl = await domtoimage.toJpeg(areaRef.current as HTMLElement, { ...scaleOpts, quality: 0.95, bgcolor: '#f5f5e5' });
+        dataUrl = await htmlToImage.toJpeg(areaRef.current as HTMLElement, { ...scaleOpts, quality: 0.95, bgcolor: '#f5f5e5' });
       } else if (type === 'svg') {
-        dataUrl = await domtoimage.toSvg(areaRef.current as HTMLElement, scaleOpts);
+        dataUrl = await htmlToImage.toSvg(areaRef.current as HTMLElement, scaleOpts);
       } else if (type === 'pdf') {
-        dataUrl = await domtoimage.toJpeg(areaRef.current as HTMLElement, { scale: appConfig.export?.pdfScale || 1.5, quality: 0.85, bgcolor: '#f5f5e5' });
+        dataUrl = await htmlToImage.toJpeg(areaRef.current as HTMLElement, { scale: appConfig.export?.pdfScale || 1.5, quality: 0.85, bgcolor: '#f5f5e5' });
       }
 
       if (!dataUrl) throw new Error('Export failed');
@@ -245,8 +245,8 @@ export function Workbench({
     try {
       await prepareForExport();
       if (!areaRef.current) throw new Error('Export area lost');
-      const domtoimage = await import('dom-to-image-more');
-      const dataUrl = await domtoimage.toPng(areaRef.current as HTMLElement, { scale: appConfig.export?.scale || window.devicePixelRatio || 2 });
+      const htmlToImage = await import('html-to-image');
+      const dataUrl = await htmlToImage.toPng(areaRef.current as HTMLElement, { scale: appConfig.export?.scale || window.devicePixelRatio || 2 });
       
       const img = new window.Image();
       img.src = dataUrl;
@@ -593,5 +593,3 @@ export function Workbench({
     </div>
   );
 }
-
-

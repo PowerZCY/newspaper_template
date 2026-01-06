@@ -1,4 +1,4 @@
-import { hanyi, liuJian, montserrat, quicksand } from '@/lib/fonts';
+import { hanyi, liuJian, montserrat, quicksand, xingkai, nokia, fzxz } from '@/lib/fonts';
 import { cn } from '@windrun-huaiin/lib/utils';
 import Image from "next/image";
 import React from "react";
@@ -6,13 +6,16 @@ import { AIEditable } from "../ai-editable";
 import { FontToolbar } from "./FontToolbar";
 
 // Extend the font options
-type ChineseFontKey = 'hanyi' | 'liujian' | 'montserrat' | 'quicksand';
+type ChineseFontKey = 'hanyi' | 'liujian' | 'montserrat' | 'quicksand' | 'xingkai' | 'nokia' | 'fzxz';
 
 const fontMap = {
   hanyi: hanyi,
   liujian: liuJian,
   montserrat: montserrat,
-  quicksand: quicksand
+  quicksand: quicksand,
+  xingkai: xingkai,
+  nokia: nokia,
+  fzxz: fzxz
 };
 
 // Define the content structure for Song Poster
@@ -63,7 +66,7 @@ export const NewspaperSongChinese: React.FC<NewspaperSongChineseProps> = ({
 
   // Helper to toggle fonts
   const toggleFont = (field: 'headlineFont' | 'lyricsFont' | 'subTitleFont' | 'sideTextFont' | 'subTitleTextFont', current: ChineseFontKey | undefined) => {
-    const sequence: ChineseFontKey[] = ['hanyi', 'liujian', 'montserrat', 'quicksand'];
+    const sequence: ChineseFontKey[] = ['hanyi', 'liujian', 'montserrat', 'quicksand', 'xingkai', 'nokia', 'fzxz'];
     const idx = sequence.indexOf(current || 'hanyi');
     const next = sequence[(idx + 1) % sequence.length];
     onContentChange(field, next);
@@ -74,7 +77,7 @@ export const NewspaperSongChinese: React.FC<NewspaperSongChineseProps> = ({
   };
   
   const getFontName = (key: ChineseFontKey | undefined) => {
-      const map: Record<string, string> = { hanyi: 'Hanyi', liujian: 'Liujian', montserrat: 'Montserrat', quicksand: 'Quicksand' };
+      const map: Record<string, string> = { hanyi: 'Hanyi', liujian: 'Liujian', montserrat: 'Montserrat', quicksand: 'Quicksand', xingkai: 'Xingkai', nokia: 'Nokia', fzxz: 'Fzxz' };
       return map[key || 'hanyi'];
   };
   
@@ -149,7 +152,7 @@ export const NewspaperSongChinese: React.FC<NewspaperSongChineseProps> = ({
       </div>
 
       {/* Top Dividers */}
-      <div className="w-full mb-1" style={{ borderTop: '1px solid #1c1917' }}></div>
+      <div className="newspaper-divider newspaper-divider-thin w-full mb-1"></div>
       
       {/* Headline Area */}
       <div className="flex flex-col items-center justify-center mb-0 relative z-10 w-full">
@@ -184,8 +187,8 @@ export const NewspaperSongChinese: React.FC<NewspaperSongChineseProps> = ({
         </div>
 
         {/* Divider below Headline */}
-        <div className="w-full" style={{ borderTop: '4px solid #1c1917' }}></div>
-        <div className="w-full mt-0.5" style={{ borderTop: '4px solid #1c1917' }}></div>
+        <div className="newspaper-divider newspaper-divider-thick w-full"></div>
+        <div className="newspaper-divider newspaper-divider-thick w-full mt-0.5"></div>
       </div>
 
       {/* Main Content: Lyrics Area */}
@@ -229,7 +232,9 @@ export const NewspaperSongChinese: React.FC<NewspaperSongChineseProps> = ({
       </div>
 
       {/* Bottom Section: 3-Column Grid */}
-      <div className="grid grid-cols-3 gap-2 w-full mb-2 pt-1" style={{ borderTop: '2px solid #1c1917' }}>
+      <div className="w-full mb-2">
+        <div className="newspaper-divider newspaper-divider-medium w-full mb-1"></div>
+        <div className="grid grid-cols-3 gap-2 w-full pt-1">
           
           {/* Left: Description (sideText) */}
           <div className="relative group flex flex-col justify-start pr-2">
@@ -289,7 +294,7 @@ export const NewspaperSongChinese: React.FC<NewspaperSongChineseProps> = ({
                         getFontClass(content.subTitleFont || 'quicksand')
                     )}
                     disableAI={true}
-                    style={{ fontSize: content.subTitleSize ? `${content.subTitleSize}px` : '24px', borderBottom: '2px solid #1c1917' }}
+                    style={{ fontSize: content.subTitleSize ? `${content.subTitleSize}px` : '24px' }}
                 />
                 <FontToolbar 
                     className="right-0 top-1/2 -translate-y-1/2" 
@@ -301,7 +306,8 @@ export const NewspaperSongChinese: React.FC<NewspaperSongChineseProps> = ({
                     onInc={() => changeSize('subTitleSize', content.subTitleSize, 1)}
                     onDec={() => changeSize('subTitleSize', content.subTitleSize, -1)}
                 />
-              </div>
+                <div className="newspaper-divider newspaper-divider-medium w-full mt-2"></div>
+            </div>
               
               {/* Info Text (subTitleText) */}
               <div className="relative group pr-2">
@@ -329,10 +335,12 @@ export const NewspaperSongChinese: React.FC<NewspaperSongChineseProps> = ({
               </div>
           </div>
 
+        </div>
       </div>
 
       {/* Footer */}
-      <div className="mt-2 pt-2 text-center" style={{ borderTop: '1px solid #d6d3d1' }}>
+      <div className="mt-2 pt-2 text-center">
+         <div className="newspaper-divider newspaper-divider-thin w-full mb-2" style={{ backgroundColor: '#d6d3d1' }}></div>
          <AIEditable
             seqId={`${seqIdPrefix}_footerText`}
             value={content.footerText}
