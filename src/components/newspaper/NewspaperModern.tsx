@@ -106,7 +106,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
           type="title"
           aiTitleMaxChars={content.aiTitleMaxChars}
         />
-      </div>Purple Bamboo Dreams
+      </div>
       <div className="newspaper-divider" style={{borderTop: '2px solid #222', width: '100%', marginBottom: '4px'}}></div>
       <AIEditable
         seqId={`${seqIdPrefix}_headline`}
