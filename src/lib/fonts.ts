@@ -40,7 +40,9 @@ export const alexBrush = localFont({
 });
 
 export const quicksand = localFont({
-  src: '../../public/fonts/Quicksand-VariableFont_wght.ttf',
+  src: [
+    { path: '../../public/fonts/Quicksand-VariableFont_wght.ttf', weight: '700', style: 'normal' },
+  ],
   display: 'swap',
   variable: '--font-quicksand',
 });

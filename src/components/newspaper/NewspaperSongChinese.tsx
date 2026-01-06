@@ -211,7 +211,10 @@ export const NewspaperSongChinese: React.FC<NewspaperSongChineseProps> = ({
             onDec={() => changeSize('lyricsSize', content.lyricsSize, -2)}
           />
           
-          <div className="w-full h-full" style={{ writingMode: 'vertical-rl', textOrientation: 'upright' }}>
+          <div
+            className="w-full"
+            style={{ display: 'flex', alignItems: 'flex-start', writingMode: 'vertical-rl', textOrientation: 'upright' }}
+          >
               <AIEditable
                 seqId={`${seqIdPrefix}_lyrics`}
                 value={content.lyrics}
