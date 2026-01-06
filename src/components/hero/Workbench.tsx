@@ -586,6 +586,7 @@ export function Workbench({
                     {template === 'song_en' && (
                         <NewspaperSongEnglish 
                             mainImg={imgs.mainImg}
+                            flowers={imgs.flowers}
                             onMainImgChange={(f) => onImgChange('mainImg', f)}
                             onTriggerImgUpload={onGlobalImgUpload}
                             content={content}
