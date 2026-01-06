@@ -35,6 +35,8 @@ export interface NewspaperSongChineseContent {
   lyricsFont?: ChineseFontKey;
   sideTextFont?: ChineseFontKey;
   subTitleTextFont?: ChineseFontKey;
+  headerLeftFont?: ChineseFontKey;
+  headerRightFont?: ChineseFontKey;
   
   // Font sizes (px)
   headlineSize?: number;
@@ -109,7 +111,7 @@ export const NewspaperSongChinese: React.FC<NewspaperSongChineseProps> = ({
           seqId={`${seqIdPrefix}_headerLeft`}
           value={content.headerLeft || "Traditional"}
           onChange={val => onContentChange("headerLeft", val)}
-          className={cn("editable text-xs text-neutral-700", quicksand.className)}
+          className={cn("editable text-xs text-neutral-700", getFontClass(content.headerLeftFont || 'quicksand'))}
           style={{
             width: 200,
             overflow: 'hidden',
@@ -136,7 +138,7 @@ export const NewspaperSongChinese: React.FC<NewspaperSongChineseProps> = ({
           seqId={`${seqIdPrefix}_headerRight`}
           value={content.headerRight || "Music Poster"}
           onChange={val => onContentChange("headerRight", val)}
-          className={cn("editable text-xs text-neutral-700", quicksand.className)}
+          className={cn("editable text-xs text-neutral-700", getFontClass(content.headerRightFont || 'quicksand'))}
           style={{
             width: 200,
             overflow: 'hidden',
