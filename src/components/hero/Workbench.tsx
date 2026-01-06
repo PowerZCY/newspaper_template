@@ -96,6 +96,13 @@ export function Workbench({
     };
   }, []);
 
+  const getScaleForExport = (type: 'png' | 'jpeg' | 'svg' | 'pdf' | 'webp') => {
+    const defaultScale = appConfig.export?.scale || window.devicePixelRatio || 2;
+    if (type === 'jpeg') return appConfig.export?.jpegScale ?? defaultScale;
+    if (type === 'pdf') return appConfig.export?.pdfScale ?? defaultScale;
+    return defaultScale;
+  };
+
   const prepareForExport = useCallback(async () => {
     if (!areaRef.current) return;
     areaRef.current.classList.add('exporting');
@@ -149,7 +156,7 @@ export function Workbench({
       if (!areaRef.current) throw new Error('Export area lost');
       const htmlToImage = await import('html-to-image');
       let dataUrl;
-      const scaleOpts = { scale: appConfig.export?.scale || window.devicePixelRatio || 2 };
+      const scaleOpts = { scale: getScaleForExport(type) };
 
       if (type === 'png') {
         dataUrl = await htmlToImage.toPng(areaRef.current as HTMLElement, scaleOpts);
@@ -158,7 +165,7 @@ export function Workbench({
       } else if (type === 'svg') {
         dataUrl = await htmlToImage.toSvg(areaRef.current as HTMLElement, scaleOpts);
       } else if (type === 'pdf') {
-        dataUrl = await htmlToImage.toJpeg(areaRef.current as HTMLElement, { scale: appConfig.export?.pdfScale || 1.5, quality: 0.85, bgcolor: '#f5f5e5' });
+        dataUrl = await htmlToImage.toJpeg(areaRef.current as HTMLElement, { scale: getScaleForExport('pdf'), quality: 0.85, bgcolor: '#f5f5e5' });
       }
 
       if (!dataUrl) throw new Error('Export failed');
@@ -246,7 +253,7 @@ export function Workbench({
       await prepareForExport();
       if (!areaRef.current) throw new Error('Export area lost');
       const htmlToImage = await import('html-to-image');
-      const dataUrl = await htmlToImage.toPng(areaRef.current as HTMLElement, { scale: appConfig.export?.scale || window.devicePixelRatio || 2 });
+      const dataUrl = await htmlToImage.toPng(areaRef.current as HTMLElement, { scale: getScaleForExport('webp') });
       
       const img = new window.Image();
       img.src = dataUrl;

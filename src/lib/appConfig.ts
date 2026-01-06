@@ -53,8 +53,9 @@ export const appConfig = {
     limitMaxChars: 1000
   },
   export: {
-    scale: 3, // 图片导出清晰度
-    pdfScale: 4, // PDF导出JPEG的清晰度
+    scale: 5, // 图片导出清晰度
+    jpegScale: 5, // JPEG导出专用清晰度
+    pdfScale: 5, // PDF导出JPEG的清晰度
   },
   socialConfig: [
     // { key: 'Twitter', name: 'Twitter' },

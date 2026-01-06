@@ -67,6 +67,11 @@ export const NEWSPAPER_TEMPLATES = {
       footerText: 'LISTEN NOW:  https://suno.com/song/72d6c24a-d328-4187-81c3-cb037adef537',
       headlineFont: 'xingkai',
       lyricsFont: 'xingkai',
+      headerLeftFont: 'quicksand',
+      headerRightFont: 'quicksand',
+      subTitleFont: 'hanyi',
+      subTitleTextFont: 'quicksand',
+      sideTextFont: 'nokia',
       headlineSize: 60,
       subTitleSize: 24,
       lyricsSize: 34
