@@ -33,36 +33,6 @@ export const adorable = localFont({
 // Usage is controlled by environment variables in getLoadedFonts()
 // and by conditional rendering in components.
 
-export const xingkai = localFont({
-  src: '../../public/fonts/STXingkai.ttf',
-  display: 'swap',
-  variable: '--font-xingkai',
-});
-
-export const nokia = localFont({
-  src: '../../public/fonts/NokiaFont-GuYin.ttf',
-  display: 'swap',
-  variable: '--font-nokia',
-});
-
-export const fzxz = localFont({
-  src: '../../public/fonts/FZXZTFW.ttf',
-  display: 'swap',
-  variable: '--font-fzxz',
-});
-
-export const hanyi = localFont({
-  src: '../../public/fonts/Hanyi-Youran.ttf',
-  display: 'swap',
-  variable: '--font-hanyi',
-});
-
-export const liuJian = localFont({
-  src: '../../public/fonts/LiuJianMaoCao-Regular.ttf',
-  display: 'swap',
-  variable: '--font-liujian',
-});
-
 export const alexBrush = localFont({
   src: '../../public/fonts/AlexBrush-Regular.ttf',
   display: 'swap',
@@ -74,6 +44,31 @@ export const quicksand = localFont({
   display: 'swap',
   variable: '--font-quicksand',
 });
+
+export const xingkai = localFont({
+  src: '../../public/fonts/STXingkai.ttf',
+  display: 'swap',
+  variable: '--font-xingkai',
+});
+
+export const liuJian = localFont({
+  src: '../../public/fonts/LiuJianMaoCao-Regular.ttf',
+  display: 'swap',
+  variable: '--font-liujian',
+});
+
+export const nokia = localFont({
+  src: '../../public/fonts/NokiaFont-GuYin.ttf',
+  display: 'swap',
+  variable: '--font-nokia',
+});
+
+export const hanyi = localFont({
+  src: '../../public/fonts/Hanyi-Youran.ttf',
+  display: 'swap',
+  variable: '--font-hanyi',
+});
+
 
 // --- Usage Utilities ---
 
@@ -89,13 +84,13 @@ export const getLoadedFonts = () => {
     montserrat,
     engravers,
     adorable,
-    hanyi: isEnabled('1') ? hanyi : montserrat,
-    liuJian: isEnabled('2') ? liuJian : montserrat,
-    alexBrush: isEnabled('3') ? alexBrush : montserrat,
-    quicksand: isEnabled('4') ? quicksand : montserrat,
-    xingkai: isEnabled('5') ? xingkai : montserrat,
-    nokia: isEnabled('6') ? nokia : montserrat,
-    fzxz: isEnabled('7') ? fzxz : montserrat,
+    alexBrush: isEnabled('1') ? alexBrush : montserrat,
+    quicksand: isEnabled('2') ? quicksand : montserrat,
+    xingkai: isEnabled('3') ? xingkai : montserrat,
+    liuJian: isEnabled('4') ? liuJian : montserrat,
+    nokia: isEnabled('5') ? nokia : montserrat,
+    hanyi: isEnabled('6') ? hanyi : montserrat,
+    
   };
 };
 

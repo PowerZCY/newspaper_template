@@ -1,4 +1,4 @@
-import { hanyi, liuJian, montserrat, quicksand, xingkai, nokia, fzxz } from '@/lib/fonts';
+import { xingkai, liuJian, nokia, hanyi, quicksand, montserrat} from '@/lib/fonts';
 import { cn } from '@windrun-huaiin/lib/utils';
 import Image from "next/image";
 import React from "react";
@@ -6,16 +6,14 @@ import { AIEditable } from "../ai-editable";
 import { FontToolbar } from "./FontToolbar";
 
 // Extend the font options
-type ChineseFontKey = 'hanyi' | 'liujian' | 'montserrat' | 'quicksand' | 'xingkai' | 'nokia' | 'fzxz';
+type ChineseFontKey =  'xingkai'  | 'liujian' | 'nokia' | 'hanyi' | 'quicksand';
 
 const fontMap = {
-  hanyi: hanyi,
-  liujian: liuJian,
-  montserrat: montserrat,
-  quicksand: quicksand,
   xingkai: xingkai,
+  liujian: liuJian,
   nokia: nokia,
-  fzxz: fzxz
+  hanyi: hanyi,
+  quicksand: quicksand,
 };
 
 // Define the content structure for Song Poster
@@ -68,7 +66,7 @@ export const NewspaperSongChinese: React.FC<NewspaperSongChineseProps> = ({
 
   // Helper to toggle fonts
   const toggleFont = (field: 'headlineFont' | 'lyricsFont' | 'subTitleFont' | 'sideTextFont' | 'subTitleTextFont', current: ChineseFontKey | undefined) => {
-    const sequence: ChineseFontKey[] = ['hanyi', 'liujian', 'montserrat', 'quicksand', 'xingkai', 'nokia', 'fzxz'];
+    const sequence: ChineseFontKey[] = ['xingkai', 'liujian', 'nokia', 'hanyi', 'quicksand'];
     const idx = sequence.indexOf(current || 'hanyi');
     const next = sequence[(idx + 1) % sequence.length];
     onContentChange(field, next);
@@ -79,7 +77,7 @@ export const NewspaperSongChinese: React.FC<NewspaperSongChineseProps> = ({
   };
   
   const getFontName = (key: ChineseFontKey | undefined) => {
-      const map: Record<string, string> = { hanyi: 'Hanyi', liujian: 'Liujian', montserrat: 'Montserrat', quicksand: 'Quicksand', xingkai: 'Xingkai', nokia: 'Nokia', fzxz: 'Fzxz' };
+      const map: Record<string, string> = { xingkai: 'Xingkai', liujian: 'Liujian', nokia: 'Nokia', hanyi: 'Hanyi', quicksand: 'Quicksand', };
       return map[key || 'hanyi'];
   };
   
