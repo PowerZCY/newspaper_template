@@ -7,6 +7,37 @@
 @import '@windrun-huaiin/third-ui/styles/third-ui.css';
 
 
+.newspaper-divider {
+  display: block;
+  width: 100%;
+  background-color: #1c1917;
+}
+
+.newspaper-divider-thin {
+  height: 1px;
+}
+
+.newspaper-divider-medium {
+  height: 2px;
+}
+
+.newspaper-divider-thick {
+  height: 4px;
+}
+
+.newspaper-divider-dashed {
+  height: 1.5px;
+  background-image: repeating-linear-gradient(90deg, #1c1917 0 4px, transparent 4px 8px);
+  background-color: transparent;
+}
+
+.newspaper-divider-vertical {
+  width: 2px;
+  height: 100%;
+  background-color: #1c1917;
+  display: block;
+}
+
 /* Newspaper Template Styles */
 .newspaper-bg {
   background: #f5f5e5;
@@ -25,7 +56,10 @@
   border: none !important;
 }
 .exporting .newspaper-divider {
-  border-color: #222 !important;
+  background-color: #222 !important;
+}
+.exporting .newspaper-divider-dashed {
+  background-image: repeating-linear-gradient(90deg, #222 0 4px, transparent 4px 8px) !important;
 }
 
 .exporting .editable,

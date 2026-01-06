@@ -106,8 +106,8 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
           type="title"
           aiTitleMaxChars={content.aiTitleMaxChars}
         />
-      </div>Purple Bamboo Dreams
-      <div className="newspaper-divider" style={{borderTop: '2px solid #222', width: '100%', marginBottom: '4px'}}></div>
+      </div>
+      <div className="newspaper-divider newspaper-divider-medium mb-1"></div>
       <AIEditable
         seqId={`${seqIdPrefix}_headline`}
         value={content.headline}
@@ -125,8 +125,8 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
         type="title"
         aiTitleMaxChars={content.aiTitleMaxChars}
       />
-      <div className="newspaper-divider" style={{borderTop:'4px solid #222', width:'100%', marginBottom:'2px'}}></div>
-      <div className="newspaper-divider" style={{borderTop:'4px solid #222', width:'100%', marginBottom:'4px'}}></div>
+      <div className="newspaper-divider newspaper-divider-thick mb-0.5"></div>
+      <div className="newspaper-divider newspaper-divider-thick mb-1"></div>
       <AIEditable
         seqId={`${seqIdPrefix}_subTitle`}
         value={content.subTitle}
@@ -135,11 +135,11 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
         type="title"
         aiTitleMaxChars={content.aiTitleMaxChars}
       />
-      <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%', marginBottom:'8px'}}></div>
+      <div className="newspaper-divider newspaper-divider-medium mb-2"></div>
       {/* 上半部分：左右结构 */}
       <div className="flex flex-row w-full mb-2 items-stretch">
         {/* 左：About me 30% */}
-        <div className="flex flex-col justify-start newspaper-border-right" style={{ width: '35%', borderRight: '2px solid #222', paddingRight: '10px', marginRight: '10px' }}>
+        <div className="flex flex-col justify-start" style={{ width: '35%', paddingRight: '10px' }}>
           <AIEditable
             seqId={`${seqIdPrefix}_aboutTitle`}
             value={content.aboutTitle}
@@ -158,6 +158,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
             aiMaxChars={content.aiMaxChars}
           />
         </div>
+        <div className="newspaper-divider newspaper-divider-vertical mx-2" style={{height: '100%'}}></div>
         {/* 右：大竖图 70% */}
         <div className="flex flex-col items-center" style={{ width: '65%' }}>
           <div 
@@ -180,7 +181,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
         </div>
       </div>
       {/* 横向分割线 */}
-      <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%', marginTop: '4px', marginBottom:'4px'}}></div>
+      <div className="newspaper-divider newspaper-divider-medium my-1"></div>
       {/* 下半部分：三列结构 */}
       <div className="grid grid-cols-3 gap-0 w-full" style={{marginBottom: '10px'}}>
         {/* 左：竖图 */}
@@ -246,7 +247,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
               type="title"
               aiTitleMaxChars={content.aiTitleMaxChars}
             />
-            <div className="newspaper-divider" style={{borderTop:'1.5px dashed #222', width:'100%', margin:'16px 0 6px 0'}}></div>
+            <div className="newspaper-divider newspaper-divider-dashed" style={{margin: '16px 0 6px 0'}}></div>
             <AIEditable
               seqId={`${seqIdPrefix}_dateTime`}
               value={content.dateTime}
@@ -258,7 +259,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
           </div>
         </div>
         {/* 右：Join us! */}
-        <div className="flex flex-col newspaper-border-left" style={{borderLeft:'2px solid #222', paddingLeft:'16px'}}>
+        <div className="flex flex-col" style={{paddingLeft:'16px'}}>
           <AIEditable
             seqId={`${seqIdPrefix}_joinTitle`}
             value={content.joinTitle}
@@ -278,7 +279,7 @@ export const NewspaperModern: React.FC<NewspaperModernProps> = ({
           />
         </div>
       </div>
-      <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%', marginTop:'5px', marginBottom:'5px'}}></div>
+      <div className="newspaper-divider newspaper-divider-medium my-1"></div>
     </div>
   );
 }; 

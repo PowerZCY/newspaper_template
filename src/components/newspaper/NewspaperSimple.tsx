@@ -55,7 +55,7 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
         type="title"
         aiTitleMaxChars={content.aiTitleMaxChars}
       />
-      <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%'}}></div>
+      <div className="newspaper-divider newspaper-divider-medium my-1"></div>
       <AIEditable
         seqId={`${seqIdPrefix}_headline`}
         value={content.headline}
@@ -73,8 +73,8 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
         type="title"
         aiTitleMaxChars={content.aiTitleMaxChars}
       />
-      <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%'}}></div>
-      <div className="newspaper-divider" style={{borderTop:'4px solid #222', width:'100%', marginTop:'2px', marginBottom:'8px'}}></div>
+      <div className="newspaper-divider newspaper-divider-medium mb-0.5"></div>
+      <div className="newspaper-divider newspaper-divider-thick mb-1"></div>
       {/* Main area */}
       <div className="flex flex-row w-full min-h-[320px] gap-0 relative" style={{paddingBottom: '5px'}}>
         {/* Left column 2/3 */}
@@ -122,7 +122,7 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
           />
         </div>
         {/* Vertical divider */}
-        <div className="h-auto absolute newspaper-divider" style={{borderLeft:'2px solid #222', height:'100%', left:'66.6667%', top:0, bottom:0}}></div>
+        <div className="absolute newspaper-divider newspaper-divider-vertical" style={{height:'100%', left:'66.6667%', top:0, bottom:0}}></div>
         {/* Right column 1/3 */}
         <div className="w-1/3 pl-6 flex flex-col justify-start">
           {/* Row 1: Small title */}
@@ -165,7 +165,7 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
             type="text"
             aiMaxChars={content.aiMaxChars}
           />
-          <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%', marginTop:'25px', marginBottom:'5px'}}></div>
+          <div className="newspaper-divider newspaper-divider-medium mt-6 mb-5"></div>
           {/* Row 5: Small title + horizontal image */}
           <AIEditable
             seqId={`${seqIdPrefix}_bottomTitle`}
@@ -206,7 +206,7 @@ export const NewspaperSimple: React.FC<NewspaperSimpleProps> = ({
           />
         </div>
       </div>
-      <div className="newspaper-divider" style={{borderTop:'2px solid #222', width:'100%', marginTop:'25px', marginBottom:'5px'}}></div>
+      <div className="newspaper-divider newspaper-divider-medium mt-6 mb-5"></div>
       <AIEditable
         seqId={`${seqIdPrefix}_footer`}
         value={content.footer}
