@@ -24,7 +24,7 @@ export const appConfig = {
       name: "Chinese Song Poster",
       type: "song",
       key: "song_cn",
-      thumb: "/song_cn.webp",
+      thumb: "https://r2.d8ger.com/newspaper-template/song_cn.webp",
       href: "",
       top: false
     },
@@ -32,7 +32,7 @@ export const appConfig = {
       name: "English Song Poster",
       type: "song",
       key: "song_en",
-      thumb: "/song_en.webp",
+      thumb: "https://r2.d8ger.com/newspaper-template/song_en.webp",
       href: "",
       top: false
     }
