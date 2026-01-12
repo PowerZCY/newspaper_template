@@ -21,21 +21,21 @@ export const appConfig = {
       top: false
     },
     {
-      name: "Chinese Song Poster",
+      name: "English Song Poster(Beta)",
+      type: "song",
+      key: "song_en",
+      thumb: "https://r2.d8ger.com/newspaper-template/song_en.webp",
+      href: "",
+      top: false
+    },
+    {
+      name: "Chinese Song Poster(Alpha)",
       type: "song",
       key: "song_cn",
       thumb: "https://r2.d8ger.com/newspaper-template/song_cn.webp",
       href: "",
       top: false
     },
-    {
-      name: "English Song Poster",
-      type: "song",
-      key: "song_en",
-      thumb: "https://r2.d8ger.com/newspaper-template/song_en.webp",
-      href: "",
-      top: false
-    }
   ],
   newspaperCard: {
     cardWidth: 200,

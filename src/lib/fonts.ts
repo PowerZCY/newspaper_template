@@ -47,29 +47,13 @@ export const quicksand = localFont({
   variable: '--font-quicksand',
 });
 
-export const xingkai = localFont({
-  src: '../../public/fonts/STXingkai.ttf',
-  display: 'swap',
-  variable: '--font-xingkai',
-});
+export const xingkai = montserrat
 
-export const liuJian = localFont({
-  src: '../../public/fonts/LiuJianMaoCao-Regular.ttf',
-  display: 'swap',
-  variable: '--font-liujian',
-});
+export const liuJian = montserrat
 
-export const nokia = localFont({
-  src: '../../public/fonts/NokiaFont-GuYin.ttf',
-  display: 'swap',
-  variable: '--font-nokia',
-});
+export const nokia = montserrat
 
-export const hanyi = localFont({
-  src: '../../public/fonts/Hanyi-Youran.ttf',
-  display: 'swap',
-  variable: '--font-hanyi',
-});
+export const hanyi = montserrat
 
 
 // --- Usage Utilities ---
